@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import type { Lang, RouteKey } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  pageKey: RouteKey;
+  title: string;
+  description: string;
+  updated?: string; // ISO date, e.g. 2026-05-28
+  lead?: string;
+}
+const { lang, pageKey, title, description, updated, lead } = Astro.props;
+const updatedLabel = lang === 'de' ? 'Zuletzt aktualisiert' : 'Last updated';
+---
+
+<BaseLayout lang={lang} pageKey={pageKey} title={title} description={description}>
+  <section class="section">
+    <div class="container">
+      <header class="legalhead">
+        <h1>{title}</h1>
+        {lead && <p class="legalhead__lead">{lead}</p>}
+        {updated && (
+          <p class="legalhead__meta">{updatedLabel}: <time datetime={updated}>{updated}</time></p>
+        )}
+      </header>
+      <article class="prose">
+        <slot />
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legalhead { max-width: var(--maxw-prose); margin-bottom: var(--sp-4); }
+  .legalhead__lead { margin-top: 0.8rem; font-size: var(--step-1); color: var(--ink-soft); }
+  .legalhead__meta { margin-top: 0.8rem; font-size: var(--step--1); color: var(--ink-faint); }
+</style>

@@ -1,0 +1,63 @@
+---
+import '@fontsource-variable/bricolage-grotesque';
+import '@fontsource-variable/hanken-grotesk';
+import '../styles/theme.css';
+import Logo from '../components/Logo.astro';
+import { site } from '../data/site';
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>404 · {site.name}</title>
+    <meta name="robots" content="noindex, follow" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#0277BD" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#060F16" media="(prefers-color-scheme: dark)" />
+  </head>
+  <body>
+    <div class="bg-atmosphere" aria-hidden="true"></div>
+    <main id="main" class="nf">
+      <div class="nf__logo"><Logo href="/de/" /></div>
+      <p class="nf__code">404</p>
+      <h1 class="nf__title">Seite nicht gefunden · Page not found</h1>
+      <p class="nf__text" lang="de">Diese Seite gibt es nicht (mehr).</p>
+      <p class="nf__text" lang="en">This page doesn’t exist (anymore).</p>
+      <div class="nf__actions">
+        <a class="btn btn-primary" href="/de/">Zur Startseite</a>
+        <a class="btn btn-ghost" href="/en/">Back to home</a>
+      </div>
+      <p class="nf__support">
+        <a href={`/de/support`}>Hilfe</a> · <a href={`/en/support`}>Help</a>
+      </p>
+    </main>
+
+    <style>
+      .nf {
+        min-height: 100svh;
+        display: grid;
+        place-content: center;
+        justify-items: center;
+        text-align: center;
+        gap: 0.6rem;
+        padding: 2rem;
+      }
+      .nf__logo { margin-bottom: 1.5rem; }
+      .nf__code {
+        font-family: var(--font-display); font-weight: 700; line-height: 1;
+        font-size: clamp(4rem, 18vw, 9rem);
+        background: linear-gradient(135deg, var(--c-primary), var(--c-violet));
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+      }
+      .nf__title { font-size: var(--step-2); }
+      .nf__text { color: var(--ink-soft); margin: 0; }
+      .nf__actions { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.4rem; }
+      .nf__support { margin-top: 1.2rem; font-size: var(--step--1); color: var(--ink-faint); }
+      .nf__support a { color: var(--ink-soft); }
+    </style>
+  </body>
+</html>

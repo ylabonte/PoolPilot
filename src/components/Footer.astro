@@ -1,0 +1,116 @@
+---
+import Logo from './Logo.astro';
+import { path, useTranslations, type Lang } from '../i18n/ui';
+import { site } from '../data/site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const year = site.copyrightYear;
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__top">
+      <div class="site-footer__brand">
+        <Logo href={path('home', lang)} />
+        <p class="site-footer__tagline">{t('footer.tagline')}</p>
+      </div>
+
+      <nav class="site-footer__cols" aria-label={t('nav.menu')}>
+        <div>
+          <h2>{t('footer.product')}</h2>
+          <ul>
+            <li><a href={`${path('home', lang)}#features`}>{t('nav.features')}</a></li>
+            <li><a href={path('news', lang)}>{t('nav.news')}</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>{t('footer.support')}</h2>
+          <ul>
+            <li><a href={path('support', lang)}>{t('nav.support')}</a></li>
+            <li><a href={site.newIssueUrl} rel="noopener noreferrer">{t('footer.issues')}</a></li>
+            <li><a href={`/rss-${lang}.xml`}>{t('footer.rss')}</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>{t('footer.legal')}</h2>
+          <ul>
+            <li><a href={path('privacy', lang)}>{t('footer.privacy')}</a></li>
+            <li><a href={path('terms', lang)}>{t('footer.terms')}</a></li>
+            <li><a href={path('imprint', lang)}>{t('footer.imprint')}</a></li>
+            <li><a href={path('about', lang)}>{t('footer.about')}</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <p class="site-footer__disclaimer">{t('footer.disclaimer')}</p>
+
+    <div class="site-footer__legalline">
+      <span>© {year} {site.copyrightHolder}. {t('footer.rights')}</span>
+      <span class="site-footer__made">{t('footer.madeIn')} <span aria-hidden="true">·</span> 🇩🇪</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: var(--sp-6);
+    border-top: 1px solid var(--line);
+    background: color-mix(in oklch, var(--bg-2) 70%, transparent);
+    padding-block: var(--sp-5) var(--sp-4);
+    font-size: var(--step--1);
+  }
+  .site-footer__top {
+    display: grid;
+    grid-template-columns: 1.4fr 2fr;
+    gap: clamp(1.5rem, 5vw, 4rem);
+    align-items: start;
+  }
+  .site-footer__tagline { color: var(--ink-soft); margin-top: 0.8rem; max-width: 22rem; }
+
+  .site-footer__cols {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .site-footer__cols h2 {
+    font-family: var(--font-body);
+    font-size: var(--step--1);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.7rem;
+  }
+  .site-footer__cols ul { list-style: none; padding: 0; display: grid; gap: 0.5rem; }
+  .site-footer__cols a { color: var(--ink-soft); text-decoration: none; }
+  .site-footer__cols a:hover { color: var(--accent); text-decoration: underline; }
+
+  .site-footer__disclaimer {
+    margin-top: var(--sp-4);
+    padding-top: var(--sp-3);
+    border-top: 1px solid var(--line-soft);
+    color: var(--ink-faint);
+    max-width: 60rem;
+    font-size: 0.82rem;
+    line-height: 1.55;
+  }
+  .site-footer__legalline {
+    margin-top: var(--sp-3);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.6rem;
+    color: var(--ink-faint);
+  }
+  .site-footer__made { display: inline-flex; gap: 0.4rem; align-items: center; }
+
+  @media (max-width: 46rem) {
+    .site-footer__top { grid-template-columns: 1fr; }
+    .site-footer__cols { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>

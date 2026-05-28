@@ -1,0 +1,58 @@
+name: 🐞 Bug melden / Report a bug
+description: Etwas funktioniert nicht wie erwartet. / Something isn't working as expected.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Danke fürs Melden! **Deutsch oder Englisch** ist beides okay.
+        Thanks for reporting! **German or English** are both fine.
+  - type: dropdown
+    id: app
+    attributes:
+      label: App
+      options:
+        - PoolPilot für ProCon.IP
+        - PoolPilot für Violet
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Plattform / Platform
+      options:
+        - iOS / iPadOS
+        - Android
+        - Apple Watch
+        - Wear OS
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: Was ist passiert? / What happened?
+      description: Was hast du erwartet, was ist stattdessen passiert? / What did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Schritte zum Reproduzieren / Steps to reproduce
+      placeholder: |
+        1. …
+        2. …
+        3. …
+  - type: input
+    id: app-version
+    attributes:
+      label: App-Version / App version
+  - type: input
+    id: os-version
+    attributes:
+      label: Betriebssystem & Gerät / OS & device
+      placeholder: z. B. iOS 26.1, iPhone 17 / e.g. Android 17, Pixel 9
+  - type: markdown
+    attributes:
+      value: |
+        ⚠️ **Bitte keine Passwörter, Controller-Zugangsdaten oder IP-Adressen posten — Issues sind öffentlich.**
+        **Please don't post passwords, controller credentials or IP addresses — issues are public.**

@@ -1,0 +1,95 @@
+---
+import { sharedFeatures } from '../data/apps';
+import { useTranslations, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<ul class="features" role="list">
+  {sharedFeatures.map((f) => (
+    <li class="features__item glass">
+      <span class="features__glare" aria-hidden="true"></span>
+      <span class="features__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d={f.icon} />
+        </svg>
+      </span>
+      <div class="features__head">
+        <h3 class="features__title">{f.title[lang]}</h3>
+        {f.comingSoon && <span class="features__soon">{t('badge.comingSoon')}</span>}
+        {f.planned && <span class="features__planned">{t('badge.planned')}</span>}
+      </div>
+      <p class="features__body">{f.body[lang]}</p>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .features {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: clamp(0.8rem, 2vw, 1.3rem);
+  }
+  .features__item {
+    position: relative;
+    overflow: hidden;
+    padding: 1.4rem;
+    display: grid;
+    gap: 0.55rem;
+    align-content: start;
+    /* 3D pointer tilt (self-perspective so each card pivots about its own centre). */
+    transform: perspective(800px) translateY(var(--lift, 0)) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transform-style: preserve-3d;
+    transition: transform 0.4s var(--ease), box-shadow 0.3s var(--ease);
+    will-change: transform;
+  }
+  .features__item:hover {
+    --lift: -4px;
+    transition: transform 0.1s linear, box-shadow 0.3s var(--ease);
+    box-shadow: 0 16px 34px -20px color-mix(in oklch, var(--c-primary) 45%, transparent);
+  }
+  /* Soft glare that tracks the pointer, mirroring the hero card + badges. */
+  .features__glare {
+    position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    opacity: 0; transition: opacity 0.3s var(--ease);
+    background: radial-gradient(
+      16rem 16rem at var(--mx, 50%) var(--my, 50%),
+      color-mix(in oklch, var(--c-primary) 12%, transparent), transparent 60%
+    );
+  }
+  .features__item:hover .features__glare { opacity: 1; }
+  .features__icon {
+    display: inline-grid; place-items: center;
+    width: 2.8rem; height: 2.8rem; border-radius: var(--r-2);
+    color: #fff;
+    background: linear-gradient(135deg, var(--c-primary), var(--c-teal));
+    box-shadow: 0 8px 18px -10px color-mix(in oklch, var(--c-primary) 70%, transparent);
+  }
+  .features__head { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+  .features__title { font-size: var(--step-1); }
+  /* Status pills next to the title. Shared shape; colour signals commitment. */
+  .features__soon, .features__planned {
+    font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em;
+    padding: 0.15rem 0.55rem; border-radius: var(--r-pill);
+    white-space: nowrap;
+  }
+  /* "Coming soon" — committed: brand-blue tint. */
+  .features__soon {
+    color: var(--c-primary-ink);
+    background: color-mix(in oklch, var(--c-primary) 14%, transparent);
+    border: 1px solid color-mix(in oklch, var(--c-primary) 30%, transparent);
+  }
+  /* "Planned" — lower commitment: muted neutral, visibly softer than blue. */
+  .features__planned {
+    color: var(--ink-soft);
+    background: transparent;
+    border: 1px solid var(--line);
+  }
+  .features__body { color: var(--ink-soft); font-size: var(--step-0); }
+</style>

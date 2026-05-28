@@ -1,0 +1,30 @@
+name: ❓ Frage / Question
+description: Eine Frage zur Einrichtung oder Nutzung. / A question about setup or usage.
+labels: [question]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Tipp: Viele Fragen beantwortet schon die [Hilfe & FAQ](https://poolpilot.eu/de/support).
+        Tip: the [Help & FAQ](https://poolpilot.eu/en/support) already answers many questions.
+  - type: dropdown
+    id: app
+    attributes:
+      label: App
+      options:
+        - PoolPilot für ProCon.IP
+        - PoolPilot für Violet
+        - Allgemein / General
+    validations:
+      required: true
+  - type: textarea
+    id: question
+    attributes:
+      label: Deine Frage / Your question
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        ⚠️ **Keine Zugangsdaten oder IP-Adressen posten — Issues sind öffentlich.**
+        **Don't post credentials or IP addresses — issues are public.**

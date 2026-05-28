@@ -1,0 +1,95 @@
+---
+import LegalPage from '../../components/LegalPage.astro';
+import { path } from '../../i18n/ui';
+---
+
+<LegalPage
+  lang="en"
+  pageKey="terms"
+  title="Terms of Use"
+  description="Terms of use for the PoolPilot app and this website: scope, subscription, free trial and liability."
+  updated="2026-05-28"
+  lead="These terms govern use of the PoolPilot app for ProCon.IP and Violet, and this website."
+>
+  <h2>1. Scope</h2>
+  <p>
+    These terms apply to use of the PoolPilot app (“the app”) and this website. Purchases and
+    subscriptions are additionally subject to the terms of the respective app store (Apple Media
+    Services or Google Play).
+  </p>
+
+  <h2>2. The service</h2>
+  <p>
+    PoolPilot is a native app that displays readings from your pool controller (ProCon.IP or Violet)
+    and — as part of PoolPilot&nbsp;Pro — can control switch functions, dosing, the cover and setpoints.
+    Communication happens directly on your local network. Reading values is free; write actions require
+    an active Pro subscription or a running free trial.
+  </p>
+
+  <h2>3. Independence</h2>
+  <p>
+    PoolPilot is an independent project and is not affiliated with Pool Digital GmbH. “ProCon.IP” and
+    “Violet” are trademarks of their respective owners and are used only to describe compatibility.
+  </p>
+
+  <h2>4. Subscription, free trial and cancellation</h2>
+  <p>
+    PoolPilot&nbsp;Pro is offered as a subscription (monthly or yearly). A one-time free trial starts on
+    your first successful connection to your controller; no payment details are required during the
+    trial.
+  </p>
+  <p>
+    A subscription renews automatically at the then-current price unless cancelled at least 24&nbsp;hours
+    before the end of the current period. You manage and cancel it in the subscription settings of your
+    App Store or Google Play account. Current prices are shown in the app's purchase dialog and on the
+    app pages.
+  </p>
+
+  <h2>5. Requirements</h2>
+  <p>
+    To use the app you need a compatible controller, a device with a supported operating system, and a
+    network over which the app and controller can reach each other. You are responsible for the setup.
+  </p>
+
+  <h2>6. Use at your own risk and liability</h2>
+  <p>
+    <strong>Important:</strong> PoolPilot can switch real equipment (e.g. pumps, heating, dosing, the
+    cover). You remain responsible for the safe operation of your installation and must observe your
+    controller manufacturer's instructions and applicable safety rules. Check the effect of a switch
+    action before you trigger it.
+  </p>
+  <p>
+    The app is provided “as is”; no particular fitness or uninterrupted availability is warranted. For
+    slightly negligent conduct we are liable only for breach of a material contractual obligation, and
+    then limited to the foreseeable damage typical for this type of contract. Mandatory statutory
+    liability remains unaffected — in particular for intent and gross negligence, for injury to life,
+    body or health, and under the German Product Liability Act.
+  </p>
+
+  <h2>7. Availability and changes</h2>
+  <p>
+    Features may evolve, change or be removed. There is no claim to any particular feature or to
+    permanent availability.
+  </p>
+
+  <h2>8. Intellectual property</h2>
+  <p>
+    The app, website and content are protected by copyright. You receive a simple, non-transferable
+    right to use the app as intended.
+  </p>
+
+  <h2>9. Changes to these terms</h2>
+  <p>
+    We may adjust these terms, e.g. for new features or a changed legal situation. The version published
+    at the time applies.
+  </p>
+
+  <h2>10. Governing law</h2>
+  <p>
+    German law applies. Mandatory consumer-protection provisions of your country of residence remain
+    unaffected.
+  </p>
+
+  <h2>11. Contact</h2>
+  <p>Contact details are in the <a href={path('imprint', 'en')}>Imprint</a>.</p>
+</LegalPage>

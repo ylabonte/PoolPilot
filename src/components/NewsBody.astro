@@ -1,0 +1,73 @@
+---
+import { getCollection, render } from 'astro:content';
+import { useTranslations, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const posts = (await getCollection('news'))
+  .filter((p) => p.data.lang === lang && !p.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const rendered = await Promise.all(
+  posts.map(async (p) => ({ post: p, Content: (await render(p)).Content }))
+);
+
+const copy = {
+  de: { eyebrow: 'News', h1: 'Neuigkeiten', lead: 'Updates rund um PoolPilot. Per RSS abonnierbar – ganz ohne E-Mail-Liste.', empty: 'Noch keine Beiträge.' },
+  en: { eyebrow: 'News', h1: 'Updates', lead: 'News about PoolPilot. Subscribe via RSS — no email list needed.', empty: 'No posts yet.' },
+}[lang];
+
+const fmt = (d: Date) =>
+  new Intl.DateTimeFormat(lang === 'de' ? 'de-DE' : 'en-US', { dateStyle: 'long' }).format(d);
+---
+
+<section class="section">
+  <div class="container">
+    <header class="news__head">
+      <p class="eyebrow">{copy.eyebrow}</p>
+      <h1>{copy.h1}</h1>
+      <p class="news__lead">
+        {copy.lead}
+        <a class="news__rss" href={`/rss-${lang}.xml`}>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><circle cx="6.2" cy="17.8" r="2.2" /><path d="M4 10.2v3a6.8 6.8 0 0 1 6.8 6.8h3A9.8 9.8 0 0 0 4 10.2Zm0-5.4v3A12.2 12.2 0 0 1 16.2 20h3A15.2 15.2 0 0 0 4 4.8Z" /></svg>
+          {t('footer.rss')}
+        </a>
+      </p>
+    </header>
+
+    {rendered.length === 0 ? (
+      <p>{copy.empty}</p>
+    ) : (
+      <div class="news__list">
+        {rendered.map(({ post, Content }) => (
+          <article id={post.id} class="news__item glass">
+            <time class="news__date" datetime={post.data.date.toISOString()}>{fmt(post.data.date)}</time>
+            <h2 class="news__title">{post.data.title}</h2>
+            <div class="prose news__body"><Content /></div>
+          </article>
+        ))}
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .news__head { max-width: 42rem; }
+  .news__lead { margin-top: 0.8rem; font-size: var(--step-1); color: var(--ink-soft); }
+  .news__rss {
+    display: inline-flex; align-items: center; gap: 0.3rem; margin-left: 0.5rem;
+    font-size: var(--step--1); font-weight: 650; color: var(--c-orange); text-decoration: none;
+    vertical-align: middle;
+  }
+  .news__rss:hover { text-decoration: underline; }
+
+  .news__list { margin-top: var(--sp-5); display: grid; gap: 1.2rem; max-width: var(--maxw-prose); }
+  .news__item { padding: clamp(1.4rem, 3vw, 2rem); scroll-margin-top: 5.5rem; }
+  .news__date { font-size: var(--step--1); color: var(--ink-faint); font-weight: 650; }
+  .news__title { font-size: var(--step-2); margin-top: 0.3rem; }
+  .news__body { margin-top: 1rem; }
+</style>

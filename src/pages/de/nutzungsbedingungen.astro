@@ -1,0 +1,99 @@
+---
+import LegalPage from '../../components/LegalPage.astro';
+import { path } from '../../i18n/ui';
+---
+
+<LegalPage
+  lang="de"
+  pageKey="terms"
+  title="Nutzungsbedingungen"
+  description="Nutzungsbedingungen für die PoolPilot-App und diese Website: Leistungsumfang, Abonnement, Testphase und Haftung."
+  updated="2026-05-28"
+  lead="Diese Bedingungen regeln die Nutzung der PoolPilot-App für ProCon.IP und Violet sowie dieser Website."
+>
+  <h2>1. Geltungsbereich</h2>
+  <p>
+    Diese Nutzungsbedingungen gelten für die Nutzung der PoolPilot-App („App“) sowie dieser Website.
+    Für Käufe und Abonnements gelten zusätzlich die Bedingungen des jeweiligen App-Stores
+    (Apple Media Services bzw. Google Play).
+  </p>
+
+  <h2>2. Leistung</h2>
+  <p>
+    PoolPilot ist eine native App, die Messwerte deiner Poolsteuerung (ProCon.IP oder Violet)
+    anzeigt und – im Rahmen von PoolPilot&nbsp;Pro – Schaltfunktionen, Dosierung, Abdeckung und
+    Sollwerte steuern kann. Die Kommunikation erfolgt direkt in deinem lokalen Netzwerk. Das Lesen
+    von Werten ist kostenlos; Schreibaktionen erfordern ein aktives Pro-Abonnement oder eine laufende
+    Testphase.
+  </p>
+
+  <h2>3. Unabhängigkeit</h2>
+  <p>
+    PoolPilot ist ein unabhängiges Projekt und steht in keiner Verbindung zur Pool Digital GmbH.
+    „ProCon.IP“ und „Violet“ sind Marken ihrer jeweiligen Inhaber und werden nur zur Beschreibung der
+    Kompatibilität genannt.
+  </p>
+
+  <h2>4. Abonnement, Testphase und Kündigung</h2>
+  <p>
+    PoolPilot&nbsp;Pro wird als Abonnement (monatlich oder jährlich) angeboten. Eine einmalige,
+    kostenlose Testphase startet bei der ersten erfolgreichen Verbindung zu deinem Controller; während
+    der Testphase sind keine Zahlungsdaten erforderlich.
+  </p>
+  <p>
+    Ein Abonnement verlängert sich automatisch zum jeweils gültigen Preis, sofern es nicht mindestens
+    24&nbsp;Stunden vor Ablauf der laufenden Periode gekündigt wird. Verwaltung und Kündigung erfolgen
+    in den Abo-Einstellungen deines App-Store- bzw. Google-Play-Accounts. Die aktuellen Preise sind im
+    Kaufdialog der App sowie auf den App-Seiten ausgewiesen.
+  </p>
+
+  <h2>5. Voraussetzungen</h2>
+  <p>
+    Für die Nutzung benötigst du einen kompatiblen Controller, ein Gerät mit unterstütztem
+    Betriebssystem sowie ein Netzwerk, über das App und Controller sich erreichen. Für die Einrichtung
+    bist du selbst verantwortlich.
+  </p>
+
+  <h2>6. Nutzung auf eigenes Risiko und Haftung</h2>
+  <p>
+    <strong>Wichtig:</strong> Mit PoolPilot lassen sich reale Geräte schalten (z.&nbsp;B. Pumpen,
+    Heizung, Dosierung, Abdeckung). Du bleibst für den sicheren Betrieb deiner Anlage verantwortlich
+    und musst die Hinweise des Herstellers deines Controllers sowie geltende Sicherheitsregeln
+    beachten. Prüfe Auswirkungen einer Schaltaktion, bevor du sie auslöst.
+  </p>
+  <p>
+    Die App wird „wie besehen“ bereitgestellt; eine bestimmte Eignung oder unterbrechungsfreie
+    Verfügbarkeit wird nicht zugesichert. Für leicht fahrlässig verursachte Schäden haften wir nur bei
+    Verletzung einer wesentlichen Vertragspflicht (Kardinalpflicht) und der Höhe nach begrenzt auf den
+    vorhersehbaren, vertragstypischen Schaden. Unberührt bleibt die zwingende gesetzliche Haftung,
+    insbesondere bei Vorsatz und grober Fahrlässigkeit, für Schäden aus der Verletzung des Lebens, des
+    Körpers oder der Gesundheit sowie nach dem Produkthaftungsgesetz.
+  </p>
+
+  <h2>7. Verfügbarkeit und Änderungen</h2>
+  <p>
+    Funktionen können sich weiterentwickeln, ändern oder entfallen. Ein Anspruch auf eine bestimmte
+    Funktion oder dauerhafte Verfügbarkeit besteht nicht.
+  </p>
+
+  <h2>8. Geistiges Eigentum</h2>
+  <p>
+    App, Website und Inhalte sind urheberrechtlich geschützt. Du erhältst ein einfaches, nicht
+    übertragbares Recht zur bestimmungsgemäßen Nutzung der App.
+  </p>
+
+  <h2>9. Änderungen dieser Bedingungen</h2>
+  <p>
+    Wir können diese Bedingungen anpassen, z.&nbsp;B. bei neuen Funktionen oder geänderter Rechtslage.
+    Maßgeblich ist die jeweils veröffentlichte Fassung.
+  </p>
+
+  <h2>10. Anwendbares Recht</h2>
+  <p>
+    Es gilt deutsches Recht. Zwingende verbraucherschützende Vorschriften deines Wohnsitzstaates
+    bleiben unberührt.
+  </p>
+
+  <h2>11. Kontakt</h2>
+  <p>Kontaktangaben findest du im <a href={path('imprint', 'de')}>Impressum</a>.</p>
+</LegalPage>

@@ -1,0 +1,102 @@
+---
+import { path, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const copy = {
+  de: {
+    eyebrow: 'Beta & Pro',
+    heading: 'Offene Beta – kostenlos, ohne Registrierung',
+    intro:
+      'PoolPilot ist gerade in der Beta Phase. Alle Funktionen sind offen und kostenlos. Nach der Beta Phase wird ein Teil davon zu PoolPilot Pro – einem Abo mit kostenloser Testphase.',
+    nowTag: 'Kostenlos',
+    proTag: 'Pro',
+    nowTitle: 'Jetzt, in der Beta',
+    nowBody: 'Alles ausprobieren: Werte lesen, schalten, Widgets und die Watch-Ansicht – komplett kostenlos, ohne Konto.',
+    laterTitle: 'Nach der Beta',
+    laterBody: 'Einige Funktionen werden Teil von PoolPilot Pro. Welche genau und zu welchem Preis, sagen wir rechtzeitig vorher – auf der News-Seite.',
+    fine: 'Pro wird ein Abo über den App Store bzw. Google Play – mit kostenloser Testphase und jederzeit kündbar in den Store-Einstellungen. Während der Beta entstehen keine Kosten, und nichts wird automatisch kostenpflichtig; Änderungen kündigen wir vorher an.',
+    seeTerms: 'Nutzungsbedingungen',
+    seePrivacy: 'Datenschutz',
+  },
+  en: {
+    eyebrow: 'Beta & Pro',
+    heading: 'Open beta - free, no registration',
+    intro:
+      'PoolPilot is currently in beta. Every feature is open and free. After the beta, some of them will become PoolPilot Pro — a subscription with a free trial.',
+    nowTag: 'Free',
+    proTag: 'Pro',
+    nowTitle: 'Right now, in beta',
+    nowBody: 'Try everything: read values, switch, widgets and the watch view — completely free, no account.',
+    laterTitle: 'After the beta',
+    laterBody: 'Some features will become part of PoolPilot Pro. Exactly which ones, and at what price, we’ll say well in advance — on the news page.',
+    fine: 'Pro will be a subscription through the App Store or Google Play — with a free trial and cancellable anytime in your store settings. Nothing costs anything during the beta, and nothing turns into a paid plan automatically; we’ll announce any change beforehand.',
+    seeTerms: 'Terms',
+    seePrivacy: 'Privacy',
+  },
+}[lang];
+---
+
+<section class="pricing" aria-labelledby="pricing-h">
+  <p class="eyebrow">{copy.eyebrow}</p>
+  <h2 id="pricing-h">{copy.heading}</h2>
+  <p class="pricing__intro">{copy.intro}</p>
+
+  <div class="pricing__grid">
+    <div class="pricing__plan pricing__plan--now glass">
+      <span class="pricing__tag">{copy.nowTag}</span>
+      <h3>{copy.nowTitle}</h3>
+      <p class="pricing__planbody">{copy.nowBody}</p>
+    </div>
+
+    <div class="pricing__plan glass">
+      <span class="pricing__tag">{copy.proTag}</span>
+      <h3>{copy.laterTitle}</h3>
+      <p class="pricing__planbody">{copy.laterBody}</p>
+    </div>
+  </div>
+
+  <div class="pricing__fine">
+    <p>{copy.fine}</p>
+    <p class="pricing__links">
+      <a href={path('terms', lang)}>{copy.seeTerms}</a>
+      <span aria-hidden="true">·</span>
+      <a href={path('privacy', lang)}>{copy.seePrivacy}</a>
+    </p>
+  </div>
+</section>
+
+<style>
+  .pricing__intro { color: var(--ink-soft); max-width: 42rem; margin-top: 0.6rem; }
+  .pricing__grid {
+    margin-top: var(--sp-4);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1rem;
+  }
+  .pricing__plan { padding: 1.5rem; display: grid; gap: 0.5rem; align-content: start; position: relative; }
+  .pricing__plan--now { outline: 2px solid color-mix(in oklch, var(--accent) 55%, transparent); }
+  .pricing__tag {
+    position: absolute; top: 1rem; right: 1rem;
+    font-size: 0.66rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--accent); padding: 0.2rem 0.6rem; border-radius: var(--r-pill);
+    border: 1px solid color-mix(in oklch, var(--accent) 45%, transparent);
+  }
+  .pricing__plan h3 { font-size: var(--step-1); }
+  .pricing__planbody { color: var(--ink-soft); font-size: var(--step-0); }
+
+  .pricing__fine {
+    margin-top: var(--sp-4);
+    padding: 1.2rem 1.4rem;
+    border-radius: var(--r-2);
+    border: 1px solid var(--line);
+    background: color-mix(in oklch, var(--bg-2) 55%, transparent);
+    max-width: 52rem;
+  }
+  .pricing__fine p { color: var(--ink-faint); font-size: 0.82rem; line-height: 1.55; }
+  .pricing__links { margin-top: 0.7rem; display: flex; gap: 0.6rem; }
+  .pricing__links a { color: var(--accent); font-weight: 600; }
+</style>

@@ -1,0 +1,87 @@
+---
+import { useTranslations, type Lang } from '../i18n/ui';
+
+interface Props {
+  store: 'appstore' | 'playstore';
+  lang: Lang;
+}
+const { store, lang } = Astro.props;
+const t = useTranslations(lang);
+
+const isApple = store === 'appstore';
+const soon = t('badge.comingSoon');
+const name = isApple ? 'App Store' : 'Google Play';
+// Apple logo + Play triangle as inline SVG glyphs.
+const glyph = isApple
+  ? 'M16.4 12.8c0-2 1.6-3 1.7-3a3.7 3.7 0 0 0-2.9-1.6c-1.2-.1-2.4.7-3 .7s-1.6-.7-2.6-.7A4 4 0 0 0 6.3 10c-1.5 2.6-.4 6.4 1 8.5.8 1 1.6 2.2 2.7 2.1 1.1 0 1.5-.7 2.8-.7s1.7.7 2.8.7 1.9-1 2.6-2.1a9 9 0 0 0 1.2-2.4c-.1 0-2.8-1.1-2.8-4.3ZM14.5 6a3.6 3.6 0 0 0 .9-2.6 3.7 3.7 0 0 0-2.4 1.2 3.5 3.5 0 0 0-.9 2.6A3 3 0 0 0 14.5 6Z'
+  : '';
+---
+
+<span class={`storebadge storebadge--${store}`} role="img" aria-label={`${soon}: ${name}`}>
+  <span class="storebadge__glare" aria-hidden="true"></span>
+  <span class="storebadge__glyph" aria-hidden="true">
+    {isApple ? (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d={glyph} /></svg>
+    ) : (
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <path d="M3 2.5v19l11-9.5z" fill="#34A853" />
+        <path d="M3 2.5l11 9.5 3.2-2.8z" fill="#EA4335" />
+        <path d="M3 21.5l11-9.5 3.2 2.8z" fill="#4285F4" />
+        <path d="M17.2 9.2L21 11.4c.9.5.9 1.7 0 2.2l-3.8 2.2-3.2-2.8z" fill="#FBBC04" />
+      </svg>
+    )}
+  </span>
+  <span class="storebadge__text">
+    <small>{soon}</small>
+    <strong>{name}</strong>
+  </span>
+</span>
+
+<style>
+  .storebadge {
+    position: relative;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.55rem 1rem;
+    border-radius: var(--r-2);
+    border: 1px solid var(--line);
+    background: var(--bg-2);
+    color: var(--ink);
+    line-height: 1.1;
+    cursor: default;
+    user-select: none;
+    /* 3D pointer tilt (self-perspective so each badge pivots about its own centre). */
+    transform: perspective(600px) translateY(var(--lift, 0)) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transform-style: preserve-3d;
+    transition: transform 0.4s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s var(--ease);
+    will-change: transform;
+  }
+  .storebadge:hover {
+    --lift: -2px;
+    transition: transform 0.08s linear, box-shadow 0.3s var(--ease), border-color 0.3s var(--ease);
+    border-color: color-mix(in oklch, var(--c-primary) 40%, var(--line));
+    box-shadow: 0 12px 26px -16px color-mix(in oklch, var(--c-primary) 45%, transparent);
+  }
+  /* Soft glare that tracks the pointer, mirroring the hero card. */
+  .storebadge__glare {
+    position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    opacity: 0; transition: opacity 0.3s var(--ease);
+    background: radial-gradient(
+      8rem 8rem at var(--mx, 50%) var(--my, 50%),
+      color-mix(in oklch, var(--c-primary) 14%, transparent), transparent 60%
+    );
+  }
+  .storebadge:hover .storebadge__glare { opacity: 1; }
+  .storebadge__glyph { display: inline-flex; color: var(--ink); }
+  .storebadge__text { display: grid; text-align: left; }
+  .storebadge__text small {
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-faint);
+    font-weight: 700;
+  }
+  .storebadge__text strong { font-size: 0.98rem; font-weight: 700; }
+</style>

@@ -1,0 +1,137 @@
+---
+import { useTranslations, type Lang } from '../i18n/ui';
+import { site } from '../data/site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const copy = {
+  de: {
+    eyebrow: 'Hilfe',
+    h1: 'Hilfe & Kontakt',
+    lead: 'Die häufigsten Fragen klärt der FAQ unten. Kommst du nicht weiter, öffne ein GitHub-Issue oder schreib eine E-Mail.',
+    faqHeading: 'Häufige Fragen',
+    contactHeading: 'Noch Fragen?',
+    contactBody: 'Für Bugs und Wünsche sind öffentliche GitHub-Issues am besten – so sehen alle den Stand. Für Persönliches oder Account-Themen nutze die E-Mail.',
+    issueBtn: 'Issue öffnen',
+    issueNote: 'Öffentlich auf GitHub · Deutsch oder Englisch willkommen',
+    emailBtn: 'E-Mail schreiben',
+    emailNote: 'Für private oder kontobezogene Anliegen',
+    faqs: [
+      { q: 'Welche Controller werden unterstützt?', a: 'Eine App für beide: PoolPilot unterstützt die <strong>ProCon.IP</strong> und die <strong>Violet</strong>. Du legst einfach ein Verbindungsprofil an – den Gerätetyp erkennt die App automatisch.' },
+      { q: 'Wie verbinde ich die App mit meinem Controller?', a: 'App und Controller müssen im selben Netzwerk sein. Leg ein Verbindungsprofil an und trag die Adresse (Host oder IP) deines Controllers sowie Benutzername und Passwort ein – ob ProCon.IP oder Violet, erkennt PoolPilot automatisch. Ein Demo-Modus zum Ausprobieren ist eingebaut.' },
+      { q: 'Die App erreicht den Controller nicht – was tun?', a: 'Prüfe, ob Telefon und Controller im selben WLAN/Netz sind und ob Adresse/Port stimmen. Unter <strong>Android 17 und neuer</strong> braucht die App zusätzlich die Berechtigung für das lokale Netzwerk – bestätige die Abfrage beim ersten Start. Prüfe außerdem HTTP/HTTPS-Einstellung und eine eventuelle Firewall.' },
+      { q: 'Brauche ich ein Konto oder eine Cloud?', a: 'Nein. PoolPilot spricht direkt mit deinem Controller im lokalen Netz. Es gibt kein Konto bei uns und keine Cloud.' },
+      { q: 'Was kostet PoolPilot, und was ist Pro?', a: 'Während der Beta ist PoolPilot komplett kostenlos – alle Funktionen sind offen. Nach der Beta wird ein Teil davon zu <strong>PoolPilot Pro</strong>, einem Abo mit kostenloser Testphase. Was genau Pro wird und was es kostet, geben wir rechtzeitig vorher auf der News-Seite bekannt.' },
+      { q: 'Wie kündige ich das Abo?', a: 'Sobald es PoolPilot Pro gibt: in den Abo-Einstellungen deines App-Store- bzw. Google-Play-Accounts, wo es sich automatisch verlängert, solange es nicht rechtzeitig gekündigt wird. Während der Beta gibt es noch kein Abo.' },
+      { q: 'Werden meine Daten gesammelt?', a: 'Nein – keine Werbung, kein Tracking. Zugangsdaten bleiben auf dem Gerät. Details in der Datenschutzerklärung.' },
+      { q: 'Funktioniert das auch von unterwegs?', a: 'PoolPilot kommuniziert mit dem Controller in deinem lokalen Netzwerk. Zugriff von unterwegs hängt von deinem eigenen Netz ab (z. B. über ein VPN nach Hause) und ist nicht Teil der App.' },
+    ],
+  },
+  en: {
+    eyebrow: 'Help',
+    h1: 'Help & contact',
+    lead: 'The common questions are answered in the FAQ below. If you’re stuck, open a GitHub issue or send an email.',
+    faqHeading: 'Frequently asked questions',
+    contactHeading: 'Still stuck?',
+    contactBody: 'For bugs and requests, public GitHub issues work best — everyone can see the status. For personal or account matters, use email.',
+    issueBtn: 'Open an issue',
+    issueNote: 'Public on GitHub · German or English welcome',
+    emailBtn: 'Send an email',
+    emailNote: 'For private or account-related matters',
+    faqs: [
+      { q: 'Which controllers are supported?', a: 'One app for both: PoolPilot supports the <strong>ProCon.IP</strong> and the <strong>Violet</strong>. Just add a connection profile — the app detects the device type automatically.' },
+      { q: 'How do I connect the app to my controller?', a: 'The app and the controller must be on the same network. Add a connection profile and enter your controller’s address (host or IP) plus a username and password — PoolPilot detects whether it’s a ProCon.IP or a Violet automatically. A demo mode is built in so you can try the app first.' },
+      { q: 'The app can’t reach the controller — what now?', a: 'Check that your phone and controller are on the same Wi-Fi/network and that the address/port are correct. On <strong>Android 17 and newer</strong> the app also needs the local-network permission — accept the prompt on first launch. Also check the HTTP/HTTPS setting and any firewall.' },
+      { q: 'Do I need an account or a cloud?', a: 'No. PoolPilot talks directly to your controller on the local network. There is no account with us and no cloud.' },
+      { q: 'What does PoolPilot cost, and what is Pro?', a: 'During the beta, PoolPilot is completely free — every feature is open. After the beta, some of them will become <strong>PoolPilot Pro</strong>, a subscription with a free trial. Exactly which features become Pro, and what it costs, we’ll announce in good time on the news page beforehand.' },
+      { q: 'How do I cancel the subscription?', a: 'Once PoolPilot Pro exists: in the subscription settings of your App Store or Google Play account, where it renews automatically unless cancelled in time. During the beta there’s no subscription yet.' },
+      { q: 'Is my data collected?', a: 'No — no ads, no tracking. Credentials stay on your device. See the Privacy Policy for details.' },
+      { q: 'Does it work when I’m away from home?', a: 'PoolPilot communicates with the controller on your local network. Remote access depends on your own network setup (e.g. a VPN back home) and is not part of the app.' },
+    ],
+  },
+}[lang];
+const mailto = `mailto:${site.supportEmail}?subject=PoolPilot%20Support`;
+---
+
+<section class="section">
+  <div class="container">
+    <header class="support__head">
+      <p class="eyebrow">{copy.eyebrow}</p>
+      <h1>{copy.h1}</h1>
+      <p class="support__lead">{copy.lead}</p>
+    </header>
+
+    <div class="support__grid">
+      <div class="support__faq">
+        <h2>{copy.faqHeading}</h2>
+        <div class="faq">
+          {copy.faqs.map((f, i) => (
+            <details class="faq__item glass" name="faq" open={i === 0}>
+              <summary>
+                <span>{f.q}</span>
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
+              </summary>
+              <div class="faq__answer"><p set:html={f.a}></p></div>
+            </details>
+          ))}
+        </div>
+      </div>
+
+      <aside class="support__contact">
+        <div class="glass support__card">
+          <h2>{copy.contactHeading}</h2>
+          <p>{copy.contactBody}</p>
+          <a class="btn btn-primary" href={site.newIssueUrl} rel="noopener noreferrer">{copy.issueBtn}</a>
+          <small>{copy.issueNote}</small>
+          <hr />
+          <a class="btn btn-ghost" href={mailto}>{copy.emailBtn}</a>
+          <small>{copy.emailNote}</small>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  .support__head { max-width: 42rem; }
+  .support__lead { margin-top: 0.8rem; font-size: var(--step-1); color: var(--ink-soft); }
+  .support__grid {
+    margin-top: var(--sp-5);
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: start;
+  }
+  .support__faq h2, .support__card h2 { font-size: var(--step-2); margin-bottom: 1rem; }
+
+  .faq { display: grid; gap: 0.7rem; }
+  .faq__item { padding: 0; overflow: hidden; }
+  .faq__item summary {
+    list-style: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: 1.1rem 1.3rem; font-weight: 650; font-family: var(--font-display);
+  }
+  .faq__item summary::-webkit-details-marker { display: none; }
+  /* Inset outline: the card's overflow:hidden would clip the default +3px ring. */
+  .faq__item summary:focus-visible { outline: 2.5px solid var(--accent); outline-offset: -2.5px; border-radius: inherit; }
+  .faq__item summary svg { flex: none; transition: transform 0.25s var(--ease); color: var(--ink-faint); }
+  .faq__item[open] summary svg { transform: rotate(180deg); }
+  .faq__answer { padding: 0 1.3rem 1.2rem; }
+  .faq__answer p { color: var(--ink-soft); }
+
+  .support__contact { position: sticky; top: 5.5rem; }
+  .support__card { padding: 1.6rem; display: grid; gap: 0.6rem; }
+  .support__card p { color: var(--ink-soft); margin-bottom: 0.4rem; }
+  .support__card .btn { width: 100%; justify-content: center; }
+  .support__card small { color: var(--ink-faint); font-size: 0.74rem; text-align: center; }
+  .support__card hr { border: 0; border-top: 1px solid var(--line); margin: 0.6rem 0; }
+
+  @media (max-width: 52rem) {
+    .support__grid { grid-template-columns: 1fr; }
+    .support__contact { position: static; }
+  }
+</style>

@@ -1,0 +1,129 @@
+---
+import LegalPage from '../../components/LegalPage.astro';
+import { path } from '../../i18n/ui';
+import { site } from '../../data/site';
+---
+
+<LegalPage
+  lang="de"
+  pageKey="privacy"
+  title="Datenschutzerklärung"
+  description="Wie PoolPilot mit Daten umgeht: lokale Speicherung auf dem Gerät, keine Werbung, kein Tracking. Diese Erklärung beschreibt App, Käufe und Website."
+  updated="2026-05-28"
+  lead="Kurz gesagt: PoolPilot sammelt keine personenbezogenen Daten auf eigenen Servern. Es gibt keine Werbung und kein Tracking – wir werten deine Daten schlicht nicht aus."
+>
+  <h2>1. Verantwortlicher</h2>
+  <p>
+    Verantwortlich im Sinne der Datenschutz-Grundverordnung (DSGVO) ist:
+  </p>
+  <p>
+    Yannic Labonte<br />
+    Webergasse 3<br />
+    40668 Meerbusch<br />
+    Deutschland<br />
+    E-Mail: <a href="mailto:yannic.labonte@gmail.com">yannic.labonte@gmail.com</a>
+  </p>
+  <p>Weitere Angaben findest du im <a href={path('imprint', 'de')}>Impressum</a>.</p>
+
+  <h2>2. Grundsatz</h2>
+  <p>
+    PoolPilot ist eine native App, die direkt mit deiner Poolsteuerung (ProCon.IP oder Violet)
+    in deinem eigenen Netzwerk kommuniziert. Es gibt kein Benutzerkonto bei uns, keine Cloud, keine
+    Werbung und keine Analyse-/Tracking-Dienste. Wir verarbeiten so wenige Daten wie möglich.
+  </p>
+
+  <h2>3. Daten in der App</h2>
+  <h3>Verbindungsdaten zum Controller</h3>
+  <p>
+    Damit die App mit deinem Controller sprechen kann, gibst du dessen Adresse (Host/IP) sowie
+    Benutzername und Passwort ein. Diese <strong>Zugangsdaten werden ausschließlich lokal auf deinem
+    Gerät gespeichert</strong> – auf iOS in der System-Keychain, auf Android im verschlüsselten
+    App-Speicher (DataStore). Sie verlassen dein Gerät nur, um Anfragen an genau diesen Controller
+    zu senden. Wir erhalten diese Daten zu keinem Zeitpunkt.
+  </p>
+  <h3>Mess- und Einstellungsdaten</h3>
+  <p>
+    Mess- und Statuswerte werden vom Controller abgerufen und auf dem Gerät angezeigt bzw. für
+    Widgets und die Watch-Ansicht zwischengespeichert. Auch diese Daten verbleiben auf dem Gerät
+    bzw. im Datenbereich der App.
+  </p>
+  <h3>Keine Telemetrie</h3>
+  <p>
+    Die App enthält keine Analyse-, Tracking- oder Werbe-SDKs. Eine optionale Fehlerdiagnose
+    (Crash-Reporting) ist derzeit deaktiviert. Sollte sie künftig aktiviert werden, wird diese
+    Erklärung vorab entsprechend angepasst.
+  </p>
+
+  <h2>4. Käufe und Abonnements</h2>
+  <p>
+    Schreibfunktionen sind Teil von PoolPilot&nbsp;Pro. Käufe und Abonnements werden über den
+    <strong>Apple App Store</strong> bzw. <strong>Google Play</strong> abgewickelt; die Zahlung
+    erfolgt über deinen dortigen Account. Wir erhalten keine Zahlungsdaten (z.&nbsp;B. Kartennummern).
+  </p>
+  <p>
+    Zur Verwaltung der Berechtigungen („Pro“ aktiv/inaktiv) setzen wir den Dienst
+    <strong>RevenueCat</strong> (RevenueCat, Inc., USA) ein. RevenueCat verarbeitet in unserem
+    Auftrag eine pseudonyme App-Nutzer-Kennung sowie Kauf-/Beleginformationen des Stores, um den
+    Abo-Status zu prüfen. Rechtsgrundlage ist Art.&nbsp;6&nbsp;Abs.&nbsp;1&nbsp;lit.&nbsp;b DSGVO
+    (Vertragserfüllung).
+  </p>
+
+  <h2>5. Diese Website</h2>
+  <h3>Hosting (GitHub Pages)</h3>
+  <p>
+    Diese Website wird über <strong>GitHub Pages</strong> bereitgestellt (GitHub, Inc., ein Unternehmen
+    von Microsoft). Beim Abruf werden technisch notwendige Zugriffsdaten – etwa deine IP-Adresse,
+    Datum/Uhrzeit, abgerufene Datei und der verwendete Browser – durch den Hoster verarbeitet, um die
+    Seite auszuliefern und ihren sicheren Betrieb zu gewährleisten. Rechtsgrundlage ist Art.&nbsp;6
+    Abs.&nbsp;1&nbsp;lit.&nbsp;f DSGVO (berechtigtes Interesse am stabilen, sicheren Betrieb).
+  </p>
+  <h3>Keine Cookies, keine Analyse</h3>
+  <p>
+    Die Website setzt keine Cookies, nutzt keine Analyse-Werkzeuge und bindet keine externen
+    Ressourcen (z.&nbsp;B. Web-Fonts von Drittanbietern) ein. Schriften werden lokal mitgeliefert.
+    Deshalb gibt es auch kein Cookie-Banner.
+  </p>
+
+  <h2>6. Support</h2>
+  <p>
+    Für Support kannst du ein <strong>GitHub-Issue</strong> öffnen. Inhalte und dein GitHub-Profil
+    sind dort öffentlich und werden von GitHub verarbeitet; die Nutzung ist freiwillig. Alternativ
+    erreichst du uns per <strong>E-Mail</strong> – dann verarbeiten wir die von dir mitgeteilten Daten
+    ausschließlich zur Bearbeitung deiner Anfrage (Art.&nbsp;6&nbsp;Abs.&nbsp;1&nbsp;lit.&nbsp;b und
+    lit.&nbsp;f DSGVO).
+  </p>
+
+  <h2>7. Empfänger und Drittlandübermittlung</h2>
+  <p>
+    Je nach Nutzung werden Daten an Apple, Google, RevenueCat sowie GitHub/Microsoft übermittelt. Diese
+    Anbieter können Daten auch in den USA verarbeiten. Soweit erforderlich, stützt sich eine Übermittlung
+    auf geeignete Garantien (z.&nbsp;B. EU-Standardvertragsklauseln bzw. das EU-US Data Privacy Framework).
+  </p>
+
+  <h2>8. Speicherdauer</h2>
+  <p>
+    App- und Verbindungsdaten verbleiben auf deinem Gerät, bis du sie löschst oder die App
+    deinstallierst. Hosting-Logs werden vom Hoster nur für die zur Sicherheit erforderliche Dauer
+    vorgehalten. Support-Kommunikation bewahren wir auf, solange es zur Bearbeitung nötig ist.
+  </p>
+
+  <h2>9. Deine Rechte</h2>
+  <p>
+    Du hast nach der DSGVO das Recht auf Auskunft (Art.&nbsp;15), Berichtigung (Art.&nbsp;16), Löschung
+    (Art.&nbsp;17), Einschränkung der Verarbeitung (Art.&nbsp;18), Datenübertragbarkeit (Art.&nbsp;20)
+    sowie ein Widerspruchsrecht (Art.&nbsp;21). Eine erteilte Einwilligung kannst du jederzeit mit
+    Wirkung für die Zukunft widerrufen.
+  </p>
+
+  <h2>10. Beschwerderecht</h2>
+  <p>
+    Du hast das Recht, dich bei einer Datenschutz-Aufsichtsbehörde zu beschweren, insbesondere in dem
+    Mitgliedstaat deines Aufenthalts oder des mutmaßlichen Verstoßes.
+  </p>
+
+  <h2>11. Änderungen</h2>
+  <p>
+    Wir passen diese Datenschutzerklärung an, wenn sich die App, genutzte Dienste oder die Rechtslage
+    ändern. Es gilt die jeweils auf <a href={site.url}>{site.domain}</a> veröffentlichte Fassung.
+  </p>
+</LegalPage>

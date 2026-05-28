@@ -1,0 +1,37 @@
+---
+import { type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const text =
+  lang === 'de'
+    ? 'Unabhängiges Projekt. „ProCon.IP“ und „Violet“ sind Marken ihrer jeweiligen Inhaber. PoolPilot ist nicht mit der Pool Digital GmbH verbunden, von ihr gesponsert oder unterstützt.'
+    : 'Independent project. “ProCon.IP” and “Violet” are trademarks of their respective owners. PoolPilot is not affiliated with, sponsored by, or endorsed by Pool Digital GmbH.';
+---
+
+<aside class="disclaimer" role="note">
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="9" /><path d="M12 8h.01M11 12h1v4h1" />
+  </svg>
+  <p>{text}</p>
+</aside>
+
+<style>
+  .disclaimer {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    padding: 0.85rem 1.1rem;
+    border-radius: var(--r-2);
+    border: 1px solid var(--line);
+    background: color-mix(in oklch, var(--bg-2) 60%, transparent);
+    color: var(--ink-faint);
+    font-size: var(--step--1);
+    line-height: 1.5;
+  }
+  .disclaimer svg { flex: none; margin-top: 0.15em; }
+  .disclaimer p { margin: 0; }
+</style>

@@ -1,0 +1,40 @@
+---
+import { routes, type Lang, type RouteKey } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  pageKey: RouteKey;
+}
+const { lang, pageKey } = Astro.props;
+const other: Lang = lang === 'de' ? 'en' : 'de';
+const href = routes[pageKey][other];
+const otherLabel = other === 'de' ? 'Deutsch' : 'English';
+const switchLabel = lang === 'de' ? 'Sprache wechseln' : 'Switch language';
+---
+
+<a class="langtoggle" href={href} hreflang={other} lang={other} aria-label={`${switchLabel}: ${otherLabel}`}>
+  <span aria-hidden="true">{lang === 'de' ? 'DE' : 'EN'}</span>
+  <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M8 7l4 4-4 4" /><path d="M16 17l-4-4 4-4" opacity="0.5" />
+  </svg>
+  <span class="langtoggle__other" aria-hidden="true">{other === 'de' ? 'DE' : 'EN'}</span>
+</a>
+
+<style>
+  .langtoggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: var(--step--1);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 0.45rem 0.7rem;
+    border-radius: var(--r-pill);
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+    text-decoration: none;
+    transition: border-color 0.18s, color 0.18s;
+  }
+  .langtoggle:hover { border-color: var(--accent); color: var(--accent); }
+  .langtoggle__other { color: var(--ink-faint); }
+</style>

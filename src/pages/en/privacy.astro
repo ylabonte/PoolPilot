@@ -1,0 +1,119 @@
+---
+import LegalPage from '../../components/LegalPage.astro';
+import { path } from '../../i18n/ui';
+import { site } from '../../data/site';
+---
+
+<LegalPage
+  lang="en"
+  pageKey="privacy"
+  title="Privacy Policy"
+  description="How PoolPilot handles data: stored locally on your device, no ads, no tracking. This policy covers the app, purchases and the website."
+  updated="2026-05-28"
+  lead="In short: PoolPilot collects no personal data on our own servers. There are no ads and no tracking — we simply don't exploit your data."
+>
+  <h2>1. Controller (data controller)</h2>
+  <p>The party responsible under the General Data Protection Regulation (GDPR) is:</p>
+  <p>
+    Yannic Labonte<br />
+    Webergasse 3<br />
+    40668 Meerbusch<br />
+    Germany<br />
+    Email: <a href="mailto:yannic.labonte@gmail.com">yannic.labonte@gmail.com</a>
+  </p>
+  <p>Further details are in the <a href={path('imprint', 'en')}>Imprint</a>.</p>
+
+  <h2>2. Principle</h2>
+  <p>
+    PoolPilot is a native app that talks directly to your pool controller (ProCon.IP or Violet) on
+    your own network. There is no account with us, no cloud, no advertising and no analytics/tracking
+    services. We process as little data as possible.
+  </p>
+
+  <h2>3. Data inside the app</h2>
+  <h3>Controller connection details</h3>
+  <p>
+    To let the app talk to your controller, you enter its address (host/IP) plus a username and
+    password. These <strong>credentials are stored only locally on your device</strong> — in the
+    system Keychain on iOS, in encrypted app storage (DataStore) on Android. They leave your device
+    only to send requests to that specific controller. We never receive them.
+  </p>
+  <h3>Readings and settings</h3>
+  <p>
+    Readings and status values are fetched from your controller and shown on the device, or cached for
+    the widgets and the watch view. This data likewise stays on the device / within the app's storage.
+  </p>
+  <h3>No telemetry</h3>
+  <p>
+    The app contains no analytics, tracking or advertising SDKs. Optional crash reporting is currently
+    disabled. Should it be enabled in future, this policy will be updated beforehand.
+  </p>
+
+  <h2>4. Purchases and subscriptions</h2>
+  <p>
+    Write features are part of PoolPilot&nbsp;Pro. Purchases and subscriptions are handled by the
+    <strong>Apple App Store</strong> or <strong>Google Play</strong>; payment goes through your account
+    there. We receive no payment data (e.g. card numbers).
+  </p>
+  <p>
+    To manage entitlements (“Pro” active/inactive) we use <strong>RevenueCat</strong> (RevenueCat, Inc.,
+    USA). On our behalf, RevenueCat processes a pseudonymous app user identifier and store
+    purchase/receipt information to verify subscription status. The legal basis is Art.&nbsp;6(1)(b) GDPR
+    (performance of a contract).
+  </p>
+
+  <h2>5. This website</h2>
+  <h3>Hosting (GitHub Pages)</h3>
+  <p>
+    This website is served via <strong>GitHub Pages</strong> (GitHub, Inc., a Microsoft company). When
+    you access it, technically necessary access data — such as your IP address, date/time, the file
+    requested and your browser — is processed by the host to deliver the site and keep it running
+    securely. The legal basis is Art.&nbsp;6(1)(f) GDPR (legitimate interest in stable, secure operation).
+  </p>
+  <h3>No cookies, no analytics</h3>
+  <p>
+    The website sets no cookies, uses no analytics tools, and embeds no third-party resources (e.g.
+    third-party web fonts). Fonts are bundled locally. That is why there is no cookie banner.
+  </p>
+
+  <h2>6. Support</h2>
+  <p>
+    For support you can open a <strong>GitHub issue</strong>. Its contents and your GitHub profile are
+    public there and processed by GitHub; using it is voluntary. Alternatively you can reach us by
+    <strong>email</strong> — we then process the data you provide solely to handle your request
+    (Art.&nbsp;6(1)(b) and (f) GDPR).
+  </p>
+
+  <h2>7. Recipients and transfers to third countries</h2>
+  <p>
+    Depending on use, data may be transferred to Apple, Google, RevenueCat and GitHub/Microsoft. These
+    providers may process data in the USA. Where required, any transfer relies on appropriate safeguards
+    (e.g. EU Standard Contractual Clauses or the EU-US Data Privacy Framework).
+  </p>
+
+  <h2>8. Retention</h2>
+  <p>
+    App and connection data stay on your device until you delete them or uninstall the app. Hosting logs
+    are kept by the host only for as long as needed for security. Support correspondence is kept as long
+    as needed to handle it.
+  </p>
+
+  <h2>9. Your rights</h2>
+  <p>
+    Under the GDPR you have the right of access (Art.&nbsp;15), rectification (Art.&nbsp;16), erasure
+    (Art.&nbsp;17), restriction (Art.&nbsp;18), data portability (Art.&nbsp;20) and to object
+    (Art.&nbsp;21). You can withdraw any consent at any time with effect for the future.
+  </p>
+
+  <h2>10. Right to complain</h2>
+  <p>
+    You have the right to lodge a complaint with a data protection supervisory authority, in particular
+    in the member state of your residence or of the alleged infringement.
+  </p>
+
+  <h2>11. Changes</h2>
+  <p>
+    We update this policy when the app, the services used, or the legal situation change. The version
+    published on <a href={site.url}>{site.domain}</a> applies.
+  </p>
+</LegalPage>

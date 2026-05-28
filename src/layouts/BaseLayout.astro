@@ -1,0 +1,81 @@
+---
+import '@fontsource-variable/bricolage-grotesque';
+import '@fontsource-variable/hanken-grotesk';
+import '../styles/theme.css';
+
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { routes, useTranslations, type Lang, type RouteKey } from '../i18n/ui';
+import { site } from '../data/site';
+
+interface Props {
+  lang: Lang;
+  pageKey: RouteKey;
+  title: string;
+  description: string;
+  ogImage?: string;
+  noindex?: boolean;
+}
+const {
+  lang,
+  pageKey,
+  title,
+  description,
+  ogImage = '/og/default.png',
+  noindex = false,
+} = Astro.props;
+
+const t = useTranslations(lang);
+const canonical = new URL(routes[pageKey][lang], site.url).href;
+const deUrl = new URL(routes[pageKey].de, site.url).href;
+const enUrl = new URL(routes[pageKey].en, site.url).href;
+const ogUrl = new URL(ogImage, site.url).href;
+const fullTitle = pageKey === 'home' ? `${site.name} — ${title}` : `${title} · ${site.name}`;
+const locale = lang === 'de' ? 'de_DE' : 'en_US';
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#0277BD" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#060F16" media="(prefers-color-scheme: dark)" />
+
+    <link rel="alternate" hreflang="de" href={deUrl} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="x-default" href={deUrl} />
+
+    <link rel="alternate" type="application/rss+xml" title={`${site.name} News (${lang.toUpperCase()})`} href={`/rss-${lang}.xml`} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={locale} />
+    <meta property="og:image" content={ogUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogUrl} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{t('nav.skip')}</a>
+    <div class="bg-atmosphere" aria-hidden="true"></div>
+    <Header lang={lang} pageKey={pageKey} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+  </body>
+</html>

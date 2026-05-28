@@ -1,0 +1,445 @@
+---
+import ControllerCard from './ControllerCard.astro';
+import FeatureStrip from './FeatureStrip.astro';
+import StoreBadge from './StoreBadge.astro';
+import ScreenshotFrame from './ScreenshotFrame.astro';
+import PricingBlock from './PricingBlock.astro';
+import Disclaimer from './Disclaimer.astro';
+import { app, controllers } from '../data/apps';
+import { path, useTranslations, type Lang } from '../i18n/ui';
+import { site } from '../data/site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const brandAccent = `--accent: light-dark(${app.accent.light}, ${app.accent.dark});`;
+
+const copy = {
+  de: {
+    chip: 'Demnächst für iOS & Android',
+    h1a: 'Endlich eine native App',
+    h1b: 'für deine Poolsteuerung.',
+    sub: 'Keine Konten, keine Werbung, kein Tracking. Du legst ein Verbindungsprofil an, und PoolPilot erkennt automatisch, ob eine ProCon.IP oder eine Violet dahintersteckt – und spricht direkt mit ihr in deinem eigenen Netzwerk.',
+    badges: ['Kein Konto', 'Keine Werbung', 'Kein Tracking'],
+    ctrlHeading: 'Eine App, beide Steuerungen',
+    ctrlIntro: 'PoolPilot unterstützt ProCon.IP und Violet. Profil anlegen genügt – den Gerätetyp erkennt die App von selbst.',
+    featHeading: 'Was in der App steckt',
+    featIntro: 'Vier Tabs, überall gleich aufgebaut – egal, an welcher Steuerung sie hängt.',
+    shotsHeading: 'Ein Blick in die App',
+    shotsIntro: 'Klare Anzeigen auf dem iPhone, eine Glance-Ansicht auf der Apple Watch.',
+    shotPhone: 'PoolPilot – Dashboard auf dem iPhone',
+    shotWatch: 'PoolPilot – Glance auf der Apple Watch',
+    mockTitle: 'Live-Werte',
+    helpHeading: 'Fragen oder ein Problem?',
+    helpBody: 'Die Hilfe-Seite beantwortet die häufigsten Fragen. Für alles andere gibt es GitHub-Issues und eine E-Mail-Adresse.',
+  },
+  en: {
+    chip: 'Coming soon for iOS & Android',
+    h1a: 'Finally, a native app',
+    h1b: 'for your pool controller.',
+    sub: 'No accounts, no ads, no tracking. You add a connection profile and PoolPilot detects automatically whether it’s a ProCon.IP or a Violet — then talks straight to it on your own network.',
+    badges: ['No account', 'No ads', 'No tracking'],
+    ctrlHeading: 'One app, both controllers',
+    ctrlIntro: 'PoolPilot works with ProCon.IP and Violet. Adding a profile is all it takes — the app figures out the device type on its own.',
+    featHeading: 'What’s in the app',
+    featIntro: 'Four tabs, laid out the same way everywhere — whichever controller it’s talking to.',
+    shotsHeading: 'A look inside the app',
+    shotsIntro: 'Clear gauges on iPhone, a glance view on Apple Watch.',
+    shotPhone: 'PoolPilot — dashboard on iPhone',
+    shotWatch: 'PoolPilot — glance on Apple Watch',
+    mockTitle: 'Live readings',
+    helpHeading: 'Questions or a problem?',
+    helpBody: 'The help page answers the common questions. For anything else there are GitHub issues and an email address.',
+  },
+}[lang];
+
+const tiles = [
+  { key: 'ph', label: 'pH', value: '7.2', sev: 'ok' },
+  { key: 'orp', label: 'Redox', unit: 'mV', value: '720', sev: 'ok' },
+  { key: 'temp', label: 'Temp', unit: '°C', value: '27.4', sev: 'info' },
+];
+---
+
+<div class="landing" style={brandAccent}>
+  <!-- Hero -->
+  <section class="hero section">
+    <div class="container hero__grid">
+      <div class="hero__copy reveal">
+        <img class="hero__icon" src={app.icon} alt="PoolPilot" width="64" height="64" decoding="async" />
+        <span class="chip hero__chip">
+          <span class="hero__dot" aria-hidden="true"></span>{copy.chip}
+        </span>
+        <h1>{copy.h1a}<br />{copy.h1b}</h1>
+        <p class="hero__sub">{copy.sub}</p>
+        <ul class="hero__badges" role="list">
+          {copy.badges.map((b) => <li class="chip chip--ok">{b}</li>)}
+        </ul>
+        <div class="hero__store">
+          <StoreBadge store="appstore" lang={lang} />
+          <StoreBadge store="playstore" lang={lang} />
+        </div>
+      </div>
+
+      <div class="hero__visual reveal" style="animation-delay: 0.12s">
+        <div class="mock glass" aria-hidden="true">
+          <div class="mock__glare" aria-hidden="true"></div>
+          <div class="mock__head">
+            <span class="mock__title">{copy.mockTitle}</span>
+            <span class="mock__age" aria-hidden="true">
+              <svg class="mock__age-ring" viewBox="0 0 36 36" width="20" height="20">
+                <circle class="mock__age-track" cx="18" cy="18" r="16" />
+                <circle class="mock__age-prog" cx="18" cy="18" r="16" pathLength="100" />
+              </svg>
+              <span class="mock__age-num">✓</span>
+            </span>
+          </div>
+          <div class="mock__tiles">
+            {tiles.map((tile) => (
+              <div class={`mock__tile mock__tile--${tile.sev}`}>
+                <span class="mock__val"><span class="mock__num" data-drift={tile.key}>{tile.value}</span><small>{tile.unit ?? ''}</small></span>
+                <span class="mock__label">{tile.label}</span>
+              </div>
+            ))}
+          </div>
+          <svg class="mock__wave" viewBox="0 0 240 48" preserveAspectRatio="none">
+            <g class="mock__wave-back">
+              <path d="M0 30 C 30 39 90 39 120 30 C 150 21 210 21 240 30 C 270 39 330 39 360 30 C 390 21 450 21 480 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </g>
+            <g class="mock__wave-front">
+              <path d="M0 26 C 30 12 90 12 120 26 C 150 40 210 40 240 26 C 270 12 330 12 360 26 C 390 40 450 40 480 26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Supported controllers -->
+  <section class="section" aria-labelledby="ctrl-h">
+    <div class="container">
+      <header class="sectionhead">
+        <h2 id="ctrl-h">{copy.ctrlHeading}</h2>
+        <p>{copy.ctrlIntro}</p>
+      </header>
+      <div class="ctrlgrid">
+        {controllers.map((c) => <ControllerCard controller={c} lang={lang} />)}
+      </div>
+      <div class="landing__note"><Disclaimer lang={lang} /></div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="section" aria-labelledby="feat-h">
+    <div class="container">
+      <header class="sectionhead">
+        <h2 id="feat-h">{copy.featHeading}</h2>
+        <p>{copy.featIntro}</p>
+      </header>
+      <FeatureStrip lang={lang} />
+    </div>
+  </section>
+
+  <!-- Screenshots -->
+  <section class="section" aria-labelledby="shots-h">
+    <div class="container">
+      <header class="sectionhead">
+        <h2 id="shots-h">{copy.shotsHeading}</h2>
+        <p>{copy.shotsIntro}</p>
+      </header>
+      <div class="shots">
+        <ScreenshotFrame variant="phone" label={copy.shotPhone} lang={lang} />
+        <ScreenshotFrame variant="watch" label={copy.shotWatch} lang={lang} />
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="section">
+    <div class="container"><PricingBlock lang={lang} /></div>
+  </section>
+
+  <!-- Help CTA -->
+  <section class="section">
+    <div class="container">
+      <div class="helpcta glass">
+        <div>
+          <h2>{copy.helpHeading}</h2>
+          <p>{copy.helpBody}</p>
+        </div>
+        <div class="helpcta__actions">
+          <a class="btn btn-primary" href={path('support', lang)}>{t('cta.getHelp')}</a>
+          <a class="btn btn-ghost" href={site.newIssueUrl} rel="noopener noreferrer">{t('cta.openIssue')}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  // Decorative drift for the hero mock values — purely cosmetic, no real data.
+  // The card is aria-hidden; respect reduced-motion by staying static.
+  const card = document.querySelector('.mock');
+  if (card && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const bands: Record<string, () => string> = {
+      ph: () => (7.0 + Math.random() * 0.4).toFixed(1),
+      orp: () => String(Math.round(705 + Math.random() * 30)),
+      temp: () => (27.0 + Math.random() * 0.8).toFixed(1),
+    };
+    const nums = card.querySelectorAll<HTMLElement>('.mock__num');
+
+    // Split each value into per-character cells, each its own clip-window + track,
+    // so only the digits that actually change roll on an update.
+    const buildCells = (el: HTMLElement, text: string) => {
+      el.textContent = '';
+      for (const ch of text) {
+        const cell = document.createElement('span');
+        cell.className = 'mock__cell';
+        const track = document.createElement('span');
+        track.className = 'mock__track';
+        const span = document.createElement('span');
+        span.textContent = ch;
+        track.appendChild(span);
+        cell.appendChild(track);
+        el.appendChild(cell);
+      }
+    };
+    nums.forEach((el) => buildCells(el, el.textContent ?? ''));
+
+    // dir > 0: digit rises → old flies up, new enters from below.
+    // dir < 0: digit falls → old flies down, new enters from above.
+    const rollCell = (cell: HTMLElement, ch: string, delay: number, dir: number) => {
+      const track = cell.querySelector<HTMLElement>('.mock__track');
+      const cur = track?.firstElementChild as HTMLElement | null;
+      if (!track || !cur) return;
+      const next = document.createElement('span');
+      next.textContent = ch;
+      const dist = cur.getBoundingClientRect().height;
+      const up = dir >= 0;
+      // Stack order + start offset depend on direction so the track always slides
+      // toward the new digit; both cases end with `next` alone at translateY(0).
+      if (up) track.appendChild(next);
+      else track.insertBefore(next, cur);
+      const from = up ? '0' : `${-dist}px`;
+      const to = up ? `${-dist}px` : '0';
+      const anim = track.animate(
+        [{ transform: `translateY(${from})` }, { transform: `translateY(${to})` }],
+        { duration: 480, delay, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'both' },
+      );
+      anim.finished
+        .then(() => {
+          // Drop the outgoing digit, then clear the fill transform so the lone new
+          // digit sits back inside the clip window (works for both directions).
+          cur.remove();
+          anim.cancel();
+        })
+        .catch(() => {});
+    };
+
+    const update = (el: HTMLElement, val: string) => {
+      const cells = el.querySelectorAll<HTMLElement>('.mock__cell');
+      if (cells.length !== val.length) { buildCells(el, val); return; } // length shift → rebuild
+      let changed = 0;
+      [...val].forEach((ch, i) => {
+        const cur = cells[i].querySelector('.mock__track')?.firstElementChild;
+        const curCh = cur?.textContent ?? '';
+        if (cur && curCh !== ch) {
+          const dir = /\d/.test(ch) && /\d/.test(curCh) ? (Number(ch) >= Number(curCh) ? 1 : -1) : 1;
+          rollCell(cells[i], ch, changed++ * 45, dir); // left→right stagger
+        }
+      });
+    };
+
+    const drift = () => {
+      nums.forEach((el) => {
+        const make = bands[el.dataset.drift ?? ''];
+        if (make) update(el, make());
+      });
+    };
+
+    // 3D pointer tilt: the element pivots as if balanced on a centre needle and
+    // the cursor presses its point down — so the spot under the pointer recedes.
+    // Sets --rx/--ry (rotation) and --mx/--my (glare position) for the CSS to use.
+    const attachTilt = (el: HTMLElement, max: number) => {
+      let raf = 0;
+      el.addEventListener('pointermove', (e) => {
+        const r = el.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;  // -0.5 … 0.5
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        if (raf) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => {
+          el.style.setProperty('--rx', `${(-py * max).toFixed(2)}deg`);
+          el.style.setProperty('--ry', `${(px * max).toFixed(2)}deg`);
+          el.style.setProperty('--mx', `${((px + 0.5) * 100).toFixed(1)}%`);
+          el.style.setProperty('--my', `${((py + 0.5) * 100).toFixed(1)}%`);
+        });
+      });
+      el.addEventListener('pointerleave', () => {
+        if (raf) cancelAnimationFrame(raf);
+        el.style.setProperty('--rx', '0deg');
+        el.style.setProperty('--ry', '0deg');
+      });
+    };
+
+    attachTilt(card as HTMLElement, 9);
+    document.querySelectorAll<HTMLElement>('.storebadge').forEach((b) => attachTilt(b, 14));
+    document.querySelectorAll<HTMLElement>('.features__item').forEach((c) => attachTilt(c, 6));
+
+    // Age dial = the single master clock. A radial ring depletes 100%→0% over
+    // REFRESH seconds; the centre shows the data age in seconds (✓ at age 0). When a
+    // cycle completes it snaps full again and triggers a value drift, so the dial and
+    // the gauge values stay in lockstep. One rAF loop drives both.
+    const REFRESH = 5; // seconds per refresh cycle
+    const ring = card.querySelector<SVGCircleElement>('.mock__age-prog');
+    const numEl = card.querySelector<HTMLElement>('.mock__age-num');
+    const t0 = performance.now();
+    let cycleIdx = 0;
+    let shownSec = 0;
+    const tick = (t: number) => {
+      const elapsed = (t - t0) / 1000;
+      const cycle = Math.floor(elapsed / REFRESH);
+      if (cycle !== cycleIdx) { cycleIdx = cycle; drift(); } // new cycle → refresh values
+      const within = elapsed - cycle * REFRESH;              // 0 … REFRESH
+      if (ring) ring.style.strokeDashoffset = String((within / REFRESH) * 100); // full → empty
+      const sec = Math.floor(within);
+      if (numEl && sec !== shownSec) {
+        shownSec = sec;
+        numEl.textContent = sec === 0 ? '✓' : String(sec);
+        numEl.classList.remove('is-fade');
+        void numEl.offsetWidth; // reflow → restart the cross-fade
+        numEl.classList.add('is-fade');
+      }
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+</script>
+
+<style>
+  /* Hero */
+  .hero { padding-top: clamp(2rem, 6vw, 4.5rem); }
+  .hero__grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .hero__icon {
+    width: 64px; height: 64px; border-radius: 1rem; display: block; margin-bottom: 1.1rem;
+    box-shadow: 0 10px 24px -12px color-mix(in oklch, var(--accent) 75%, transparent);
+  }
+  .hero__chip { background: var(--bg-2); }
+  .hero__dot {
+    width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--c-ok);
+    box-shadow: 0 0 0 0 color-mix(in oklch, var(--c-ok) 60%, transparent);
+    animation: pulse 2.4s var(--ease) infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 color-mix(in oklch, var(--c-ok) 55%, transparent); }
+    70% { box-shadow: 0 0 0 0.5rem transparent; }
+    100% { box-shadow: 0 0 0 0 transparent; }
+  }
+  .hero h1 { margin-top: 1rem; }
+  .hero__sub { margin-top: 1.1rem; font-size: var(--step-1); color: var(--ink-soft); max-width: 34rem; }
+  .hero__badges { list-style: none; padding: 0; margin-top: 1.4rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .hero__store { margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.6rem; }
+
+  /* Mock dashboard */
+  .hero__visual { justify-self: center; width: 100%; perspective: 900px; }
+  .mock {
+    padding: 1.3rem; max-width: 24rem; margin-inline: auto; overflow: hidden;
+    position: relative;
+    transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transform-style: preserve-3d;
+    transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+    will-change: transform;
+    box-shadow: 0 10px 30px -14px color-mix(in oklch, var(--c-primary) 35%, transparent);
+  }
+  .mock:hover {
+    transition: transform 0.08s linear, box-shadow 0.3s var(--ease);
+    box-shadow: 0 20px 44px -18px color-mix(in oklch, var(--c-primary) 45%, transparent);
+  }
+  /* Soft glare that tracks the pointer, reinforcing the tilt. */
+  .mock__glare {
+    position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    opacity: 0; transition: opacity 0.3s var(--ease);
+    background: radial-gradient(
+      20rem 20rem at var(--mx, 50%) var(--my, 50%),
+      color-mix(in oklch, var(--c-primary) 12%, transparent), transparent 60%
+    );
+  }
+  .mock:hover .mock__glare { opacity: 1; }
+  .mock__head { margin-bottom: 1rem; display: flex; align-items: center; gap: 0.55rem; }
+  .mock__title { font-family: var(--font-display); font-weight: 700; font-size: var(--step-1); }
+  /* Compact age/refresh dial, inline with the title: ring depletes over the refresh
+     cycle, centre counts the data age (✓ at age 0). */
+  .mock__age { position: relative; display: inline-grid; place-items: center; width: 20px; height: 20px; flex: none; }
+  .mock__age-ring { transform: rotate(-90deg); overflow: visible; }
+  .mock__age-track { fill: none; stroke: color-mix(in oklch, var(--ink) 12%, transparent); stroke-width: 3.5; }
+  .mock__age-prog {
+    fill: none; stroke: var(--c-ok); stroke-width: 3.5; stroke-linecap: round;
+    stroke-dasharray: 100; stroke-dashoffset: 0;
+  }
+  .mock__age-num {
+    position: absolute; font-size: 0.6rem; font-weight: 700; line-height: 1;
+    color: color-mix(in oklch, var(--c-ok) 45%, var(--ink)); font-variant-numeric: tabular-nums;
+  }
+  .mock__age-num.is-fade { animation: agefade 0.25s ease-in-out; }
+  @keyframes agefade {
+    0% { opacity: 0.25; }
+    100% { opacity: 1; }
+  }
+  .mock__tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.7rem; }
+  .mock__tile {
+    padding: 0.9rem 0.7rem; border-radius: var(--r-2); text-align: center;
+    background: var(--bg-2); border: 1px solid var(--line);
+    display: grid; gap: 0.2rem;
+  }
+  .mock__val { font-family: var(--font-display); font-weight: 700; font-size: var(--step-2); line-height: 1; }
+  /* Per-digit odometer: each character is its own fixed-height clip window;
+     only changed digits roll their track (old slides up, new rolls in). */
+  .mock__num { display: inline-flex; vertical-align: bottom; font-variant-numeric: tabular-nums; }
+  .mock__num :global(.mock__cell) { display: block; overflow: hidden; height: 1.15em; line-height: 1.15; }
+  .mock__num :global(.mock__track) { display: block; }
+  .mock__num :global(.mock__track) > :global(span) { display: block; }
+  .mock__val small { font-size: 0.5em; font-weight: 600; color: var(--ink-soft); margin-left: 0.1em; }
+  .mock__label { font-size: 0.82rem; font-weight: 650; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.06em; }
+  .mock__tile--ok .mock__val { color: var(--c-ok); }
+  .mock__tile--info .mock__val { color: var(--c-teal); }
+  .mock__tile--ok .mock__label { color: color-mix(in oklch, var(--c-ok) 78%, var(--ink)); }
+  .mock__tile--info .mock__label { color: color-mix(in oklch, var(--c-teal) 78%, var(--ink)); }
+
+  /* Flowing wave: two periodic paths drifting at different speeds for depth.
+     Each path is two identical 240u periods → translateX(-240px) loops seamlessly. */
+  .mock__wave { display: block; width: 100%; height: 2.6rem; margin-top: 1rem; overflow: hidden; animation: wavebob 5s ease-in-out infinite; }
+  .mock__wave-front { color: var(--c-primary); animation: waveflow 6s linear infinite; }
+  .mock__wave-back { color: var(--c-teal); opacity: 0.4; animation: waveflow 9s linear infinite; }
+  @keyframes waveflow { to { transform: translateX(-240px); } }
+  @keyframes wavebob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(2px); } }
+
+  /* Section heads + grids */
+  .sectionhead { max-width: 40rem; margin-bottom: var(--sp-4); }
+  .sectionhead p { color: var(--ink-soft); margin-top: 0.5rem; font-size: var(--step-1); }
+  .ctrlgrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(1rem, 3vw, 1.8rem); }
+  .landing__note { margin-top: var(--sp-4); }
+
+  /* Screenshots */
+  .shots { display: flex; align-items: flex-end; justify-content: center; gap: 1.4rem; flex-wrap: wrap; }
+
+  /* Help CTA */
+  .helpcta {
+    padding: clamp(1.6rem, 4vw, 2.6rem);
+    display: flex; flex-wrap: wrap; gap: 1.5rem;
+    align-items: center; justify-content: space-between;
+  }
+  .helpcta h2 { font-size: var(--step-2); }
+  .helpcta p { color: var(--ink-soft); margin-top: 0.5rem; max-width: 34rem; }
+  .helpcta__actions { display: flex; flex-wrap: wrap; gap: 0.7rem; }
+
+  @media (max-width: 52rem) {
+    .hero__grid { grid-template-columns: 1fr; }
+    .hero__visual { order: -1; max-width: 22rem; }
+    .ctrlgrid { grid-template-columns: 1fr; }
+  }
+</style>

@@ -1,0 +1,47 @@
+---
+import LegalPage from '../../components/LegalPage.astro';
+import { path } from '../../i18n/ui';
+---
+
+<LegalPage
+  lang="de"
+  pageKey="about"
+  title="Über PoolPilot"
+  description="Was PoolPilot ist, warum es entstanden ist – und der klare Hinweis: ein unabhängiges Projekt, nicht mit der Pool Digital GmbH verbunden."
+  lead="Ein unabhängiges Ein-Personen-Projekt aus Deutschland."
+>
+  <h2>Worum es geht</h2>
+  <p>
+    PoolPilot bringt deine Poolsteuerung als ordentliche, native App auf iPhone, iPad, Apple Watch
+    und Android. Statt einer umständlichen Weboberfläche bekommst du klare Anzeigen, schnelle Schalter
+    und Widgets – eine App für ProCon.IP und Violet, die automatisch erkennt, welche Steuerung du hast.
+  </p>
+
+  <h2>Warum es PoolPilot gibt</h2>
+  <p>
+    Das Projekt ist aus dem Wunsch entstanden, die eigene Poolsteuerung komfortabel vom Sofa aus
+    abzulesen und zu bedienen. Es wird in der Freizeit von einer Einzelperson entwickelt – mit viel
+    Sorgfalt, aber ohne großes Unternehmen dahinter.
+  </p>
+
+  <h2>Unser Umgang mit Daten</h2>
+  <p>
+    Keine Konten, keine Werbung, kein Tracking. Die App spricht direkt mit deinem Controller in deinem
+    eigenen Netzwerk; Zugangsdaten bleiben auf deinem Gerät. Details stehen in der
+    <a href={path('privacy', 'de')}>Datenschutzerklärung</a>.
+  </p>
+
+  <h2>Unabhängigkeit und Marken</h2>
+  <p>
+    PoolPilot ist ein <strong>unabhängiges Projekt</strong> und steht in keiner Verbindung zur Pool
+    Digital GmbH – wird von ihr weder gesponsert noch unterstützt oder geprüft. Die Namen „ProCon.IP“
+    und „Violet“ sowie zugehörige Marken gehören ihren jeweiligen Inhabern und werden ausschließlich
+    genannt, um zu beschreiben, mit welcher Hardware PoolPilot zusammenarbeitet.
+  </p>
+
+  <h2>Kontakt</h2>
+  <p>
+    Fragen, Wünsche oder ein Problem? Die <a href={path('support', 'de')}>Hilfe-Seite</a> zeigt dir den
+    schnellsten Weg.
+  </p>
+</LegalPage>
