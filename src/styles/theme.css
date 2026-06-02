@@ -10,6 +10,10 @@
 
   /* ---- Brand palette (light / dark via light-dark) ---------------------- */
   --c-primary:   light-dark(#0277BD, #4FC3F7);
+  /* Deeper primary for filled surfaces (icon chips, primary button) — the bright
+     dark-mode --c-primary washes out white text/glyphs, so dark uses a calmer
+     blue. Light tone is unchanged. */
+  --c-primary-deep: light-dark(#0277BD, #1C7FB8);
   --c-primary-ink: light-dark(#015a8d, #8fd6fb);
   --c-teal:      light-dark(#00838F, #4DD0E1);
   --c-orange:    light-dark(#EF6C00, #FFB74D);
@@ -156,9 +160,9 @@ main { flex: 1 0 auto; }
 }
 .btn:hover { transform: translateY(-2px); }
 .btn-primary {
-  background: linear-gradient(135deg, var(--accent), color-mix(in oklch, var(--accent) 60%, var(--c-teal)));
+  background: linear-gradient(135deg, var(--c-primary-deep), color-mix(in oklch, var(--c-primary-deep) 60%, var(--c-teal)));
   color: #fff;
-  box-shadow: 0 10px 28px -12px color-mix(in oklch, var(--accent) 80%, transparent);
+  box-shadow: 0 10px 28px -12px color-mix(in oklch, var(--c-primary-deep) 80%, transparent);
 }
 .btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
 .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
