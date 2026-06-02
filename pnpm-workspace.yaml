@@ -1,0 +1,6 @@
+# pnpm 10+ blocks dependency build scripts by default. Astro's image pipeline
+# needs sharp's native binary, and esbuild needs its platform binary — allow
+# both. (pnpm 11 replaced the old "onlyBuiltDependencies" list with this map.)
+allowBuilds:
+  esbuild: true
+  sharp: true
