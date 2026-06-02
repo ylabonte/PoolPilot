@@ -1,0 +1,15 @@
+{
+  "name": "PoolPilot",
+  "short_name": "PoolPilot",
+  "description": "Eine native App für deine Poolsteuerung — ProCon.IP und Violet.",
+  "lang": "de",
+  "start_url": "/de/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#0277BD",
+  "background_color": "#F4FAFE",
+  "icons": [
+    { "src": "/icons/poolpilot.png", "sizes": "1024x1024", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

@@ -33,27 +33,28 @@ const ogUrl = new URL(ogImage, site.url).href;
 const fullTitle = pageKey === 'home' ? `${site.name} — ${title}` : `${title} · ${site.name}`;
 const locale = lang === 'de' ? 'de_DE' : 'en_US';
 
-// Structured data (schema.org). Kept truthful — no invented prices/ratings.
-// One @graph linking the publisher, the website, and the app it markets.
-const orgId = `${site.url}/#org`;
+// Structured data (schema.org). Kept truthful — no invented ratings.
+// PoolPilot is a solo project (no company), so the publisher/author is a Person.
+// A shared #person node is referenced by @id and also inlined on the app so the
+// name actually renders in consumers that don't dereference @id.
+const personId = `${site.url}/#person`;
+const person = {
+  '@type': 'Person',
+  '@id': personId,
+  name: site.operator.name,
+  url: site.url,
+};
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
-    {
-      '@type': 'Organization',
-      '@id': orgId,
-      name: site.name,
-      url: site.url,
-      logo: new URL('/icons/poolpilot.png', site.url).href,
-      email: `mailto:${site.supportEmail}`,
-    },
+    person,
     {
       '@type': 'WebSite',
       '@id': `${site.url}/#website`,
       url: site.url,
       name: site.name,
       inLanguage: ['de', 'en'],
-      publisher: { '@id': orgId },
+      publisher: { '@id': personId },
     },
     {
       '@type': 'SoftwareApplication',
@@ -63,8 +64,17 @@ const jsonLd = {
       url: site.url,
       image: ogUrl,
       inLanguage: ['de', 'en'],
-      publisher: { '@id': orgId },
       description: description,
+      author: person,
+      publisher: person,
+      // ⚠️ PRICING: free while in Beta. When PoolPilot Pro launches, update this
+      // offer (price/currency) or model free+Pro — keep it truthful. See also the
+      // [PRICE_*] placeholders in src/data/apps.ts.
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'EUR',
+      },
     },
   ],
 };
@@ -83,6 +93,7 @@ const jsonLd = {
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#0277BD" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#060F16" media="(prefers-color-scheme: dark)" />
 
