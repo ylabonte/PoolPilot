@@ -32,6 +32,42 @@ const enUrl = new URL(routes[pageKey].en, site.url).href;
 const ogUrl = new URL(ogImage, site.url).href;
 const fullTitle = pageKey === 'home' ? `${site.name} — ${title}` : `${title} · ${site.name}`;
 const locale = lang === 'de' ? 'de_DE' : 'en_US';
+
+// Structured data (schema.org). Kept truthful — no invented prices/ratings.
+// One @graph linking the publisher, the website, and the app it markets.
+const orgId = `${site.url}/#org`;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': orgId,
+      name: site.name,
+      url: site.url,
+      logo: new URL('/icons/poolpilot.png', site.url).href,
+      email: `mailto:${site.supportEmail}`,
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${site.url}/#website`,
+      url: site.url,
+      name: site.name,
+      inLanguage: ['de', 'en'],
+      publisher: { '@id': orgId },
+    },
+    {
+      '@type': 'SoftwareApplication',
+      name: site.name,
+      applicationCategory: 'UtilitiesApplication',
+      operatingSystem: 'iOS, iPadOS, Android, watchOS, Wear OS',
+      url: site.url,
+      image: ogUrl,
+      inLanguage: ['de', 'en'],
+      publisher: { '@id': orgId },
+      description: description,
+    },
+  ],
+};
 ---
 
 <!doctype html>
@@ -68,6 +104,8 @@ const locale = lang === 'de' ? 'de_DE' : 'en_US';
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogUrl} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
     <a class="skip-link" href="#main">{t('nav.skip')}</a>
