@@ -8,12 +8,14 @@ body:
         Danke fürs Melden! **Deutsch oder Englisch** ist beides okay.
         Thanks for reporting! **German or English** are both fine.
   - type: dropdown
-    id: app
+    id: controller
     attributes:
-      label: App
+      label: Welche Steuerung? / Which controller?
       options:
-        - PoolPilot für ProCon.IP
-        - PoolPilot für Violet
+        - ProCon.IP
+        - Violet
+        - beide / both
+        - weiß nicht / not sure
     validations:
       required: true
   - type: dropdown

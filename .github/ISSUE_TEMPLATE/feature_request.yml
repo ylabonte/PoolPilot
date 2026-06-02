@@ -8,13 +8,14 @@ body:
         Danke für die Idee! **Deutsch oder Englisch** ist beides okay.
         Thanks for the idea! **German or English** are both fine.
   - type: dropdown
-    id: app
+    id: controller
     attributes:
-      label: Betrifft / Applies to
+      label: Welche Steuerung? / Which controller?
       options:
-        - PoolPilot für ProCon.IP
-        - PoolPilot für Violet
-        - Beide / Both
+        - ProCon.IP
+        - Violet
+        - beide / both
+        - weiß nicht / not sure
     validations:
       required: true
   - type: textarea

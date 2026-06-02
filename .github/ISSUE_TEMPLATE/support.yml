@@ -8,13 +8,14 @@ body:
         Tipp: Viele Fragen beantwortet schon die [Hilfe & FAQ](https://poolpilot.eu/de/support).
         Tip: the [Help & FAQ](https://poolpilot.eu/en/support) already answers many questions.
   - type: dropdown
-    id: app
+    id: controller
     attributes:
-      label: App
+      label: Welche Steuerung? / Which controller?
       options:
-        - PoolPilot für ProCon.IP
-        - PoolPilot für Violet
-        - Allgemein / General
+        - ProCon.IP
+        - Violet
+        - beide / both
+        - Allgemein / general
     validations:
       required: true
   - type: textarea

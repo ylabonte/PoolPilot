@@ -1,0 +1,38 @@
+name: 📖 Website / Doku — Website / docs
+description: Fehler oder Verbesserung auf poolpilot.eu (Texte, Links, Übersetzung). / An issue or improvement on poolpilot.eu (text, links, translation).
+labels: [documentation]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Danke! Das hier ist für die **Website** (poolpilot.eu) – Tippfehler, falsche Infos, tote Links, Übersetzungen.
+        Für Probleme mit der **App** nutze bitte „Bug melden“. **Deutsch oder Englisch** ist beides okay.
+        Thanks! This is for the **website** (poolpilot.eu) – typos, wrong info, broken links, translations.
+        For **app** problems please use “Report a bug”. **German or English** are both fine.
+  - type: input
+    id: page
+    attributes:
+      label: Seite / Page
+      description: Wo? Adresse oder Titel der Seite. / Where? URL or page title.
+      placeholder: z. B. https://poolpilot.eu/de/datenschutz
+    validations:
+      required: true
+  - type: dropdown
+    id: type
+    attributes:
+      label: Art / Type
+      options:
+        - Tippfehler / typo
+        - Falscher Inhalt / wrong info
+        - Toter Link / broken link
+        - Übersetzung / translation
+        - Sonstiges / other
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Was sollte sich ändern? / What should change?
+      description: Beschreibe kurz, was falsch ist oder besser sein könnte. / Briefly describe what's wrong or could be better.
+    validations:
+      required: true
