@@ -3,5 +3,5 @@
 # the PoolPilot app source lives in a separate private repository.
 Contact: mailto:yannic.labonte@gmail.com
 Preferred-Languages: de, en
-Canonical: https://poolpilot.eu/.well-known/security.txt
+Canonical: https://poolpilot.eu/security.txt
 Expires: 2027-06-02T00:00:00.000Z
