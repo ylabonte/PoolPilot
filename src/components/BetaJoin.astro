@@ -1,9 +1,8 @@
 ---
 /**
- * "Join the closed beta" section. Android is live now via Google Play closed
- * testing (3 steps: join the Google Group → opt in → install). iOS shows an
- * honest pending state until `beta.iosTestflight` is filled, at which point the
- * card flips to a live "Join on TestFlight" button.
+ * "Join the beta" section. iOS is live via TestFlight; Android via Google Play
+ * closed testing (3 steps: join the Google Group → opt in → install). The iOS
+ * card flips to a pending state if `beta.iosTestflight` is ever emptied.
  */
 import { beta } from '../data/apps';
 import { path, type Lang } from '../i18n/ui';
@@ -17,10 +16,10 @@ const hasTestflight = beta.iosTestflight.length > 0;
 
 const copy = {
   de: {
-    eyebrow: 'Closed Beta',
-    h2: 'Mach bei der Closed Beta mit',
+    eyebrow: 'Beta',
+    h2: 'Mach bei der Beta mit',
     intro:
-      'PoolPilot ist in der geschlossenen Beta – kostenlos und ohne Konto. Android läuft schon; iOS folgt, sobald Apples Review durch ist.',
+      'PoolPilot ist in der Beta – kostenlos und ohne Konto. Jetzt für iOS und Android verfügbar.',
     androidTitle: 'Android',
     androidBadge: 'Jetzt verfügbar',
     steps: [
@@ -36,13 +35,13 @@ const copy = {
     iosLiveTitle: 'Über TestFlight beitreten',
     iosLiveBody: 'Öffne die TestFlight-Einladung und installiere PoolPilot für iPhone, iPad und Apple Watch.',
     iosLiveCta: 'TestFlight öffnen',
-    note: 'Geschlossene Beta heißt: noch nicht in den öffentlichen Stores. Es kann Ecken und Kanten geben – Feedback ist willkommen.',
+    note: 'Die Beta ist noch nicht in den öffentlichen Stores. Es kann Ecken und Kanten geben – Feedback ist willkommen.',
   },
   en: {
-    eyebrow: 'Closed beta',
-    h2: 'Join the closed beta',
+    eyebrow: 'Beta',
+    h2: 'Join the beta',
     intro:
-      'PoolPilot is in closed beta — free, no account. Android is live now; iOS follows as soon as Apple’s review is through.',
+      'PoolPilot is in beta — free, no account. Available now on iOS and Android.',
     androidTitle: 'Android',
     androidBadge: 'Available now',
     steps: [
@@ -58,7 +57,7 @@ const copy = {
     iosLiveTitle: 'Join on TestFlight',
     iosLiveBody: 'Open the TestFlight invite and install PoolPilot for iPhone, iPad and Apple Watch.',
     iosLiveCta: 'Open TestFlight',
-    note: 'Closed beta means it isn’t in the public stores yet. Expect a few rough edges — feedback is welcome.',
+    note: 'The beta isn’t in the public stores yet. Expect a few rough edges — feedback is welcome.',
   },
 }[lang];
 ---
@@ -72,6 +71,23 @@ const copy = {
     </header>
 
     <div class="betajoin__grid">
+      <!-- iOS: live via TestFlight (Apple approved) -->
+      <article class="betajoin__card glass">
+        <header class="betajoin__cardhead">
+          <span class="betajoin__os">{copy.iosTitle}</span>
+          <span class={`chip${hasTestflight ? ' chip--ok' : ''}`}>{copy.iosBadge}</span>
+        </header>
+        <div class="betajoin__ios">
+          <h3 class="betajoin__steptitle">{hasTestflight ? copy.iosLiveTitle : copy.iosPendingTitle}</h3>
+          <p class="betajoin__stepbody">{hasTestflight ? copy.iosLiveBody : copy.iosPendingBody}</p>
+          {hasTestflight ? (
+            <a class="btn btn-primary" href={beta.iosTestflight} target="_blank" rel="noopener noreferrer">{copy.iosLiveCta}</a>
+          ) : (
+            <a class="btn btn-ghost" href={path('news', lang)}>{copy.iosPendingCta}</a>
+          )}
+        </div>
+      </article>
+
       <!-- Android: available now -->
       <article class="betajoin__card glass">
         <header class="betajoin__cardhead">
@@ -90,23 +106,6 @@ const copy = {
             </li>
           ))}
         </ol>
-      </article>
-
-      <!-- iOS: TestFlight after Apple review -->
-      <article class="betajoin__card glass">
-        <header class="betajoin__cardhead">
-          <span class="betajoin__os">{copy.iosTitle}</span>
-          <span class={`chip${hasTestflight ? ' chip--ok' : ''}`}>{copy.iosBadge}</span>
-        </header>
-        <div class="betajoin__ios">
-          <h3 class="betajoin__steptitle">{hasTestflight ? copy.iosLiveTitle : copy.iosPendingTitle}</h3>
-          <p class="betajoin__stepbody">{hasTestflight ? copy.iosLiveBody : copy.iosPendingBody}</p>
-          {hasTestflight ? (
-            <a class="btn btn-primary" href={beta.iosTestflight} target="_blank" rel="noopener noreferrer">{copy.iosLiveCta}</a>
-          ) : (
-            <a class="btn btn-ghost" href={path('news', lang)}>{copy.iosPendingCta}</a>
-          )}
-        </div>
       </article>
     </div>
 
