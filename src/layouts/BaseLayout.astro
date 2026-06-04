@@ -126,5 +126,23 @@ const jsonLd = {
       <slot />
     </main>
     <Footer lang={lang} />
+
+    <script>
+      // Subtle parallax: the decorative background mesh drifts a touch slower than
+      // the content as you scroll, adding depth. rAF-throttled + passive; the drift
+      // is small and capped so the soft glows never slide far (the base colour is
+      // continuous, so no seam). Off entirely under prefers-reduced-motion.
+      const bg = document.querySelector<HTMLElement>('.bg-atmosphere');
+      if (bg && matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+        let raf = 0;
+        const update = () => {
+          raf = 0;
+          const y = Math.min(window.scrollY * 0.08, 200);
+          bg.style.transform = `translate3d(0, ${-y}px, 0)`;
+        };
+        addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(update); }, { passive: true });
+        update();
+      }
+    </script>
   </body>
 </html>

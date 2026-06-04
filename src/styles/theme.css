@@ -91,6 +91,7 @@ body {
   inset: 0;
   z-index: -1;
   pointer-events: none;
+  will-change: transform; /* GPU layer for the subtle scroll parallax (BaseLayout) */
   background:
     radial-gradient(60% 50% at 12% -5%, color-mix(in oklch, var(--c-primary) 22%, transparent), transparent 70%),
     radial-gradient(55% 45% at 95% 8%, color-mix(in oklch, var(--c-teal) 18%, transparent), transparent 70%),
