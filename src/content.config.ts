@@ -13,6 +13,8 @@ const news = defineCollection({
     date: z.coerce.date(),
     lang: z.enum(['de', 'en']),
     summary: z.string(),
+    // 'release' marks a version release note; everything else is general news.
+    type: z.enum(['news', 'release']).default('news'),
     draft: z.boolean().optional(),
   }),
 });

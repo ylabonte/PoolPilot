@@ -16,10 +16,28 @@ const rendered = await Promise.all(
   posts.map(async (p) => ({ post: p, Content: (await render(p)).Content }))
 );
 
+// Show the category filter only when both kinds of post exist — otherwise it
+// would be a control that does nothing (or could empty the list).
+const hasNews = posts.some((p) => p.data.type !== 'release');
+const hasRelease = posts.some((p) => p.data.type === 'release');
+const showFilter = hasNews && hasRelease;
+
 const copy = {
-  de: { eyebrow: 'News', h1: 'Neuigkeiten', lead: 'Updates rund um PoolPilot. Per RSS abonnierbar – ganz ohne E-Mail-Liste.', empty: 'Noch keine Beiträge.' },
-  en: { eyebrow: 'News', h1: 'Updates', lead: 'News about PoolPilot. Subscribe via RSS — no email list needed.', empty: 'No posts yet.' },
+  de: {
+    eyebrow: 'News', h1: 'Neuigkeiten', lead: 'Updates rund um PoolPilot. Per RSS abonnierbar – ganz ohne E-Mail-Liste.', empty: 'Noch keine Beiträge.',
+    filterLabel: 'Beiträge filtern', filterAll: 'Alle', filterNews: 'Ankündigungen', filterRelease: 'Release Notes',
+  },
+  en: {
+    eyebrow: 'News', h1: 'Updates', lead: 'News about PoolPilot. Subscribe via RSS — no email list needed.', empty: 'No posts yet.',
+    filterLabel: 'Filter posts', filterAll: 'All', filterNews: 'Announcements', filterRelease: 'Release notes',
+  },
 }[lang];
+
+const filterOpts = [
+  { v: 'all', label: copy.filterAll },
+  { v: 'news', label: copy.filterNews },
+  { v: 'release', label: copy.filterRelease },
+];
 
 const fmt = (d: Date) =>
   new Intl.DateTimeFormat(lang === 'de' ? 'de-DE' : 'en-US', { dateStyle: 'long' }).format(d);
@@ -42,14 +60,23 @@ const fmt = (d: Date) =>
     {rendered.length === 0 ? (
       <p>{copy.empty}</p>
     ) : (
-      <div class="news__list">
-        {rendered.map(({ post, Content }) => (
-          <article id={post.id} class="news__item glass">
-            <time class="news__date" datetime={post.data.date.toISOString()}>{fmt(post.data.date)}</time>
-            <h2 class="news__title">{post.data.title}</h2>
-            <div class="prose news__body"><Content /></div>
-          </article>
-        ))}
+      <div class="news" data-filter="all">
+        {showFilter && (
+          <div class="seg" role="radiogroup" aria-label={copy.filterLabel} data-group="filter">
+            {filterOpts.map((o) => (
+              <button class="seg__btn" role="radio" aria-checked={o.v === 'all'} tabindex={o.v === 'all' ? 0 : -1} data-value={o.v}>{o.label}</button>
+            ))}
+          </div>
+        )}
+        <div class="news__list">
+          {rendered.map(({ post, Content }) => (
+            <article id={post.id} class="news__item glass" data-type={post.data.type}>
+              <time class="news__date" datetime={post.data.date.toISOString()}>{fmt(post.data.date)}</time>
+              <h2 class="news__title">{post.data.title}</h2>
+              <div class="prose news__body"><Content /></div>
+            </article>
+          ))}
+        </div>
       </div>
     )}
   </div>
@@ -65,9 +92,68 @@ const fmt = (d: Date) =>
   }
   .news__rss:hover { text-decoration: underline; }
 
-  .news__list { margin-top: var(--sp-5); display: grid; gap: 1.2rem; max-width: var(--maxw-prose); }
+  .news { margin-top: var(--sp-5); max-width: var(--maxw-prose); }
+  .news__list { display: grid; gap: 1.2rem; }
+
+  /* Category filter — segmented pill radiogroup (shared aesthetic with the
+     showcase selectors). */
+  .news .seg {
+    display: inline-flex; margin-bottom: 1.4rem; padding: 0.25rem; gap: 0.2rem;
+    border-radius: var(--r-pill); background: var(--bg-2); border: 1px solid var(--line);
+  }
+  .seg__btn {
+    appearance: none; border: 0; cursor: pointer;
+    font: inherit; font-size: var(--step--1); font-weight: 650; line-height: 1;
+    padding: 0.45rem 0.95rem; border-radius: var(--r-pill);
+    background: transparent; color: var(--ink-soft);
+    transition: color 0.18s, background 0.18s var(--ease);
+  }
+  .seg__btn:hover { color: var(--ink); }
+  .seg__btn[aria-checked='true'] {
+    background: color-mix(in oklch, var(--c-primary) 14%, transparent);
+    color: var(--c-primary-ink);
+    box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--c-primary) 30%, transparent);
+  }
   .news__item { padding: clamp(1.4rem, 3vw, 2rem); scroll-margin-top: 5.5rem; }
   .news__date { font-size: var(--step--1); color: var(--ink-faint); font-weight: 650; }
   .news__title { font-size: var(--step-2); margin-top: 0.3rem; }
   .news__body { margin-top: 1rem; }
 </style>
+
+<script>
+  // Category filter: a radiogroup (roving tabindex + arrows) that shows/hides
+  // posts by data-type. Hidden via the `hidden` attribute, so filtered-out posts
+  // leave both the view and the a11y tree. No JS → all posts shown (graceful).
+  const root = document.querySelector<HTMLElement>('.news[data-filter]');
+  const seg = root?.querySelector<HTMLElement>('.seg[data-group="filter"]');
+  if (root && seg) {
+    const items = [...root.querySelectorAll<HTMLElement>('.news__item')];
+    const apply = (value: string) => {
+      root.dataset.filter = value;
+      items.forEach((art) => {
+        art.hidden = value !== 'all' && art.dataset.type !== value;
+      });
+    };
+
+    const btns = [...seg.querySelectorAll<HTMLButtonElement>('.seg__btn')];
+    const check = (idx: number, focus = true) => {
+      btns.forEach((b, i) => {
+        b.setAttribute('aria-checked', String(i === idx));
+        b.tabIndex = i === idx ? 0 : -1;
+      });
+      if (focus) btns[idx].focus();
+      apply(btns[idx].dataset.value ?? 'all');
+    };
+    btns.forEach((btn, i) => {
+      btn.addEventListener('click', () => check(i));
+      btn.addEventListener('keydown', (e) => {
+        let next = -1;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (i + 1) % btns.length;
+        else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (i - 1 + btns.length) % btns.length;
+        else if (e.key === 'Home') next = 0;
+        else if (e.key === 'End') next = btns.length - 1;
+        if (next >= 0) { e.preventDefault(); check(next); }
+      });
+    });
+  }
+</script>
