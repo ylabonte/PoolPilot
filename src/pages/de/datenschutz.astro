@@ -9,7 +9,7 @@ import { site } from '../../data/site';
   pageKey="privacy"
   title="Datenschutzerklärung"
   description="Wie PoolPilot mit Daten umgeht: lokale Speicherung auf dem Gerät, keine Werbung, kein Tracking. Diese Erklärung beschreibt App, Käufe und Website."
-  updated="2026-05-28"
+  updated="2026-06-04"
   lead="Kurz gesagt: PoolPilot sammelt keine personenbezogenen Daten auf eigenen Servern. Es gibt keine Werbung und kein Tracking – wir werten deine Daten schlicht nicht aus."
 >
   <h2>1. Verantwortlicher</h2>
@@ -107,7 +107,38 @@ import { site } from '../../data/site';
     vorgehalten. Support-Kommunikation bewahren wir auf, solange es zur Bearbeitung nötig ist.
   </p>
 
-  <h2>9. Deine Rechte</h2>
+  <h2 id="deletion">9. Datenlöschung anfordern</h2>
+  <h3>Daten auf deinem Gerät</h3>
+  <p>
+    Verbindungsprofile, Zugangsdaten und zwischengespeicherte Messwerte liegen ausschließlich auf
+    deinem Gerät. Du löschst sie selbst, indem du das jeweilige Profil in der App entfernst oder die
+    App deinstallierst – damit sind diese Daten vollständig entfernt. Eine Anfrage an uns ist dafür
+    nicht erforderlich.
+  </p>
+  <h3>Daten bei RevenueCat</h3>
+  <p>
+    Die einzigen in unserem Auftrag serverseitig gespeicherten Daten sind die pseudonyme
+    App-Nutzer-Kennung sowie Kauf-/Belegdaten bei <strong>RevenueCat</strong> (siehe Abschnitt&nbsp;4).
+    Auf Anfrage lassen wir den zugehörigen Datensatz dort löschen. Schreibe dazu an
+    <a href={`mailto:${site.supportEmail}`}>{site.supportEmail}</a>.
+  </p>
+  <p>Damit wir deinen Datensatz ohne Rückfragen zuordnen und löschen können, gib bitte an:</p>
+  <ul>
+    <li>Plattform: Android (Google&nbsp;Play) oder iOS (App&nbsp;Store)</li>
+    <li>
+      die Bestell- bzw. Transaktionsnummer deines Kaufs – bei Google&nbsp;Play die Bestellnummer im
+      Format <code>GPA.XXXX-XXXX-XXXX-XXXXX</code> (aus deiner Kaufhistorie bzw. der
+      Google-Bestellbestätigung), bei Apple die Transaktionsnummer aus deinem Apple-Beleg (E-Mail)
+    </li>
+    <li>die E-Mail-Adresse deines Store-Kontos (Google- bzw. Apple-ID)</li>
+    <li>das ungefähre Kaufdatum und das Produkt (Monats- oder Jahresabo)</li>
+  </ul>
+  <p>
+    Hinweis: Gesetzliche Aufbewahrungspflichten (z.&nbsp;B. für steuerlich relevante Belege) können
+    einzelne Daten von der sofortigen Löschung ausnehmen.
+  </p>
+
+  <h2>10. Deine Rechte</h2>
   <p>
     Du hast nach der DSGVO das Recht auf Auskunft (Art.&nbsp;15), Berichtigung (Art.&nbsp;16), Löschung
     (Art.&nbsp;17), Einschränkung der Verarbeitung (Art.&nbsp;18), Datenübertragbarkeit (Art.&nbsp;20)
@@ -115,13 +146,13 @@ import { site } from '../../data/site';
     Wirkung für die Zukunft widerrufen.
   </p>
 
-  <h2>10. Beschwerderecht</h2>
+  <h2>11. Beschwerderecht</h2>
   <p>
     Du hast das Recht, dich bei einer Datenschutz-Aufsichtsbehörde zu beschweren, insbesondere in dem
     Mitgliedstaat deines Aufenthalts oder des mutmaßlichen Verstoßes.
   </p>
 
-  <h2>11. Änderungen</h2>
+  <h2>12. Änderungen</h2>
   <p>
     Wir passen diese Datenschutzerklärung an, wenn sich die App, genutzte Dienste oder die Rechtslage
     ändern. Es gilt die jeweils auf <a href={site.url}>{site.domain}</a> veröffentlichte Fassung.
