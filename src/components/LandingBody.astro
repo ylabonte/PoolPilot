@@ -2,7 +2,7 @@
 import ControllerCard from './ControllerCard.astro';
 import FeatureStrip from './FeatureStrip.astro';
 import StoreBadge from './StoreBadge.astro';
-import ScreenshotFrame from './ScreenshotFrame.astro';
+import ScreenshotShowcase from './ScreenshotShowcase.astro';
 import PricingBlock from './PricingBlock.astro';
 import Disclaimer from './Disclaimer.astro';
 import { app, controllers } from '../data/apps';
@@ -28,10 +28,25 @@ const copy = {
     featHeading: 'Was in der App steckt',
     featIntro: 'Vier Tabs, überall gleich aufgebaut – egal, an welcher Steuerung sie hängt.',
     shotsHeading: 'Ein Blick in die App',
-    shotsIntro: 'Klare Anzeigen auf dem iPhone, eine Glance-Ansicht auf der Apple Watch.',
-    shotPhone: 'PoolPilot – Dashboard auf dem iPhone',
-    shotWatch: 'PoolPilot – Glance auf der Apple Watch',
+    shotsIntro: 'Gleiche App, beide Plattformen: Zieh den Trenner, um iOS und Android zu vergleichen – und wähl Steuerung, Bildschirm und Darstellung selbst.',
+    shotsDisclaimer: 'Echte Screenshots aus der laufenden Entwicklung – nicht das finale Design. Ecken, Kanten und Bugs sind möglich; ein Vorgeschmack auf den aktuellen Stand, der stetig besser wird.',
     mockTitle: 'Live-Werte',
+    showcase: {
+      controllerLabel: 'Steuerung wählen',
+      screenLabel: 'Bildschirm wählen',
+      themeLabel: 'Darstellung wählen',
+      viewLabel: 'Uhren-Ansicht wählen',
+      controllers: { proconip: 'ProCon.IP', violet: 'Violet' },
+      screens: { dashboard: 'Dashboard', measurements: 'Messwerte', switches: 'Schaltausgänge' },
+      themes: { light: 'Hell', dark: 'Dunkel' },
+      views: { app: 'App', complications: 'Komplikationen' },
+      platforms: { ios: 'iOS', android: 'Android', watchos: 'Apple Watch', wearos: 'Wear OS' },
+      sliderLabel: 'iOS und Android vergleichen – ziehen zum Aufdecken',
+      valueText: '{ios}% iOS · {android}% Android',
+      placeholder: 'Screenshot folgt',
+      altPhone: (p: string, c: string, s: string) => `PoolPilot – ${s} (${c}) auf ${p}`,
+      altWatch: (p: string, v: string) => `PoolPilot – ${v} auf ${p}`,
+    },
     helpHeading: 'Fragen oder ein Problem?',
     helpBody: 'Die Hilfe-Seite beantwortet die häufigsten Fragen. Für alles andere gibt es GitHub-Issues und eine E-Mail-Adresse.',
   },
@@ -46,10 +61,25 @@ const copy = {
     featHeading: 'What’s in the app',
     featIntro: 'Four tabs, laid out the same way everywhere — whichever controller it’s talking to.',
     shotsHeading: 'A look inside the app',
-    shotsIntro: 'Clear gauges on iPhone, a glance view on Apple Watch.',
-    shotPhone: 'PoolPilot — dashboard on iPhone',
-    shotWatch: 'PoolPilot — glance on Apple Watch',
+    shotsIntro: 'Same app, both platforms: drag the divider to compare iOS and Android — and pick the controller, screen and appearance yourself.',
+    shotsDisclaimer: 'Real screenshots from ongoing development — not the final design. Rough edges and bugs are possible; a sneak peek at where things stand today, and it keeps getting better.',
     mockTitle: 'Live readings',
+    showcase: {
+      controllerLabel: 'Choose controller',
+      screenLabel: 'Choose screen',
+      themeLabel: 'Choose appearance',
+      viewLabel: 'Choose watch view',
+      controllers: { proconip: 'ProCon.IP', violet: 'Violet' },
+      screens: { dashboard: 'Dashboard', measurements: 'Measurements', switches: 'Switches' },
+      themes: { light: 'Light', dark: 'Dark' },
+      views: { app: 'App', complications: 'Complications' },
+      platforms: { ios: 'iOS', android: 'Android', watchos: 'Apple Watch', wearos: 'Wear OS' },
+      sliderLabel: 'Compare iOS and Android — drag to reveal',
+      valueText: '{ios}% iOS · {android}% Android',
+      placeholder: 'Screenshot coming',
+      altPhone: (p: string, c: string, s: string) => `PoolPilot — ${s} (${c}) on ${p}`,
+      altWatch: (p: string, v: string) => `PoolPilot — ${v} on ${p}`,
+    },
     helpHeading: 'Questions or a problem?',
     helpBody: 'The help page answers the common questions. For anything else there are GitHub issues and an email address.',
   },
@@ -148,10 +178,8 @@ const tiles = [
         <h2 id="shots-h">{copy.shotsHeading}</h2>
         <p>{copy.shotsIntro}</p>
       </header>
-      <div class="shots">
-        <ScreenshotFrame variant="phone" label={copy.shotPhone} lang={lang} />
-        <ScreenshotFrame variant="watch" label={copy.shotWatch} lang={lang} />
-      </div>
+      <ScreenshotShowcase lang={lang} copy={copy.showcase} />
+      <p class="shots__note">{copy.shotsDisclaimer}</p>
     </div>
   </section>
 
@@ -424,8 +452,11 @@ const tiles = [
   .ctrlgrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(1rem, 3vw, 1.8rem); }
   .landing__note { margin-top: var(--sp-4); }
 
-  /* Screenshots */
-  .shots { display: flex; align-items: flex-end; justify-content: center; gap: 1.4rem; flex-wrap: wrap; }
+  /* Quiet fine-print under the screenshots: real, in-development, not final. */
+  .shots__note {
+    margin: var(--sp-4) auto 0; max-width: 44rem; text-align: center;
+    font-size: var(--step--1); line-height: 1.5; color: var(--ink-soft);
+  }
 
   /* Help CTA */
   .helpcta {

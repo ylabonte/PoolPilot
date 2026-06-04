@@ -1,0 +1,201 @@
+---
+/**
+ * iOS ↔ Android phone comparison slider. One phone bezel holds two stacked
+ * layers: Android (bottom, full) and iOS (top, clipped by --pos). A real
+ * <input type=range> (visually hidden, full-frame) drives --pos — giving pointer
+ * drag + keyboard (arrows/Home/End) + screen-reader semantics for free.
+ *
+ * All 24 images (2 controllers × 3 screens × 2 themes × 2 platforms) are rendered;
+ * the parent ScreenshotShowcase script toggles the active controller×screen×theme
+ * combo via `.is-active` and mirrors the range value into --pos + aria-valuetext.
+ *
+ * Missing files: each <img> gets `.is-broken` (parent onerror delegation), which
+ * hides it so the layer's placeholder shows through — no broken-image, no reflow.
+ */
+import type { Lang } from '../i18n/ui';
+
+interface SliderCopy {
+  controllers: { proconip: string; violet: string };
+  screens: { dashboard: string; measurements: string; switches: string };
+  platforms: { ios: string; android: string };
+  sliderLabel: string;
+  placeholder: string;
+  altPhone: (platform: string, controller: string, screen: string) => string;
+}
+interface Props {
+  lang: Lang;
+  copy: SliderCopy;
+}
+const { copy } = Astro.props;
+
+const controllers = ['proconip', 'violet'] as const;
+const screens = ['dashboard', 'measurements', 'switches'] as const;
+const themes = ['light', 'dark'] as const;
+// The default-active combo (matches the parent's initial state + the no-JS image).
+// The parent flips to dark on load if the visitor's OS prefers it.
+const isDefault = (c: string, s: string, t: string) =>
+  c === 'proconip' && s === 'dashboard' && t === 'light';
+// Dark variants reuse the same name with a `_dark` suffix before `.png`.
+const srcFor = (platform: string, c: string, s: string, t: string) =>
+  `/screenshots/screenshot_${platform}_${c}_${s}${t === 'dark' ? '_dark' : ''}.png`;
+
+const layers = [
+  { platform: 'android', cls: 'compare__layer--android', name: copy.platforms.android },
+  { platform: 'ios', cls: 'compare__layer--ios', name: copy.platforms.ios },
+] as const;
+const ph = copy.placeholder;
+---
+
+<figure class="compare" style="--pos:50">
+  <div class="compare__screen">
+    {layers.map((layer) => (
+      <div class={`compare__layer ${layer.cls}`}>
+        {/* Placeholder first → painted underneath; a loaded <img> covers it,
+            a missing one (display:none) reveals it. */}
+        <div class="compare__ph" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2" /><circle cx="8.5" cy="10" r="1.6" /><path d="M5 17l4.5-4.5L13 16l3-3 3 3" /></svg>
+          <span>{ph}</span>
+        </div>
+        {controllers.map((c) =>
+          screens.map((s) =>
+            themes.map((t) => (
+              <img
+                class={`compare__img${isDefault(c, s, t) ? ' is-active' : ''}`}
+                src={isDefault(c, s, t) ? srcFor(layer.platform, c, s, t) : undefined}
+                data-src={srcFor(layer.platform, c, s, t)}
+                alt={copy.altPhone(layer.name, copy.controllers[c], copy.screens[s])}
+                data-platform={layer.platform}
+                data-controller={c}
+                data-screen={s}
+                data-theme={t}
+                width="1080"
+                height="2424"
+                decoding="async"
+              />
+            )),
+          ),
+        )}
+      </div>
+    ))}
+
+    <!-- Platform name tags (text, not colour-alone) -->
+    <span class="compare__tag compare__tag--ios" aria-hidden="true">{copy.platforms.ios}</span>
+    <span class="compare__tag compare__tag--android" aria-hidden="true">{copy.platforms.android}</span>
+
+    <!-- Visible divider + knob, tracks --pos -->
+    <span class="compare__divider" aria-hidden="true"></span>
+
+    <!-- The accessible primitive: a real range input drives --pos. -->
+    <label class="visually-hidden" for="compare-range">{copy.sliderLabel}</label>
+    <input
+      id="compare-range"
+      class="compare__range"
+      type="range"
+      min="0"
+      max="100"
+      value="50"
+      step="1"
+      aria-valuetext="50% iOS · 50% Android"
+    />
+  </div>
+</figure>
+
+<style>
+  .compare {
+    margin: 0;
+    width: min(22rem, 86vw);
+    padding: 0.6rem;
+    /* Concentric with the screen: screen radius + the 0.6rem frame padding, so
+       the glass frame stays an even width around the rounded corners. */
+    border-radius: 3.5rem 3.5rem 2.2rem 2.2rem;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  }
+  .compare__screen {
+    position: relative; overflow: hidden;
+    /* Big enough top radius to swallow the screenshots' baked-in black corner
+       mask (the Android shots include the rounded display edge in black; this
+       also ~matches the iPhone's display radius). Bottom is cropped off, so it
+       stays tighter. No separate notch — the screenshots include their own. */
+    border-radius: 2.9rem 2.9rem 1.6rem 1.6rem;
+    aspect-ratio: 9 / 19.5;
+    /* Near-black so the corner the clip exposes reads as a phone's black screen
+       edge in every case (light+dark, both devices) — never a coloured sliver.
+       Only ever visible in those corner triangles; a real image or the opaque
+       placeholder covers the rest. */
+    background: #04080c;
+  }
+
+  .compare__layer { position: absolute; inset: 0; }
+  /* iOS sits on top and is revealed from the left up to --pos %. */
+  .compare__layer--ios { clip-path: inset(0 calc(100% - var(--pos, 50) * 1%) 0 0); }
+
+  .compare__img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: top center; display: none;
+  }
+  .compare__img.is-active { display: block; }
+  .compare__img.is-broken { display: none !important; }
+
+  .compare__ph {
+    position: absolute; inset: 0;
+    display: grid; place-content: center; justify-items: center; gap: 0.4rem;
+    padding: 1rem; text-align: center; color: var(--ink-faint);
+    /* Opaque (matches the empty screen) so a missing image masks the layer
+       beneath it — otherwise the iOS half would bleed the Android shot through. */
+    background:
+      radial-gradient(120% 80% at 50% 0%, color-mix(in oklch, var(--accent) 24%, transparent), transparent 60%),
+      var(--bg);
+  }
+  .compare__ph span { font-size: 0.78rem; font-weight: 700; color: var(--ink-soft); }
+
+  .compare__tag {
+    position: absolute; top: 0.7rem; z-index: 3;
+    font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+    padding: 0.12rem 0.45rem; border-radius: var(--r-pill);
+    background: color-mix(in oklch, var(--bg) 70%, transparent);
+    color: var(--ink); border: 1px solid var(--line);
+    backdrop-filter: blur(4px);
+  }
+  .compare__tag--ios { left: 0.7rem; }
+  .compare__tag--android { right: 0.7rem; }
+
+  .compare__divider {
+    position: absolute; top: 0; bottom: 0; z-index: 2;
+    left: calc(var(--pos, 50) * 1%); width: 2px; transform: translateX(-1px);
+    background: color-mix(in oklch, var(--c-primary) 70%, white);
+    pointer-events: none;
+  }
+  .compare__divider::after {
+    content: ''; position: absolute; top: 50%; left: 50%;
+    width: 2.2rem; height: 2.2rem; transform: translate(-50%, -50%);
+    border-radius: 50%; background: var(--glass-bg); border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow); backdrop-filter: blur(8px);
+  }
+  /* a subtle ◂▸ hint in the knob */
+  .compare__divider::before {
+    content: ''; position: absolute; top: 50%; left: 50%;
+    width: 0.9rem; height: 0.9rem; transform: translate(-50%, -50%); z-index: 1;
+    background: var(--c-primary);
+    -webkit-mask: center / contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'%3E%3Cpath d='M8.5 7 4 12l4.5 5M15.5 7 20 12l-4.5 5'/%3E%3C/svg%3E");
+    mask: center / contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'%3E%3Cpath d='M8.5 7 4 12l4.5 5M15.5 7 20 12l-4.5 5'/%3E%3C/svg%3E");
+  }
+
+  .compare__range {
+    position: absolute; inset: 0; z-index: 5;
+    width: 100%; height: 100%; margin: 0;
+    opacity: 0; cursor: ew-resize; background: transparent;
+    -webkit-appearance: none; appearance: none;
+    touch-action: pan-y; /* horizontal drag → slider, vertical → page scroll */
+  }
+  .compare__range::-webkit-slider-thumb { -webkit-appearance: none; width: 2.4rem; height: 100%; }
+  .compare__range::-moz-range-thumb { width: 2.4rem; height: 100%; border: 0; background: transparent; }
+  .compare__range::-moz-range-track { background: transparent; }
+  .compare__range:focus-visible { outline: none; }
+  /* Mirror the focus ring onto the visible knob. */
+  .compare__range:focus-visible ~ .compare__divider::after {
+    outline: 2.5px solid var(--accent); outline-offset: 3px;
+  }
+</style>

@@ -1,0 +1,102 @@
+---
+/**
+ * Apple Watch (watchOS) + Wear OS shown side by side (their shapes differ, so
+ * not a reveal-slider). One view selector lives in the parent ScreenshotShowcase;
+ * here we render both views for both platforms and toggle the active one via
+ * `.is-active` (driven by the parent's script). Missing image files fall back to
+ * the placeholder (parent's onerror delegation adds `.is-broken`).
+ */
+import type { Lang } from '../i18n/ui';
+
+interface WatchCopy {
+  platforms: { watchos: string; wearos: string };
+  views: { app: string; complications: string };
+  placeholder: string;
+  altWatch: (platform: string, view: string) => string;
+}
+interface Props {
+  lang: Lang;
+  copy: WatchCopy;
+}
+const { copy } = Astro.props;
+
+const views = ['complications', 'app'] as const;
+const platforms = [
+  { id: 'watchos', shape: 'rect', name: copy.platforms.watchos },
+  { id: 'wearos', shape: 'round', name: copy.platforms.wearos },
+] as const;
+---
+
+<div class="watchpair">
+  {platforms.map((p) => (
+    <figure class={`watch watch--${p.shape}`}>
+      <div class="watch__device">
+        <div class="watch__screen">
+          {views.map((v) => (
+            <img
+              class={`watch__img${v === 'complications' ? ' is-active' : ''}`}
+              src={v === 'complications' ? `/screenshots/screenshot_${p.id}_${v}.png` : undefined}
+              data-src={`/screenshots/screenshot_${p.id}_${v}.png`}
+              alt={copy.altWatch(p.name, copy.views[v])}
+              data-platform={p.id}
+              data-view={v}
+              width="454"
+              height="454"
+              decoding="async"
+            />
+          ))}
+          <div class="watch__ph" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2" /><circle cx="8.5" cy="10" r="1.6" /><path d="M5 17l4.5-4.5L13 16l3-3 3 3" /></svg>
+            <span>{copy.placeholder}</span>
+          </div>
+        </div>
+      </div>
+      <figcaption class="watch__cap">{p.name}</figcaption>
+    </figure>
+  ))}
+</div>
+
+<style>
+  .watchpair {
+    display: flex; flex-wrap: wrap; justify-content: center;
+    gap: clamp(1.2rem, 5vw, 3rem); margin-top: var(--sp-4);
+  }
+  .watch { margin: 0; display: grid; justify-items: center; gap: 0.7rem; }
+  .watch__device {
+    padding: 0.55rem;
+    background: var(--glass-bg); border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    width: 9.5rem;
+  }
+  .watch--rect .watch__device { aspect-ratio: 5 / 6; border-radius: 2.4rem; }
+  .watch--round .watch__device { aspect-ratio: 1 / 1; border-radius: 50%; }
+  .watch__screen {
+    position: relative; height: 100%; overflow: hidden;
+    display: grid; place-items: center;
+    background:
+      radial-gradient(120% 80% at 50% 0%, color-mix(in oklch, var(--accent) 24%, transparent), transparent 60%),
+      var(--bg);
+  }
+  .watch--rect .watch__screen { border-radius: 1.9rem; }
+  .watch--round .watch__screen { border-radius: 50%; }
+  .watch__img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; display: none;
+  }
+  .watch__img.is-active { display: block; }
+  /* A broken/missing active image hides itself so the placeholder shows through. */
+  .watch__img.is-broken { display: none !important; }
+
+  /* No z-index: stays an in-flow item painted *under* the absolute <img>, so a
+     loaded face covers it and only a missing one reveals the placeholder. */
+  .watch__ph {
+    display: grid; justify-items: center; gap: 0.3rem; padding: 0.8rem;
+    text-align: center; color: var(--ink-faint);
+  }
+  .watch__ph span { font-size: 0.7rem; font-weight: 700; color: var(--ink-soft); }
+
+  .watch__cap {
+    font-size: var(--step--1); font-weight: 650; color: var(--ink-soft);
+  }
+</style>

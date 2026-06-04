@@ -1,0 +1,237 @@
+---
+/**
+ * Interactive screenshots showcase: a phone iOS↔Android compare-slider with
+ * Controller + Screen selectors, and a side-by-side watch pair with a View
+ * selector. All interactivity is in one scoped script at the bottom.
+ *
+ * Selectors are accessible radiogroups (roving tabindex + arrow keys). The
+ * slider is a real <input type=range> mirrored into a --pos custom property.
+ */
+import CompareSlider from './CompareSlider.astro';
+import WatchPair from './WatchPair.astro';
+import type { Lang } from '../i18n/ui';
+
+export interface ShowcaseCopy {
+  controllerLabel: string;
+  screenLabel: string;
+  themeLabel: string;
+  viewLabel: string;
+  controllers: { proconip: string; violet: string };
+  screens: { dashboard: string; measurements: string; switches: string };
+  themes: { light: string; dark: string };
+  views: { app: string; complications: string };
+  platforms: { ios: string; android: string; watchos: string; wearos: string };
+  sliderLabel: string;
+  /** Template with {ios}/{android} placeholders, read by the client script. */
+  valueText: string;
+  placeholder: string;
+  altPhone: (platform: string, controller: string, screen: string) => string;
+  altWatch: (platform: string, view: string) => string;
+}
+interface Props {
+  lang: Lang;
+  copy: ShowcaseCopy;
+}
+const { lang, copy } = Astro.props;
+
+const controllerOpts = [
+  { v: 'proconip', label: copy.controllers.proconip },
+  { v: 'violet', label: copy.controllers.violet },
+];
+const screenOpts = [
+  { v: 'dashboard', label: copy.screens.dashboard },
+  { v: 'measurements', label: copy.screens.measurements },
+  { v: 'switches', label: copy.screens.switches },
+];
+const themeOpts = [
+  { v: 'light', label: copy.themes.light },
+  { v: 'dark', label: copy.themes.dark },
+];
+const viewOpts = [
+  { v: 'complications', label: copy.views.complications },
+  { v: 'app', label: copy.views.app },
+];
+---
+
+<div class="showcase" data-controller="proconip" data-screen="dashboard" data-theme="light" data-view="complications" data-valuetext={copy.valueText}>
+  <!-- Phone: controller + screen selectors, then the slider -->
+  <div class="showcase__phone">
+    <div class="showcase__selectors">
+      <div class="seg" role="radiogroup" aria-label={copy.controllerLabel} data-group="controller">
+        {controllerOpts.map((o, i) => (
+          <button class="seg__btn" role="radio" aria-checked={o.v === 'proconip'} tabindex={o.v === 'proconip' ? 0 : -1} data-value={o.v}>{o.label}</button>
+        ))}
+      </div>
+      <div class="seg" role="radiogroup" aria-label={copy.screenLabel} data-group="screen">
+        {screenOpts.map((o) => (
+          <button class="seg__btn" role="radio" aria-checked={o.v === 'dashboard'} tabindex={o.v === 'dashboard' ? 0 : -1} data-value={o.v}>{o.label}</button>
+        ))}
+      </div>
+      <div class="seg" role="radiogroup" aria-label={copy.themeLabel} data-group="theme">
+        {themeOpts.map((o) => (
+          <button class="seg__btn" role="radio" aria-checked={o.v === 'light'} tabindex={o.v === 'light' ? 0 : -1} data-value={o.v}>{o.label}</button>
+        ))}
+      </div>
+    </div>
+
+    <CompareSlider lang={lang} copy={copy} />
+  </div>
+
+  <!-- Watch: view selector, then the side-by-side pair -->
+  <div class="showcase__watch">
+    <div class="seg" role="radiogroup" aria-label={copy.viewLabel} data-group="view">
+      {viewOpts.map((o) => (
+        <button class="seg__btn" role="radio" aria-checked={o.v === 'complications'} tabindex={o.v === 'complications' ? 0 : -1} data-value={o.v}>{o.label}</button>
+      ))}
+    </div>
+
+    <WatchPair lang={lang} copy={copy} />
+  </div>
+</div>
+
+<style>
+  .showcase { display: grid; gap: var(--sp-5); margin-top: var(--sp-4); }
+  .showcase__phone, .showcase__watch { display: grid; justify-items: center; gap: 1.2rem; }
+
+  .showcase__selectors { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.8rem 1.4rem; }
+
+  /* Segmented control (radiogroup) — pill aesthetic from chips. */
+  .seg {
+    display: inline-flex; padding: 0.25rem; gap: 0.2rem;
+    border-radius: var(--r-pill); background: var(--bg-2);
+    border: 1px solid var(--line);
+  }
+  .seg__btn {
+    appearance: none; border: 0; cursor: pointer;
+    font: inherit; font-size: var(--step--1); font-weight: 650; line-height: 1;
+    padding: 0.45rem 0.95rem; border-radius: var(--r-pill);
+    background: transparent; color: var(--ink-soft);
+    transition: color 0.18s, background 0.18s var(--ease);
+  }
+  .seg__btn:hover { color: var(--ink); }
+  .seg__btn[aria-checked='true'] {
+    background: color-mix(in oklch, var(--c-primary) 14%, transparent);
+    color: var(--c-primary-ink);
+    box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--c-primary) 30%, transparent);
+  }
+</style>
+
+<script>
+  // Single scoped controller for the showcase: slider mirroring, radiogroup
+  // keyboard/selection, image-matrix toggling, and broken-image placeholders.
+  const root = document.querySelector<HTMLElement>('.showcase');
+  if (root) {
+    const state = { controller: 'proconip', screen: 'dashboard', theme: 'light', view: 'complications' };
+
+    // --- Compare slider: mirror the range value into --pos + aria-valuetext ---
+    const compare = root.querySelector<HTMLElement>('.compare');
+    const range = root.querySelector<HTMLInputElement>('.compare__range');
+    const tpl = root.dataset.valuetext ?? '{ios}% iOS · {android}% Android';
+    const setPos = (v: number) => {
+      compare?.style.setProperty('--pos', String(v));
+      if (range) range.setAttribute('aria-valuetext', tpl.replace('{ios}', String(v)).replace('{android}', String(100 - v)));
+    };
+    if (range) {
+      range.addEventListener('input', () => setPos(Number(range.value)));
+      setPos(Number(range.value));
+    }
+
+    // --- Load-on-demand ---
+    // We deliberately do NOT use loading="lazy": a display:none lazy image gets
+    // re-requested by Chromium on every reflow (the hero's 1 Hz age-dial forces
+    // one each second → every hidden screenshot re-downloads endlessly). Instead
+    // each <img> carries data-src and we promote it to src the first time its combo
+    // is shown — so every file is fetched at most once. The default combo ships
+    // with a real src (works without JS); the rest stay src-less until activated.
+    const ensureLoaded = (img: HTMLImageElement) => {
+      if (img.classList.contains('is-broken')) return; // known-missing → don't retry
+      if (!img.getAttribute('src') && img.dataset.src) img.src = img.dataset.src;
+    };
+
+    // --- Image-matrix toggling ---
+    const applyPhone = () => {
+      root.dataset.controller = state.controller;
+      root.dataset.screen = state.screen;
+      root.dataset.theme = state.theme;
+      root.querySelectorAll<HTMLImageElement>('.compare__img').forEach((img) => {
+        const on = img.dataset.controller === state.controller && img.dataset.screen === state.screen && img.dataset.theme === state.theme;
+        img.classList.toggle('is-active', on);
+        if (on) ensureLoaded(img);
+      });
+    };
+    const applyWatch = () => {
+      root.dataset.view = state.view;
+      root.querySelectorAll<HTMLImageElement>('.watch__img').forEach((img) => {
+        const on = img.dataset.view === state.view;
+        img.classList.toggle('is-active', on);
+        if (on) ensureLoaded(img);
+      });
+    };
+
+    // --- Radiogroups: roving tabindex + arrow/Home/End keyboard + click ---
+    const select = (group: string, value: string) => {
+      if (group === 'controller') state.controller = value;
+      else if (group === 'screen') state.screen = value;
+      else if (group === 'theme') state.theme = value;
+      else if (group === 'view') state.view = value;
+      if (group === 'view') applyWatch();
+      else applyPhone();
+    };
+
+    root.querySelectorAll<HTMLElement>('.seg').forEach((seg) => {
+      const group = seg.dataset.group ?? '';
+      const btns = [...seg.querySelectorAll<HTMLButtonElement>('.seg__btn')];
+      const check = (idx: number, focus = true) => {
+        btns.forEach((b, i) => {
+          const on = i === idx;
+          b.setAttribute('aria-checked', String(on));
+          b.tabIndex = on ? 0 : -1;
+        });
+        if (focus) btns[idx].focus();
+        select(group, btns[idx].dataset.value ?? '');
+      };
+      btns.forEach((btn, i) => {
+        btn.addEventListener('click', () => check(i));
+        btn.addEventListener('keydown', (e) => {
+          let next = -1;
+          if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (i + 1) % btns.length;
+          else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (i - 1 + btns.length) % btns.length;
+          else if (e.key === 'Home') next = 0;
+          else if (e.key === 'End') next = btns.length - 1;
+          if (next >= 0) { e.preventDefault(); check(next); }
+        });
+      });
+    });
+
+    // --- Broken / missing images → show the placeholder behind the layer ---
+    // On failure we add `.is-broken` (hides the img so the placeholder shows) and
+    // drop src so the file is never re-requested. ensureLoaded skips is-broken, so a
+    // known-missing combo isn't re-fetched if the user toggles back to it.
+    const markBroken = (img: HTMLImageElement) => {
+      if (img.classList.contains('is-broken')) return;
+      img.classList.add('is-broken');
+      img.removeAttribute('src');
+    };
+    root.querySelectorAll<HTMLImageElement>('.compare__img, .watch__img').forEach((img) => {
+      img.addEventListener('error', () => markBroken(img));
+      // catch already-failed (cached) loads that errored before this script ran
+      if (img.complete && img.naturalWidth === 0 && img.getAttribute('src')) markBroken(img);
+    });
+
+    // Promote the default-active images in case markup ever ships them src-less.
+    root.querySelectorAll<HTMLImageElement>('.compare__img.is-active, .watch__img.is-active').forEach(ensureLoaded);
+
+    // --- Initial phone appearance follows the visitor's OS theme (once, on load) ---
+    // Markup ships light-active (the no-JS image); flip to dark here when preferred,
+    // reflecting it in the theme radiogroup and promoting the dark variant.
+    if (window.matchMedia?.('(prefers-color-scheme: dark)').matches) {
+      state.theme = 'dark';
+      root.querySelectorAll<HTMLButtonElement>('.seg[data-group="theme"] .seg__btn').forEach((b) => {
+        const on = b.dataset.value === 'dark';
+        b.setAttribute('aria-checked', String(on));
+        b.tabIndex = on ? 0 : -1;
+      });
+      applyPhone();
+    }
+  }
+</script>
