@@ -88,7 +88,9 @@ body {
 /* ---- Atmospheric background: aqueous mesh + faint grain ---------------- */
 .bg-atmosphere {
   position: fixed;
-  inset: 0;
+  /* Overhang the viewport top + bottom so the scroll parallax (BaseLayout) can
+     drift the mesh without ever sliding an edge into view (no bare-bg "bar"). */
+  inset: -240px 0;
   z-index: -1;
   pointer-events: none;
   will-change: transform; /* GPU layer for the subtle scroll parallax (BaseLayout) */
