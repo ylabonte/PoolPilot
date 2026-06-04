@@ -2,6 +2,7 @@
 import ControllerCard from './ControllerCard.astro';
 import FeatureStrip from './FeatureStrip.astro';
 import StoreBadge from './StoreBadge.astro';
+import BetaJoin from './BetaJoin.astro';
 import ScreenshotShowcase from './ScreenshotShowcase.astro';
 import PricingBlock from './PricingBlock.astro';
 import Disclaimer from './Disclaimer.astro';
@@ -18,7 +19,8 @@ const brandAccent = `--accent: light-dark(${app.accent.light}, ${app.accent.dark
 
 const copy = {
   de: {
-    chip: 'Demnächst für iOS & Android',
+    chip: 'Closed Beta — Android jetzt, iOS folgt',
+    joinBeta: 'Zur Closed Beta',
     h1a: 'Endlich eine native App',
     h1b: 'für deine Poolsteuerung.',
     sub: 'Keine Konten, keine Werbung, kein Tracking. Du legst ein Verbindungsprofil an, und PoolPilot erkennt automatisch, ob eine ProCon.IP oder eine Violet dahintersteckt – und spricht direkt mit ihr in deinem eigenen Netzwerk.',
@@ -51,7 +53,8 @@ const copy = {
     helpBody: 'Die Hilfe-Seite beantwortet die häufigsten Fragen. Für alles andere gibt es GitHub-Issues und eine E-Mail-Adresse.',
   },
   en: {
-    chip: 'Coming soon for iOS & Android',
+    chip: 'Closed beta — Android now, iOS soon',
+    joinBeta: 'Join the closed beta',
     h1a: 'Finally, a native app',
     h1b: 'for your pool controller.',
     sub: 'No accounts, no ads, no tracking. You add a connection profile and PoolPilot detects automatically whether it’s a ProCon.IP or a Violet — then talks straight to it on your own network.',
@@ -106,6 +109,7 @@ const tiles = [
         <ul class="hero__badges" role="list">
           {copy.badges.map((b) => <li class="chip chip--ok">{b}</li>)}
         </ul>
+        <a class="btn btn-primary hero__join" href="#beta">{copy.joinBeta}</a>
         <div class="hero__store">
           <StoreBadge store="appstore" lang={lang} />
           <StoreBadge store="playstore" lang={lang} />
@@ -145,6 +149,9 @@ const tiles = [
       </div>
     </div>
   </section>
+
+  <!-- Join the closed beta -->
+  <BetaJoin lang={lang} />
 
   <!-- Supported controllers -->
   <section class="section" aria-labelledby="ctrl-h">
@@ -371,7 +378,8 @@ const tiles = [
   .hero h1 { margin-top: 1rem; }
   .hero__sub { margin-top: 1.1rem; font-size: var(--step-1); color: var(--ink-soft); max-width: 34rem; }
   .hero__badges { list-style: none; padding: 0; margin-top: 1.4rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
-  .hero__store { margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .hero__join { margin-top: 1.5rem; }
+  .hero__store { margin-top: 0.9rem; display: flex; flex-wrap: wrap; gap: 0.6rem; }
 
   /* Mock dashboard */
   .hero__visual { justify-self: center; width: 100%; perspective: 900px; }

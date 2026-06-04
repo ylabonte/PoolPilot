@@ -1,0 +1,153 @@
+---
+/**
+ * "Join the closed beta" section. Android is live now via Google Play closed
+ * testing (3 steps: join the Google Group → opt in → install). iOS shows an
+ * honest pending state until `beta.iosTestflight` is filled, at which point the
+ * card flips to a live "Join on TestFlight" button.
+ */
+import { beta } from '../data/apps';
+import { path, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const hasTestflight = beta.iosTestflight.length > 0;
+
+const copy = {
+  de: {
+    eyebrow: 'Closed Beta',
+    h2: 'Mach bei der Closed Beta mit',
+    intro:
+      'PoolPilot ist in der geschlossenen Beta – kostenlos und ohne Konto. Android läuft schon; iOS folgt, sobald Apples Review durch ist.',
+    androidTitle: 'Android',
+    androidBadge: 'Jetzt verfügbar',
+    steps: [
+      { t: 'Der Google-Gruppe beitreten', d: 'Tritt der Tester-Gruppe bei – das schaltet dich für den geschlossenen Test frei.', cta: 'Gruppe beitreten', href: beta.googleGroup },
+      { t: 'Als Tester anmelden', d: 'Öffne den Test-Link und bestätige die Teilnahme.', cta: 'Teilnahme bestätigen', href: beta.androidOptIn },
+      { t: 'Aus Google Play installieren', d: 'Danach installierst du PoolPilot wie gewohnt aus dem Play Store.', cta: 'Bei Google Play öffnen', href: beta.androidPlay },
+    ],
+    iosTitle: 'iOS & Apple Watch',
+    iosBadge: hasTestflight ? 'Jetzt verfügbar' : 'In Kürze',
+    iosPendingTitle: 'TestFlight folgt in Kürze',
+    iosPendingBody: 'Die iOS-Version wartet noch auf Apples Review. Sobald sie durch ist, landet der TestFlight-Link genau hier.',
+    iosPendingCta: 'Per News benachrichtigen lassen',
+    iosLiveTitle: 'Über TestFlight beitreten',
+    iosLiveBody: 'Öffne die TestFlight-Einladung und installiere PoolPilot für iPhone, iPad und Apple Watch.',
+    iosLiveCta: 'TestFlight öffnen',
+    note: 'Geschlossene Beta heißt: noch nicht in den öffentlichen Stores. Es kann Ecken und Kanten geben – Feedback ist willkommen.',
+  },
+  en: {
+    eyebrow: 'Closed beta',
+    h2: 'Join the closed beta',
+    intro:
+      'PoolPilot is in closed beta — free, no account. Android is live now; iOS follows as soon as Apple’s review is through.',
+    androidTitle: 'Android',
+    androidBadge: 'Available now',
+    steps: [
+      { t: 'Join the Google Group', d: 'Join the tester group — that unlocks you for the closed test.', cta: 'Join the group', href: beta.googleGroup },
+      { t: 'Opt in as a tester', d: 'Open the test link and confirm you want to join.', cta: 'Become a tester', href: beta.androidOptIn },
+      { t: 'Install from Google Play', d: 'Then install PoolPilot from the Play Store as usual.', cta: 'Open on Google Play', href: beta.androidPlay },
+    ],
+    iosTitle: 'iOS & Apple Watch',
+    iosBadge: hasTestflight ? 'Available now' : 'Coming soon',
+    iosPendingTitle: 'TestFlight is coming soon',
+    iosPendingBody: 'The iOS build is waiting on Apple’s review. As soon as it’s through, the TestFlight link lands right here.',
+    iosPendingCta: 'Get notified via the news page',
+    iosLiveTitle: 'Join on TestFlight',
+    iosLiveBody: 'Open the TestFlight invite and install PoolPilot for iPhone, iPad and Apple Watch.',
+    iosLiveCta: 'Open TestFlight',
+    note: 'Closed beta means it isn’t in the public stores yet. Expect a few rough edges — feedback is welcome.',
+  },
+}[lang];
+---
+
+<section class="section betajoin" id="beta" aria-labelledby="beta-h">
+  <div class="container">
+    <header class="sectionhead">
+      <p class="eyebrow">{copy.eyebrow}</p>
+      <h2 id="beta-h">{copy.h2}</h2>
+      <p>{copy.intro}</p>
+    </header>
+
+    <div class="betajoin__grid">
+      <!-- Android: available now -->
+      <article class="betajoin__card glass">
+        <header class="betajoin__cardhead">
+          <span class="betajoin__os">{copy.androidTitle}</span>
+          <span class="chip chip--ok">{copy.androidBadge}</span>
+        </header>
+        <ol class="betajoin__steps">
+          {copy.steps.map((s, i) => (
+            <li class="betajoin__step">
+              <span class="betajoin__num" aria-hidden="true">{i + 1}</span>
+              <div class="betajoin__stepmain">
+                <h3 class="betajoin__steptitle">{s.t}</h3>
+                <p class="betajoin__stepbody">{s.d}</p>
+                <a class="betajoin__steplink" href={s.href} target="_blank" rel="noopener noreferrer">{s.cta}<span aria-hidden="true"> ↗</span></a>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </article>
+
+      <!-- iOS: TestFlight after Apple review -->
+      <article class="betajoin__card glass">
+        <header class="betajoin__cardhead">
+          <span class="betajoin__os">{copy.iosTitle}</span>
+          <span class={`chip${hasTestflight ? ' chip--ok' : ''}`}>{copy.iosBadge}</span>
+        </header>
+        <div class="betajoin__ios">
+          <h3 class="betajoin__steptitle">{hasTestflight ? copy.iosLiveTitle : copy.iosPendingTitle}</h3>
+          <p class="betajoin__stepbody">{hasTestflight ? copy.iosLiveBody : copy.iosPendingBody}</p>
+          {hasTestflight ? (
+            <a class="btn btn-primary" href={beta.iosTestflight} target="_blank" rel="noopener noreferrer">{copy.iosLiveCta}</a>
+          ) : (
+            <a class="btn btn-ghost" href={path('news', lang)}>{copy.iosPendingCta}</a>
+          )}
+        </div>
+      </article>
+    </div>
+
+    <p class="betajoin__note">{copy.note}</p>
+  </div>
+</section>
+
+<style>
+  .betajoin { scroll-margin-top: 5.5rem; }
+  .betajoin__grid {
+    margin-top: var(--sp-5);
+    display: grid; gap: clamp(1rem, 3vw, 1.6rem);
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    align-items: start;
+  }
+  .betajoin__card { padding: clamp(1.4rem, 3vw, 2rem); }
+  .betajoin__cardhead {
+    display: flex; align-items: center; justify-content: space-between; gap: 0.8rem;
+    margin-bottom: 1.2rem;
+  }
+  .betajoin__os { font-family: var(--font-display); font-size: var(--step-1); font-weight: 700; }
+
+  .betajoin__steps { list-style: none; padding: 0; display: grid; gap: 1.1rem; }
+  .betajoin__step { display: grid; grid-template-columns: auto 1fr; gap: 0.9rem; align-items: start; }
+  .betajoin__num {
+    display: grid; place-items: center; width: 1.9rem; height: 1.9rem; border-radius: 50%;
+    font-size: var(--step--1); font-weight: 700; color: #fff;
+    background: linear-gradient(135deg, var(--c-primary-deep), var(--c-teal));
+    box-shadow: 0 6px 14px -8px color-mix(in oklch, var(--c-primary) 70%, transparent);
+  }
+  .betajoin__steptitle { font-size: var(--step-0); font-weight: 700; }
+  .betajoin__stepbody { color: var(--ink-soft); font-size: var(--step--1); margin-top: 0.2rem; }
+  .betajoin__steplink {
+    display: inline-block; margin-top: 0.4rem; font-size: var(--step--1); font-weight: 650;
+  }
+
+  .betajoin__ios { display: grid; gap: 0.5rem; justify-items: start; }
+  .betajoin__ios .btn { margin-top: 0.6rem; }
+
+  .betajoin__note {
+    margin: var(--sp-4) auto 0; max-width: 44rem; text-align: center;
+    font-size: var(--step--1); line-height: 1.5; color: var(--ink-soft);
+  }
+</style>

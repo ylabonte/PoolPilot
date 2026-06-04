@@ -41,6 +41,19 @@ export const app = {
   } as Record<Lang, string>,
 };
 
+/**
+ * Closed-beta distribution links. Android is live now via Google Play closed
+ * testing (testers join the Google Group, opt in on the web, then install).
+ * iOS TestFlight follows once Apple's review passes — fill `iosTestflight` then
+ * and the iOS card flips from "coming soon" to a live "Join on TestFlight".
+ */
+export const beta = {
+  googleGroup: 'https://groups.google.com/g/poolpilot-beta',
+  androidOptIn: 'https://play.google.com/apps/testing/cloud.labonte.poolpilot',
+  androidPlay: 'https://play.google.com/store/apps/details?id=cloud.labonte.poolpilot',
+  iosTestflight: '', // ← paste the TestFlight invite URL once Apple review succeeds
+} as const;
+
 export type ControllerId = 'proconip' | 'violet';
 
 export interface Controller {
