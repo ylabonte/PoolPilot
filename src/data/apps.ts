@@ -74,20 +74,18 @@ export const controllers: Controller[] = [
     name: 'ProCon.IP',
     accent: { light: '#0277BD', dark: '#4FC3F7' },
     blurb: {
-      de: 'pH, Redox und Temperatur ablesen, Relais und Dosierkanäle schalten und die Poolabdeckung steuern.',
-      en: 'Read pH, ORP and temperature, switch relays and dosing channels, and control the pool cover.',
+      de: 'pH, Redox und Temperatur ablesen, Relais und Dosierkanäle schalten.',
+      en: 'Read pH, ORP and temperature, switch relays and dosing channels.',
     },
     highlights: {
       de: [
         'Relais und Dosierkanäle im Auto-/Ein-/Aus-Modus schalten',
         'Manuelle Dosier-Impulse mit Sicherheitsabfrage',
-        'Poolabdeckung mit Bestätigungsschritt',
         'Farbcodierte Chemie-Anzeigen (pH, Redox)',
       ],
       en: [
         'Switch relays and dosing channels Off / Auto / On',
         'Manual dosing pulses with a safety confirmation',
-        'Pool cover with a confirmation step',
         'Colour-banded chemistry gauges (pH, ORP)',
       ],
     },
@@ -184,7 +182,6 @@ export const sharedFeatures: Feature[] = [
       de: 'Home-Screen-Widgets und eine Glance-Ansicht auf Apple Watch und Wear OS. Außerdem Watch Komplikationen und Wear OS Tiles.',
       en: 'Home-screen widgets and a glance view on Apple Watch and Wear OS. Also Watch complications and Wear OS tiles.',
     },
-    comingSoon: true,
   },
   {
     icon: 'M7.5 10.5V8a4.5 4.5 0 0 1 9 0v2.5M6 10.5h12a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1zM12 14a1.5 1.5 0 0 0-.8 2.8V18h1.6v-1.2A1.5 1.5 0 0 0 12 14z',
