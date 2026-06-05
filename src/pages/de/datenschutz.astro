@@ -33,18 +33,18 @@ import { site } from '../../data/site';
   </p>
 
   <h2>3. Daten in der App</h2>
-  <h3>Verbindungsdaten zum Controller</h3>
+  <h3>Verbindungsdaten zur Poolsteuerung</h3>
   <p>
-    Damit die App mit deinem Controller sprechen kann, gibst du dessen Adresse (Host/IP) sowie
+    Damit die App mit deiner Poolsteuerung sprechen kann, gibst du deren Adresse (Host/IP) sowie
     Benutzername und Passwort ein. Diese <strong>Zugangsdaten werden ausschließlich lokal auf deinem
     Gerät gespeichert</strong> – auf iOS in der System-Keychain, auf Android im verschlüsselten,
     Android-Keystore-gestützten App-Speicher (EncryptedSharedPreferences). Sie verlassen dein Gerät nur,
-    um Anfragen an genau diesen Controller
+    um Anfragen an genau diese Poolsteuerung
     zu senden. Wir erhalten diese Daten zu keinem Zeitpunkt.
   </p>
   <h3>Mess- und Einstellungsdaten</h3>
   <p>
-    Mess- und Statuswerte werden vom Controller abgerufen und auf dem Gerät angezeigt bzw. für
+    Mess- und Statuswerte werden von der Poolsteuerung abgerufen und auf dem Gerät angezeigt bzw. für
     Widgets und die Watch-Ansicht zwischengespeichert. Auch diese Daten verbleiben auf dem Gerät
     bzw. im Datenbereich der App.
   </p>
