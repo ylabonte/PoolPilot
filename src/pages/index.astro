@@ -24,10 +24,10 @@ const title = `${site.name} — native app for your pool controller`;
     <script is:inline>
       (function () {
         try {
-          var pref = (navigator.languages && navigator.languages[0]) || navigator.language || 'de';
-          var lang = pref.toLowerCase().indexOf('de') === 0 ? 'de' : 'en';
+          const pref = (navigator.languages && navigator.languages[0]) || navigator.language || 'de';
+          const lang = pref.toLowerCase().indexOf('de') === 0 ? 'de' : 'en';
           location.replace('/' + lang + '/');
-        } catch (e) {
+        } catch {
           location.replace('/de/');
         }
       })();
