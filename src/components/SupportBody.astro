@@ -1,12 +1,11 @@
 ---
-import { useTranslations, type Lang } from '../i18n/ui';
+import { type Lang } from '../i18n/ui';
 import { site } from '../data/site';
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
-const t = useTranslations(lang);
 
 const copy = {
   de: {

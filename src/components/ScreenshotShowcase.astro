@@ -58,7 +58,7 @@ const viewOpts = [
   <div class="showcase__phone">
     <div class="showcase__selectors">
       <div class="seg" role="radiogroup" aria-label={copy.controllerLabel} data-group="controller">
-        {controllerOpts.map((o, i) => (
+        {controllerOpts.map((o) => (
           <button class="seg__btn" role="radio" aria-checked={o.v === 'proconip'} tabindex={o.v === 'proconip' ? 0 : -1} data-value={o.v}>{o.label}</button>
         ))}
       </div>
