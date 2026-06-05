@@ -9,7 +9,7 @@ import { site } from '../../data/site';
   pageKey="privacy"
   title="Privacy Policy"
   description="How PoolPilot handles data: stored locally on your device, no ads, no tracking. This policy covers the app, purchases and the website."
-  updated="2026-06-04"
+  updated="2026-06-05"
   lead="In short: PoolPilot collects no personal data on our own servers. There are no ads and no tracking — we simply don't exploit your data."
 >
   <h2>1. Controller (data controller)</h2>
@@ -35,7 +35,8 @@ import { site } from '../../data/site';
   <p>
     To let the app talk to your controller, you enter its address (host/IP) plus a username and
     password. These <strong>credentials are stored only locally on your device</strong> — in the
-    system Keychain on iOS, in encrypted app storage (DataStore) on Android. They leave your device
+    system Keychain on iOS, in encrypted, Android-Keystore-backed app storage (EncryptedSharedPreferences)
+    on Android. They leave your device
     only to send requests to that specific controller. We never receive them.
   </p>
   <h3>Readings and settings</h3>
@@ -59,7 +60,8 @@ import { site } from '../../data/site';
     To manage entitlements (“Pro” active/inactive) we use <strong>RevenueCat</strong> (RevenueCat, Inc.,
     USA). On our behalf, RevenueCat processes a pseudonymous app user identifier and store
     purchase/receipt information to verify subscription status. The legal basis is Art.&nbsp;6(1)(b) GDPR
-    (performance of a contract).
+    (performance of a contract). A data processing agreement under Art.&nbsp;28 GDPR is in place with
+    RevenueCat.
   </p>
 
   <h2>5. This website</h2>
@@ -87,8 +89,10 @@ import { site } from '../../data/site';
   <h2>7. Recipients and transfers to third countries</h2>
   <p>
     Depending on use, data may be transferred to Apple, Google, RevenueCat and GitHub/Microsoft. These
-    providers may process data in the USA. Where required, any transfer relies on appropriate safeguards
-    (e.g. EU Standard Contractual Clauses or the EU-US Data Privacy Framework).
+    providers may process data in the USA. The transfer to RevenueCat is covered by a data processing
+    agreement incorporating the EU Standard Contractual Clauses (SCCs); transfers to Apple, Google and
+    GitHub/Microsoft rely on the SCCs and/or those providers' certification under the EU-US Data Privacy
+    Framework.
   </p>
 
   <h2>8. Retention</h2>
