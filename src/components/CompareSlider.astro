@@ -37,7 +37,7 @@ const isDefault = (c: string, s: string, t: string) =>
   c === 'proconip' && s === 'dashboard' && t === 'light';
 // Dark variants reuse the same name with a `_dark` suffix before `.png`.
 const srcFor = (platform: string, c: string, s: string, t: string) =>
-  `/screenshots/screenshot_${platform}_${c}_${s}${t === 'dark' ? '_dark' : ''}.png`;
+  `/screenshots/screenshot_${platform}_${c}_${s}${t === 'dark' ? '_dark' : ''}.webp`;
 
 const layers = [
   { platform: 'android', cls: 'compare__layer--android', name: copy.platforms.android },

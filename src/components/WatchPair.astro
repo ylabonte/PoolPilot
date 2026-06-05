@@ -35,8 +35,8 @@ const platforms = [
           {views.map((v) => (
             <img
               class={`watch__img${v === 'complications' ? ' is-active' : ''}`}
-              src={v === 'complications' ? `/screenshots/screenshot_${p.id}_${v}.png` : undefined}
-              data-src={`/screenshots/screenshot_${p.id}_${v}.png`}
+              src={v === 'complications' ? `/screenshots/screenshot_${p.id}_${v}.webp` : undefined}
+              data-src={`/screenshots/screenshot_${p.id}_${v}.webp`}
               alt={copy.altWatch(p.name, copy.views[v])}
               data-platform={p.id}
               data-view={v}
