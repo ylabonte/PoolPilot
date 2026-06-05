@@ -22,3 +22,9 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# lighthouse ci output
+.lighthouseci/
+
+# claude code artifacts
+.claude/
