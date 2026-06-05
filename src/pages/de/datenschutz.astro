@@ -9,7 +9,7 @@ import { site } from '../../data/site';
   pageKey="privacy"
   title="Datenschutzerklärung"
   description="Wie PoolPilot mit Daten umgeht: lokale Speicherung auf dem Gerät, keine Werbung, kein Tracking. Diese Erklärung beschreibt App, Käufe und Website."
-  updated="2026-06-04"
+  updated="2026-06-05"
   lead="Kurz gesagt: PoolPilot sammelt keine personenbezogenen Daten auf eigenen Servern. Es gibt keine Werbung und kein Tracking – wir werten deine Daten schlicht nicht aus."
 >
   <h2>1. Verantwortlicher</h2>
@@ -37,8 +37,9 @@ import { site } from '../../data/site';
   <p>
     Damit die App mit deinem Controller sprechen kann, gibst du dessen Adresse (Host/IP) sowie
     Benutzername und Passwort ein. Diese <strong>Zugangsdaten werden ausschließlich lokal auf deinem
-    Gerät gespeichert</strong> – auf iOS in der System-Keychain, auf Android im verschlüsselten
-    App-Speicher (DataStore). Sie verlassen dein Gerät nur, um Anfragen an genau diesen Controller
+    Gerät gespeichert</strong> – auf iOS in der System-Keychain, auf Android im verschlüsselten,
+    Android-Keystore-gestützten App-Speicher (EncryptedSharedPreferences). Sie verlassen dein Gerät nur,
+    um Anfragen an genau diesen Controller
     zu senden. Wir erhalten diese Daten zu keinem Zeitpunkt.
   </p>
   <h3>Mess- und Einstellungsdaten</h3>
@@ -65,7 +66,8 @@ import { site } from '../../data/site';
     <strong>RevenueCat</strong> (RevenueCat, Inc., USA) ein. RevenueCat verarbeitet in unserem
     Auftrag eine pseudonyme App-Nutzer-Kennung sowie Kauf-/Beleginformationen des Stores, um den
     Abo-Status zu prüfen. Rechtsgrundlage ist Art.&nbsp;6&nbsp;Abs.&nbsp;1&nbsp;lit.&nbsp;b DSGVO
-    (Vertragserfüllung).
+    (Vertragserfüllung). Mit RevenueCat besteht ein Auftragsverarbeitungsvertrag (AVV) nach
+    Art.&nbsp;28 DSGVO.
   </p>
 
   <h2>5. Diese Website</h2>
@@ -96,8 +98,10 @@ import { site } from '../../data/site';
   <h2>7. Empfänger und Drittlandübermittlung</h2>
   <p>
     Je nach Nutzung werden Daten an Apple, Google, RevenueCat sowie GitHub/Microsoft übermittelt. Diese
-    Anbieter können Daten auch in den USA verarbeiten. Soweit erforderlich, stützt sich eine Übermittlung
-    auf geeignete Garantien (z.&nbsp;B. EU-Standardvertragsklauseln bzw. das EU-US Data Privacy Framework).
+    Anbieter können Daten auch in den USA verarbeiten. Die Übermittlung an RevenueCat ist durch einen
+    Auftragsverarbeitungsvertrag mit Einbeziehung der EU-Standardvertragsklauseln (SCC) abgesichert;
+    Übermittlungen an Apple, Google und GitHub/Microsoft stützen sich auf die SCC und/oder die
+    Zertifizierung dieser Anbieter unter dem EU-US Data Privacy Framework.
   </p>
 
   <h2>8. Speicherdauer</h2>
