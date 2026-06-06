@@ -35,7 +35,7 @@ const themes = ['light', 'dark'] as const;
 // The parent flips to dark on load if the visitor's OS prefers it.
 const isDefault = (c: string, s: string, t: string) =>
   c === 'proconip' && s === 'dashboard' && t === 'light';
-// Dark variants reuse the same name with a `_dark` suffix before `.png`.
+// Dark variants reuse the same name with a `_dark` suffix before `.webp`.
 const srcFor = (platform: string, c: string, s: string, t: string) =>
   `/screenshots/screenshot_${platform}_${c}_${s}${t === 'dark' ? '_dark' : ''}.webp`;
 
