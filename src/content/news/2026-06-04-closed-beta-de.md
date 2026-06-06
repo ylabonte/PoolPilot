@@ -11,10 +11,9 @@ Die PoolPilot Beta ist da – kostenlos und ohne Konto. **iOS und Android sind b
 
 Öffne TestFlight und installiere PoolPilot für iPhone, iPad und Apple Watch: [über TestFlight beitreten](https://testflight.apple.com/join/JdZ4TvgS).
 
-**Auf Android mitmachen (3 Schritte)**
+**Auf Android mitmachen (2 Schritte)**
 
-1. **Der Google-Gruppe beitreten** – [groups.google.com/g/poolpilot-beta](https://groups.google.com/g/poolpilot-beta). Das schaltet dich für den geschlossenen Test frei.
-2. **Als Tester anmelden** – [Test-Link öffnen](https://play.google.com/apps/testing/cloud.labonte.poolpilot) und Teilnahme bestätigen.
-3. **Aus Google Play installieren** – [bei Google Play öffnen](https://play.google.com/store/apps/details?id=cloud.labonte.poolpilot).
+1. **Der Google-Gruppe beitreten** – [groups.google.com/g/poolpilot-beta](https://groups.google.com/g/poolpilot-beta). Das schaltet dich für den Test frei.
+2. **Anmelden und installieren** – [Test-Seite öffnen](https://play.google.com/apps/testing/cloud.labonte.poolpilot), auf „Tester werden“ und dann auf „Bei Google Play herunterladen“ tippen.
 
 Die Beta ist noch nicht in den öffentlichen Stores – rechne mit ein paar Ecken und Kanten und melde bitte alles, was seltsam wirkt.

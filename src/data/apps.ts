@@ -48,8 +48,11 @@ export const app = {
  */
 export const beta = {
   googleGroup: 'https://groups.google.com/g/poolpilot-beta',
+  // The opt-in page is the install entry too: after "Become a tester" Google
+  // shows the working "Download it on Google Play" link there. We intentionally
+  // don't link a standalone store URL — the bare details?id=… 404s for a closed
+  // test, and the working link carries an `&ah=…` token of unknown shareability.
   androidOptIn: 'https://play.google.com/apps/testing/cloud.labonte.poolpilot',
-  androidPlay: 'https://play.google.com/store/apps/details?id=cloud.labonte.poolpilot',
   iosTestflight: 'https://testflight.apple.com/join/JdZ4TvgS',
 } as const;
 
