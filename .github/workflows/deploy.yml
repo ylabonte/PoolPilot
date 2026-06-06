@@ -7,8 +7,8 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# Least-privilege default: every job (notably the PR-only gate run) gets read-only.
-# The elevated Pages-deploy scopes live on the deploy job, which runs on push only.
+# Least-privilege default: every job is read-only. The Pages-deploy write scopes
+# live solely on the deploy job (push-only), so PR gate runs never get them.
 permissions:
   contents: read
 
@@ -36,19 +36,21 @@ jobs:
       - run: pnpm run build
       # Lighthouse CI: a11y / best-practices / SEO >= 0.95, performance >= 0.80.
       - run: pnpm run lighthouse
-      # The Pages artifact is only needed for the real deploy (push to main), not on PRs.
-      - uses: actions/configure-pages@v6
-        if: github.event_name != 'pull_request'
-      - uses: actions/upload-pages-artifact@v5
+      # Hand the built site to the deploy job (push only). A plain artifact needs no
+      # Pages token scopes, so the build job stays read-only.
+      - uses: actions/upload-artifact@v4
         if: github.event_name != 'pull_request'
         with:
+          name: site-dist
           path: ./dist
+          retention-days: 1
 
   deploy:
     needs: build
     # Deploy only on a real push to main — PRs run the gates above but never publish.
     if: github.event_name != 'pull_request'
-    # Elevated Pages scopes scoped to this job alone (PR runs never see them).
+    # Pages write scopes scoped to this job alone (configure-pages / upload-pages-artifact
+    # / deploy-pages all live here, so they have the scopes they need).
     permissions:
       contents: read
       pages: write
@@ -58,5 +60,13 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: site-dist
+          path: ./dist
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: ./dist
       - id: deployment
         uses: actions/deploy-pages@v5
