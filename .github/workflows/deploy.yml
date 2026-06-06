@@ -7,11 +7,10 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# Least-privilege token for Pages deploys.
+# Least-privilege default: every job (notably the PR-only gate run) gets read-only.
+# The elevated Pages-deploy scopes live on the deploy job, which runs on push only.
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 # One Pages deploy per ref at a time; PR builds get their own group so they never
 # block a main deploy. Let an in-flight main deploy finish.
@@ -49,6 +48,11 @@ jobs:
     needs: build
     # Deploy only on a real push to main — PRs run the gates above but never publish.
     if: github.event_name != 'pull_request'
+    # Elevated Pages scopes scoped to this job alone (PR runs never see them).
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     runs-on: ubuntu-latest
     environment:
       name: github-pages
