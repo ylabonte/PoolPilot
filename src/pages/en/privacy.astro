@@ -9,7 +9,7 @@ import { site } from '../../data/site';
   pageKey="privacy"
   title="Privacy Policy"
   description="How PoolPilot handles data: stored locally on your device, no ads, no tracking. This policy covers the app, purchases and the website."
-  updated="2026-06-05"
+  updated="2026-06-08"
   lead="In short: PoolPilot collects no personal data on our own servers. There are no ads and no tracking — we simply don't exploit your data."
 >
   <h2>1. Controller (data controller)</h2>
@@ -27,7 +27,8 @@ import { site } from '../../data/site';
   <p>
     PoolPilot is a native app that talks directly to your pool controller (ProCon.IP or Violet) on
     your own network. There is no account with us, no cloud, no advertising and no analytics/tracking
-    services. We process as little data as possible.
+    services; optional crash reporting (off by default) is described in section&nbsp;3. We process as
+    little data as possible.
   </p>
 
   <h2>3. Data inside the app</h2>
@@ -44,10 +45,20 @@ import { site } from '../../data/site';
     Readings and status values are fetched from your controller and shown on the device, or cached for
     the widgets and the watch view. This data likewise stays on the device / within the app's storage.
   </p>
-  <h3>No telemetry</h3>
+  <h3>Crash reporting (optional, off by default)</h3>
   <p>
-    The app contains no analytics, tracking or advertising SDKs. Optional crash reporting is currently
-    disabled. Should it be enabled in future, this policy will be updated beforehand.
+    The app contains no analytics, tracking or advertising SDKs. It does include
+    <strong>optional crash reporting</strong>, which is <strong>off by default</strong> — it runs only
+    after you switch it on under Settings&nbsp;→&nbsp;Crash&nbsp;reporting, and you can switch it off
+    again at any time. When enabled, technical diagnostics about a crash or error (e.g. the type of
+    error, a stack trace, the app version, the device model and OS version) are sent to
+    <strong>Sentry</strong> (Functional Software, Inc.), which processes them on our behalf to help us
+    find and fix bugs. Reports are <strong>scrubbed of credentials</strong> before they leave the device
+    — your controller password and the <code>Authorization</code> header are never transmitted — and
+    contain no pool readings. The legal basis is your consent (Art.&nbsp;6(1)(a) GDPR); withdrawing it
+    (switching the setting off) stops any further reporting. A data processing agreement under
+    Art.&nbsp;28 GDPR is in place with Sentry, and the data is stored in the EU (see sections&nbsp;7
+    and&nbsp;8).
   </p>
 
   <h2>4. Purchases and subscriptions</h2>
@@ -88,18 +99,21 @@ import { site } from '../../data/site';
 
   <h2>7. Recipients and transfers to third countries</h2>
   <p>
-    Depending on use, data may be transferred to Apple, Google, RevenueCat and GitHub/Microsoft. These
-    providers may process data in the USA. The transfer to RevenueCat is covered by a data processing
-    agreement incorporating the EU Standard Contractual Clauses (SCCs); transfers to Apple, Google and
-    GitHub/Microsoft rely on the SCCs and/or those providers' certification under the EU-US Data Privacy
-    Framework.
+    Depending on use, data may be transferred to Apple, Google, RevenueCat, Sentry and GitHub/Microsoft.
+    Apart from Sentry, these providers may process data in the USA. The transfer to RevenueCat is covered
+    by a data processing agreement incorporating the EU Standard Contractual Clauses (SCCs); transfers to
+    Apple, Google and GitHub/Microsoft rely on the SCCs and/or those providers' certification under the
+    EU-US Data Privacy Framework. Crash reports — only if you enable crash reporting — are stored by
+    <strong>Sentry</strong> in the EU (EU data residency), so no third-country transfer takes place; a
+    data processing agreement under Art.&nbsp;28 GDPR including the SCCs is in place as a safeguard.
   </p>
 
   <h2>8. Retention</h2>
   <p>
-    App and connection data stay on your device until you delete them or uninstall the app. Hosting logs
-    are kept by the host only for as long as needed for security. Support correspondence is kept as long
-    as needed to handle it.
+    App and connection data stay on your device until you delete them or uninstall the app. Crash reports
+    — only if you enable crash reporting — are retained by Sentry for a limited period (by default around
+    90&nbsp;days) and then deleted automatically. Hosting logs are kept by the host only for as long as
+    needed for security. Support correspondence is kept as long as needed to handle it.
   </p>
 
   <h2 id="deletion">9. Requesting data deletion</h2>
