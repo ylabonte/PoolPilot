@@ -9,7 +9,7 @@ import { site } from '../../data/site';
   pageKey="privacy"
   title="Datenschutzerklärung"
   description="Wie PoolPilot mit Daten umgeht: lokale Speicherung auf dem Gerät, keine Werbung, kein Tracking. Diese Erklärung beschreibt App, Käufe und Website."
-  updated="2026-06-05"
+  updated="2026-06-08"
   lead="Kurz gesagt: PoolPilot sammelt keine personenbezogenen Daten auf eigenen Servern. Es gibt keine Werbung und kein Tracking – wir werten deine Daten schlicht nicht aus."
 >
   <h2>1. Verantwortlicher</h2>
@@ -29,7 +29,8 @@ import { site } from '../../data/site';
   <p>
     PoolPilot ist eine native App, die direkt mit deiner Poolsteuerung (ProCon.IP oder Violet)
     in deinem eigenen Netzwerk kommuniziert. Es gibt kein Benutzerkonto bei uns, keine Cloud, keine
-    Werbung und keine Analyse-/Tracking-Dienste. Wir verarbeiten so wenige Daten wie möglich.
+    Werbung und keine Analyse-/Tracking-Dienste; eine optionale Fehlerdiagnose (standardmäßig
+    deaktiviert) ist in Abschnitt&nbsp;3 beschrieben. Wir verarbeiten so wenige Daten wie möglich.
   </p>
 
   <h2>3. Daten in der App</h2>
@@ -48,11 +49,22 @@ import { site } from '../../data/site';
     Widgets und die Watch-Ansicht zwischengespeichert. Auch diese Daten verbleiben auf dem Gerät
     bzw. im Datenbereich der App.
   </p>
-  <h3>Keine Telemetrie</h3>
+  <h3>Fehlerdiagnose (optional, standardmäßig aus)</h3>
   <p>
-    Die App enthält keine Analyse-, Tracking- oder Werbe-SDKs. Eine optionale Fehlerdiagnose
-    (Crash-Reporting) ist derzeit deaktiviert. Sollte sie künftig aktiviert werden, wird diese
-    Erklärung vorab entsprechend angepasst.
+    Die App enthält keine Analyse-, Tracking- oder Werbe-SDKs. Sie bietet jedoch eine
+    <strong>optionale Fehlerdiagnose (Crash-Reporting)</strong>, die <strong>standardmäßig
+    deaktiviert</strong> ist – sie läuft nur, wenn du sie unter
+    Einstellungen&nbsp;→&nbsp;Absturzberichte einschaltest, und du kannst sie jederzeit wieder
+    ausschalten. Ist sie aktiv, werden technische Diagnosedaten zu einem Absturz oder Fehler (z.&nbsp;B.
+    Fehlertyp, Stacktrace, App-Version, Gerätemodell und Betriebssystemversion) an
+    <strong>Sentry</strong> (Functional Software, Inc.) gesendet, das diese in unserem Auftrag
+    verarbeitet, damit wir Fehler finden und beheben können. Die Berichte werden vor dem Verlassen des
+    Geräts <strong>von Zugangsdaten bereinigt</strong> – dein Steuerungspasswort und der
+    <code>Authorization</code>-Header werden nie übertragen – und enthalten keine Pool-Messwerte.
+    Rechtsgrundlage ist deine Einwilligung (Art.&nbsp;6&nbsp;Abs.&nbsp;1&nbsp;lit.&nbsp;a DSGVO); ein
+    Widerruf (Ausschalten der Funktion) beendet jede weitere Übermittlung. Mit Sentry besteht ein
+    Auftragsverarbeitungsvertrag (AVV) nach Art.&nbsp;28 DSGVO; die Daten werden in der EU gespeichert
+    (siehe Abschnitte&nbsp;7 und&nbsp;8).
   </p>
 
   <h2>4. Käufe und Abonnements</h2>
@@ -97,18 +109,24 @@ import { site } from '../../data/site';
 
   <h2>7. Empfänger und Drittlandübermittlung</h2>
   <p>
-    Je nach Nutzung werden Daten an Apple, Google, RevenueCat sowie GitHub/Microsoft übermittelt. Diese
-    Anbieter können Daten auch in den USA verarbeiten. Die Übermittlung an RevenueCat ist durch einen
-    Auftragsverarbeitungsvertrag mit Einbeziehung der EU-Standardvertragsklauseln (SCC) abgesichert;
-    Übermittlungen an Apple, Google und GitHub/Microsoft stützen sich auf die SCC und/oder die
-    Zertifizierung dieser Anbieter unter dem EU-US Data Privacy Framework.
+    Je nach Nutzung werden Daten an Apple, Google, RevenueCat, Sentry sowie GitHub/Microsoft übermittelt.
+    Mit Ausnahme von Sentry können diese Anbieter Daten auch in den USA verarbeiten. Die Übermittlung an
+    RevenueCat ist durch einen Auftragsverarbeitungsvertrag mit Einbeziehung der
+    EU-Standardvertragsklauseln (SCC) abgesichert; Übermittlungen an Apple, Google und GitHub/Microsoft
+    stützen sich auf die SCC und/oder die Zertifizierung dieser Anbieter unter dem EU-US Data Privacy
+    Framework. Absturzberichte werden – sofern du die Fehlerdiagnose aktivierst – von
+    <strong>Sentry</strong> in der EU gespeichert (EU-Datenresidenz), wodurch die Daten in der EU
+    verbleiben; sollte es dennoch zu einer Übermittlung in ein Drittland kommen, ist diese durch einen
+    Auftragsverarbeitungsvertrag nach Art.&nbsp;28 DSGVO einschließlich der SCC abgesichert.
   </p>
 
   <h2>8. Speicherdauer</h2>
   <p>
     App- und Verbindungsdaten verbleiben auf deinem Gerät, bis du sie löschst oder die App
-    deinstallierst. Hosting-Logs werden vom Hoster nur für die zur Sicherheit erforderliche Dauer
-    vorgehalten. Support-Kommunikation bewahren wir auf, solange es zur Bearbeitung nötig ist.
+    deinstallierst. Absturzberichte werden – nur wenn du die Fehlerdiagnose aktivierst – von Sentry für
+    einen begrenzten Zeitraum (standardmäßig etwa 90&nbsp;Tage) vorgehalten und danach automatisch
+    gelöscht. Hosting-Logs werden vom Hoster nur für die zur Sicherheit erforderliche Dauer vorgehalten.
+    Support-Kommunikation bewahren wir auf, solange es zur Bearbeitung nötig ist.
   </p>
 
   <h2 id="loeschung">9. Datenlöschung anfordern</h2>
