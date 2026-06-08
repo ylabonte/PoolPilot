@@ -48,6 +48,18 @@ const nav: { href: string; label: string; key?: RouteKey }[] = [
     position: sticky;
     top: 0;
     z-index: 50;
+  }
+  /* The translucent blur lives on a pseudo-element, not on .site-header itself:
+     backdrop-filter turns its element into a "backdrop root", and a backdrop
+     root clips any descendant's backdrop-filter to its own subtree. With the
+     blur on .site-header directly, the mobile nav dropdown (a descendant) could
+     only blur header-internal content — i.e. nothing — so its glass never
+     rendered. Keeping .site-header filter-free lets the dropdown blur the page. */
+  .site-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1; /* behind the header content, still above page content */
     background: color-mix(in oklch, var(--bg) 72%, transparent);
     backdrop-filter: blur(14px) saturate(1.3);
     -webkit-backdrop-filter: blur(14px) saturate(1.3);
