@@ -59,6 +59,10 @@ const platforms = [
 <style>
   .watchpair {
     display: flex; flex-wrap: wrap; justify-content: center;
+    /* Bottom-align: the rect watch is taller (5/6) than the round one (1/1); without
+       this, the default `align-items: stretch` stretches the round device to match
+       it and the circle renders as a vertical ellipse. */
+    align-items: flex-end;
     gap: clamp(1.2rem, 5vw, 3rem); margin-top: var(--sp-4);
   }
   .watch { margin: 0; display: grid; justify-items: center; gap: 0.7rem; }
