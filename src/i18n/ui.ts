@@ -16,12 +16,12 @@ export const defaultLang: Lang = 'de';
 /** Page identity → per-locale URL. Slugs are localized where it reads natural. */
 export const routes = {
   home: { de: '/de/', en: '/en/' },
-  support: { de: '/de/support', en: '/en/support' },
-  news: { de: '/de/news', en: '/en/news' },
-  privacy: { de: '/de/datenschutz', en: '/en/privacy' },
-  terms: { de: '/de/nutzungsbedingungen', en: '/en/terms' },
-  imprint: { de: '/de/impressum', en: '/en/imprint' },
-  about: { de: '/de/ueber', en: '/en/about' },
+  support: { de: '/de/support/', en: '/en/support/' },
+  news: { de: '/de/news/', en: '/en/news/' },
+  privacy: { de: '/de/datenschutz/', en: '/en/privacy/' },
+  terms: { de: '/de/nutzungsbedingungen/', en: '/en/terms/' },
+  imprint: { de: '/de/impressum/', en: '/en/imprint/' },
+  about: { de: '/de/ueber/', en: '/en/about/' },
 } as const;
 export type RouteKey = keyof typeof routes;
 

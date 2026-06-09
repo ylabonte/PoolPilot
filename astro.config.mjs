@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://poolpilot.eu',
-  trailingSlash: 'ignore',
+  trailingSlash: 'always',
   i18n: {
     locales: ['de', 'en'],
     defaultLocale: 'de',
