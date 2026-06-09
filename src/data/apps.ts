@@ -42,6 +42,27 @@ export const app = {
 };
 
 /**
+ * Home-page SEO copy, centralized so the root splash and both locale home pages
+ * stay in sync. `title` is bare — BaseLayout prepends "PoolPilot — ".
+ * `description` is the keyword-rich line Google shows in its snippet; `social`
+ * is the short, punchy line used only on the OG/Twitter card.
+ */
+export const homeMeta = {
+  title: {
+    de: 'deine native App für ProCon.IP und Violet',
+    en: 'your native app for ProCon.IP and Violet',
+  } as Record<Lang, string>,
+  description: {
+    de: 'PoolPilot — eine native iOS- und Android-App für die Poolsteuerungen ProCon.IP und Violet. Keine Konten, keine Werbung, kein Tracking.',
+    en: 'PoolPilot — one native iOS and Android app for the ProCon.IP and Violet pool controllers. No accounts, no ads, no tracking.',
+  } as Record<Lang, string>,
+  social: {
+    de: 'Keine Konten, keine Werbung, kein Tracking.',
+    en: 'No accounts, no ads, no tracking.',
+  } as Record<Lang, string>,
+};
+
+/**
  * Beta distribution links. iOS is live via TestFlight; Android via Google
  * Play closed testing (testers join the Google Group, opt in on the web, then
  * install). Emptying `iosTestflight` flips the iOS card back to "coming soon".

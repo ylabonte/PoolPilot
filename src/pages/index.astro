@@ -1,8 +1,12 @@
 ---
 // Language splash at "/". Suggests a locale from navigator.language and
 // forwards once; without JS it shows links and meta-refreshes to /de/ (default).
+// Link scrapers don't run that JS, so the social card baked in here is static —
+// German, matching the default locale / x-default and the /de/ canonical.
 import { site } from '../data/site';
-const title = `${site.name} — native app for your pool controller`;
+import { app, homeMeta } from '../data/apps';
+const title = `${site.name} — ${homeMeta.title.de}`;
+const ogImage = new URL(app.icon, site.url).href;
 ---
 
 <!doctype html>
@@ -11,7 +15,7 @@ const title = `${site.name} — native app for your pool controller`;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
-    <meta name="description" content="PoolPilot — one native iOS & Android app for ProCon.IP and Violet pool controllers." />
+    <meta name="description" content={homeMeta.description.de} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -20,6 +24,19 @@ const title = `${site.name} — native app for your pool controller`;
     <link rel="alternate" hreflang="en" href={site.url + '/en/'} />
     <link rel="alternate" hreflang="x-default" href={site.url + '/de/'} />
     <meta name="theme-color" content="#0277BD" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={homeMeta.social.de} />
+    <meta property="og:url" content={site.url + '/de/'} />
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={homeMeta.social.de} />
+    <meta name="twitter:image" content={ogImage} />
+
     <noscript><meta http-equiv="refresh" content="0; url=/de/" /></noscript>
     <script is:inline>
       (function () {

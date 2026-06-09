@@ -1,13 +1,15 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import LandingBody from '../../components/LandingBody.astro';
+import { homeMeta } from '../../data/apps';
 ---
 
 <BaseLayout
   lang="de"
   pageKey="home"
-  title="Native App für deine Poolsteuerung"
-  description="PoolPilot — eine native iOS- und Android-App für die Poolsteuerungen ProCon.IP und Violet. Keine Konten, keine Werbung, kein Tracking."
+  title={homeMeta.title.de}
+  description={homeMeta.description.de}
+  ogDescription={homeMeta.social.de}
 >
   <LandingBody lang="de" />
 </BaseLayout>
