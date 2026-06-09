@@ -78,6 +78,10 @@ const ph = copy.placeholder;
       </div>
     ))}
 
+    <!-- Dummy camera cutout: the reproducible screenshots ship without the
+         device's own notch/punch-hole, so the frame draws one. -->
+    <span class="compare__notch" aria-hidden="true"></span>
+
     <!-- Platform name tags (text, not colour-alone) -->
     <span class="compare__tag compare__tag--ios" aria-hidden="true">{copy.platforms.ios}</span>
     <span class="compare__tag compare__tag--android" aria-hidden="true">{copy.platforms.android}</span>
@@ -107,7 +111,7 @@ const ph = copy.placeholder;
     padding: 0.6rem;
     /* Concentric with the screen: screen radius + the 0.6rem frame padding, so
        the glass frame stays an even width around the rounded corners. */
-    border-radius: 3.5rem 3.5rem 2.2rem 2.2rem;
+    border-radius: 2.2rem;
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
     box-shadow: var(--glass-shadow);
@@ -115,12 +119,14 @@ const ph = copy.placeholder;
   }
   .compare__screen {
     position: relative; overflow: hidden;
-    /* Big enough top radius to swallow the screenshots' baked-in black corner
-       mask (the Android shots include the rounded display edge in black; this
-       also ~matches the iPhone's display radius). Bottom is cropped off, so it
-       stays tighter. No separate notch — the screenshots include their own. */
-    border-radius: 2.9rem 2.9rem 1.6rem 1.6rem;
-    aspect-ratio: 9 / 19.5;
+    /* The reproducible screenshots are plain rectangles (no baked-in corner
+       mask, no cutout), so the screen radius is ours alone and stays symmetric;
+       the cutout is the .compare__notch overlay. */
+    border-radius: 1.6rem;
+    /* Match the Android shots (800×1796) exactly so their bottom nav labels
+       survive the cover-crop; the slightly wider iOS shots (800×1739) lose
+       ~1.5% per side instead, which their status-bar margins absorb. */
+    aspect-ratio: 800 / 1796;
     /* Near-black so the corner the clip exposes reads as a phone's black screen
        edge in every case (light+dark, both devices) — never a coloured sliver.
        Only ever visible in those corner triangles; a real image or the opaque
@@ -150,6 +156,16 @@ const ph = copy.placeholder;
       var(--bg);
   }
   .compare__ph span { font-size: 0.78rem; font-weight: 700; color: var(--ink-soft); }
+
+  .compare__notch {
+    position: absolute; z-index: 2;
+    top: 1.2%; left: 50%; transform: translateX(-50%);
+    width: 23%; aspect-ratio: 9 / 2;
+    border-radius: 999px;
+    /* Same near-black as the screen background, so it reads as hardware. */
+    background: #04080c;
+    pointer-events: none;
+  }
 
   .compare__tag {
     position: absolute; top: 0.7rem; z-index: 3;
