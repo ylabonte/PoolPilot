@@ -120,3 +120,7 @@ is not a workflow and is unaffected.
   adding it here — ask first with the exact wording; keep edits surgical and on-tone.
 - **Verify before claiming done.** `npm run build` must pass; spot-check both locales and the language
   toggle before saying it works.
+- **Stop dev servers you start.** A `pnpm dev`/`pnpm preview` you spin up for verification is a
+  long-lived background process — kill it once you're done. Strays squat the port, so the next
+  `pnpm dev` silently falls back to 4322/4323… and they accumulate across sessions. Only stop
+  servers *you* started; leave a server the user is running alone.
