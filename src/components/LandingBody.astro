@@ -134,14 +134,24 @@ const tiles = [
               </div>
             ))}
           </div>
-          <svg class="mock__wave" viewBox="0 0 240 48" preserveAspectRatio="none">
-            <g class="mock__wave-back">
-              <path d="M0 30 C 30 39 90 39 120 30 C 150 21 210 21 240 30 C 270 39 330 39 360 30 C 390 21 450 21 480 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-            </g>
-            <g class="mock__wave-front">
-              <path d="M0 26 C 30 12 90 12 120 26 C 150 40 210 40 240 26 C 270 12 330 12 360 26 C 390 40 450 40 480 26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
-            </g>
-          </svg>
+          <div class="mock__wave" aria-hidden="true">
+            <div class="mock__wave-row mock__wave-row--back">
+              <svg class="mock__wave-svg" viewBox="0 0 240 48" preserveAspectRatio="none">
+                <path d="M0 30 C 30 39 90 39 120 30 C 150 21 210 21 240 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+              <svg class="mock__wave-svg" viewBox="0 0 240 48" preserveAspectRatio="none">
+                <path d="M0 30 C 30 39 90 39 120 30 C 150 21 210 21 240 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </div>
+            <div class="mock__wave-row mock__wave-row--front">
+              <svg class="mock__wave-svg" viewBox="0 0 240 48" preserveAspectRatio="none">
+                <path d="M0 26 C 30 12 90 12 120 26 C 150 40 210 40 240 26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+              </svg>
+              <svg class="mock__wave-svg" viewBox="0 0 240 48" preserveAspectRatio="none">
+                <path d="M0 26 C 30 12 90 12 120 26 C 150 40 210 40 240 26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+              </svg>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -442,12 +452,35 @@ const tiles = [
   .mock__tile--ok .mock__label { color: color-mix(in oklch, var(--c-ok) 78%, var(--ink)); }
   .mock__tile--info .mock__label { color: color-mix(in oklch, var(--c-teal) 78%, var(--ink)); }
 
-  /* Flowing wave: two periodic paths drifting at different speeds for depth.
-     Each path is two identical 240u periods → translateX(-240px) loops seamlessly. */
-  .mock__wave { display: block; width: 100%; height: 2.6rem; margin-top: 1rem; overflow: hidden; animation: wavebob 5s ease-in-out infinite; }
-  .mock__wave-front { color: var(--c-primary); animation: waveflow 6s linear infinite; }
-  .mock__wave-back { color: var(--c-teal); opacity: 0.4; animation: waveflow 9s linear infinite; }
-  @keyframes waveflow { to { transform: translateX(-240px); } }
+  /* Flowing wave: two stacked HTML tracks scrolled by translateX(-50%).
+     Each track holds TWO identical one-period SVG copies (track width 200%,
+     each copy 50% = one period). Translating a track by -50% of its OWN width
+     moves it exactly one period → copy #2 lands on copy #1's old spot →
+     seamless loop on every engine. We animate plain composited <div>s with a
+     resolution-independent percentage — no SVG-inner-transform / transform-box
+     dependency — so it no longer breaks on Android Chrome (was static) or
+     Android Firefox (was running far too fast / ghosted). */
+  .mock__wave {
+    position: relative; display: block;
+    width: 100%; height: 2.6rem; margin-top: 1rem;
+    overflow: hidden;
+    animation: wavebob 5s ease-in-out infinite;
+  }
+  .mock__wave-row {
+    position: absolute; inset: 0;
+    display: flex; flex-wrap: nowrap;
+    width: 200%;                 /* two side-by-side copies */
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+  .mock__wave-svg {
+    display: block;
+    flex: 0 0 50%; width: 50%; height: 100%;  /* each copy = one period = container width */
+  }
+  .mock__wave-row--front { color: var(--c-primary); animation: waveflow 6s linear infinite; }
+  .mock__wave-row--back { color: var(--c-teal); opacity: 0.4; animation: waveflow 9s linear infinite; }
+  /* -50% of the row's OWN width == one copy width == one period. */
+  @keyframes waveflow { to { transform: translate3d(-50%, 0, 0); } }
   @keyframes wavebob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(2px); } }
 
   /* Section heads + grids */
