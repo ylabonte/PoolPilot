@@ -10,7 +10,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working in this
 The **public** marketing + support + legal website for **PoolPilot** — **one** native iOS & Android
 app for the **ProCon.IP** and **Violet** pool controllers (it auto-detects the controller type per
 connection profile, since the two expose different APIs). It is a static **Astro** site, bilingual
-(German + English), served by **GitHub Pages** at `https://poolpilot.labonte.cloud`.
+(German + English), served by **GitHub Pages** at `https://poolpilot.eu`.
 
 The repo is deliberately public for two reasons: GitHub Pages builds on free Actions minutes, and
 the repo's **Issues** double as the support channel. The **app source lives in a separate private
