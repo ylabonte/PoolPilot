@@ -123,9 +123,9 @@ const ph = copy.placeholder;
        mask, no cutout), so the screen radius is ours alone and stays symmetric;
        the cutout is the .compare__notch overlay. */
     border-radius: 1.6rem;
-    /* Match the Android shots (800x1739) so their bottom nav labels survive the
-       cover-crop; the 6.9" iOS shots (800x1738) are within 1px, so they barely
-       crop at all. */
+    /* Match the Android phone shots (800x1739) so their bottom nav labels
+       survive the cover-crop. The iOS shots match within 1px (800x1739 today;
+       800x1738 once captured on a 6.9" device), so they crop imperceptibly. */
     aspect-ratio: 800 / 1739;
     /* Near-black so the corner the clip exposes reads as a phone's black screen
        edge in every case (light+dark, both devices) — never a coloured sliver.
