@@ -1,13 +1,17 @@
 ---
 /**
- * iOS ↔ Android phone comparison slider. One phone bezel holds two stacked
- * layers: Android (bottom, full) and iOS (top, clipped by --pos). A real
- * <input type=range> (visually hidden, full-frame) drives --pos — giving pointer
- * drag + keyboard (arrows/Home/End) + screen-reader semantics for free.
+ * iOS ↔ Android comparison slider, phone or tablet. One bezel holds two stacked
+ * layers: an "Android family" (bottom, full) and an "iOS family" (top, clipped by
+ * --pos). Each layer resolves to a per-device platform — phone → android/ios,
+ * tablet → androidtablet/ipad. A real <input type=range> (visually hidden,
+ * full-frame) drives --pos — giving pointer drag + keyboard (arrows/Home/End) +
+ * screen-reader semantics for free.
  *
- * All 24 images (2 controllers × 3 screens × 2 themes × 2 platforms) are rendered;
- * the parent ScreenshotShowcase script toggles the active controller×screen×theme
- * combo via `.is-active` and mirrors the range value into --pos + aria-valuetext.
+ * All 48 images (2 devices × 2 controllers × 3 screens × 2 themes) are rendered;
+ * the parent ScreenshotShowcase script toggles the active device×controller×screen
+ * ×theme combo via `.is-active` and mirrors the range value into --pos +
+ * aria-valuetext. The bezel itself switches portrait↔landscape via the parent's
+ * data-device attribute (device-reactive CSS lives in ScreenshotShowcase).
  *
  * Missing files: each <img> gets `.is-broken` (parent onerror delegation), which
  * hides it so the layer's placeholder shows through — no broken-image, no reflow.
@@ -17,7 +21,7 @@ import type { Lang } from '../i18n/ui';
 interface SliderCopy {
   controllers: { proconip: string; violet: string };
   screens: { dashboard: string; measurements: string; switches: string };
-  platforms: { ios: string; android: string };
+  platforms: { ios: string; android: string; ipad: string; androidtablet: string };
   sliderLabel: string;
   placeholder: string;
   altPhone: (platform: string, controller: string, screen: string) => string;
@@ -28,21 +32,30 @@ interface Props {
 }
 const { copy } = Astro.props;
 
+const devices = ['phone', 'tablet'] as const;
 const controllers = ['proconip', 'violet'] as const;
 const screens = ['dashboard', 'measurements', 'switches'] as const;
 const themes = ['light', 'dark'] as const;
 // The default-active combo (matches the parent's initial state + the no-JS image).
 // The parent flips to dark on load if the visitor's OS prefers it.
-const isDefault = (c: string, s: string, t: string) =>
-  c === 'proconip' && s === 'dashboard' && t === 'light';
+const isDefault = (d: string, c: string, s: string, t: string) =>
+  d === 'phone' && c === 'proconip' && s === 'dashboard' && t === 'light';
 // Dark variants reuse the same name with a `_dark` suffix before `.webp`.
 const srcFor = (platform: string, c: string, s: string, t: string) =>
   `/screenshots/screenshot_${platform}_${c}_${s}${t === 'dark' ? '_dark' : ''}.webp`;
 
+// Two stacked layers, each resolving to a per-device platform. Top = iOS family
+// (clipped by --pos), bottom = Android family (full).
 const layers = [
-  { platform: 'android', cls: 'compare__layer--android', name: copy.platforms.android },
-  { platform: 'ios', cls: 'compare__layer--ios', name: copy.platforms.ios },
+  { cls: 'compare__layer--android', platform: { phone: 'android', tablet: 'androidtablet' } },
+  { cls: 'compare__layer--ios', platform: { phone: 'ios', tablet: 'ipad' } },
 ] as const;
+// Intrinsic dimensions per device (aspect hint; the bezel CSS sets the real box).
+// Phones are portrait 800×1739; tablets land on the Android-Tablet ratio 1440×900.
+const dims = {
+  phone: { width: 800, height: 1739 },
+  tablet: { width: 1440, height: 900 },
+} as const;
 const ph = copy.placeholder;
 ---
 
@@ -56,23 +69,29 @@ const ph = copy.placeholder;
           <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2" /><circle cx="8.5" cy="10" r="1.6" /><path d="M5 17l4.5-4.5L13 16l3-3 3 3" /></svg>
           <span>{ph}</span>
         </div>
-        {controllers.map((c) =>
-          screens.map((s) =>
-            themes.map((t) => (
-              <img
-                class={`compare__img${isDefault(c, s, t) ? ' is-active' : ''}`}
-                src={isDefault(c, s, t) ? srcFor(layer.platform, c, s, t) : undefined}
-                data-src={srcFor(layer.platform, c, s, t)}
-                alt={copy.altPhone(layer.name, copy.controllers[c], copy.screens[s])}
-                data-platform={layer.platform}
-                data-controller={c}
-                data-screen={s}
-                data-theme={t}
-                width="1080"
-                height="2348"
-                decoding="async"
-              />
-            )),
+        {devices.map((d) =>
+          controllers.map((c) =>
+            screens.map((s) =>
+              themes.map((t) => {
+                const platform = layer.platform[d];
+                return (
+                  <img
+                    class={`compare__img${isDefault(d, c, s, t) ? ' is-active' : ''}`}
+                    src={isDefault(d, c, s, t) ? srcFor(platform, c, s, t) : undefined}
+                    data-src={srcFor(platform, c, s, t)}
+                    alt={copy.altPhone(copy.platforms[platform], copy.controllers[c], copy.screens[s])}
+                    data-device={d}
+                    data-platform={platform}
+                    data-controller={c}
+                    data-screen={s}
+                    data-theme={t}
+                    width={dims[d].width}
+                    height={dims[d].height}
+                    decoding="async"
+                  />
+                );
+              }),
+            ),
           ),
         )}
       </div>
@@ -82,9 +101,12 @@ const ph = copy.placeholder;
          device's own notch/punch-hole, so the frame draws one. -->
     <span class="compare__notch" aria-hidden="true"></span>
 
-    <!-- Platform name tags (text, not colour-alone) -->
-    <span class="compare__tag compare__tag--ios" aria-hidden="true">{copy.platforms.ios}</span>
-    <span class="compare__tag compare__tag--android" aria-hidden="true">{copy.platforms.android}</span>
+    <!-- Platform name tags (text, not colour-alone). One pair per device; the
+         parent's data-device hides the inactive pair. -->
+    <span class="compare__tag compare__tag--ios" data-for="phone" aria-hidden="true">{copy.platforms.ios}</span>
+    <span class="compare__tag compare__tag--ios" data-for="tablet" aria-hidden="true">{copy.platforms.ipad}</span>
+    <span class="compare__tag compare__tag--android" data-for="phone" aria-hidden="true">{copy.platforms.android}</span>
+    <span class="compare__tag compare__tag--android" data-for="tablet" aria-hidden="true">{copy.platforms.androidtablet}</span>
 
     <!-- Visible divider + knob, tracks --pos -->
     <span class="compare__divider" aria-hidden="true"></span>

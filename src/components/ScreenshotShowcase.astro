@@ -1,29 +1,37 @@
 ---
 /**
- * Interactive screenshots showcase: a phone iOS↔Android compare-slider with
- * Controller + Screen selectors, and a side-by-side watch pair with a View
- * selector. All interactivity is in one scoped script at the bottom.
+ * Interactive screenshots showcase: an iOS↔Android compare-slider with
+ * Device (phone/tablet) + Controller + Screen + Theme selectors, and a
+ * side-by-side watch pair with a View selector. All interactivity is in one
+ * scoped script at the bottom.
  *
  * Selectors are accessible radiogroups (roving tabindex + arrow keys). The
  * slider is a real <input type=range> mirrored into a --pos custom property.
+ * The bezel switches portrait↔landscape via the .showcase[data-device] flag.
  */
 import CompareSlider from './CompareSlider.astro';
 import WatchPair from './WatchPair.astro';
 import type { Lang } from '../i18n/ui';
 
 export interface ShowcaseCopy {
+  deviceLabel: string;
   controllerLabel: string;
   screenLabel: string;
   themeLabel: string;
   viewLabel: string;
+  devices: { phone: string; tablet: string };
   controllers: { proconip: string; violet: string };
   screens: { dashboard: string; measurements: string; switches: string };
   themes: { light: string; dark: string };
   views: { app: string; complications: string };
-  platforms: { ios: string; android: string; watchos: string; wearos: string };
+  platforms: { ios: string; android: string; ipad: string; androidtablet: string; watchos: string; wearos: string };
+  /** Phone slider label; the tablet variant swaps in client-side. */
   sliderLabel: string;
-  /** Template with {ios}/{android} placeholders, read by the client script. */
+  sliderLabelTablet: string;
+  /** Phone template with {ios}/{android} placeholders, read by the client script. */
   valueText: string;
+  /** Tablet template with {ipad}/{androidtablet} placeholders. */
+  valueTextTablet: string;
   placeholder: string;
   altPhone: (platform: string, controller: string, screen: string) => string;
   altWatch: (platform: string, view: string) => string;
@@ -34,6 +42,10 @@ interface Props {
 }
 const { lang, copy } = Astro.props;
 
+const deviceOpts = [
+  { v: 'phone', label: copy.devices.phone },
+  { v: 'tablet', label: copy.devices.tablet },
+];
 const controllerOpts = [
   { v: 'proconip', label: copy.controllers.proconip },
   { v: 'violet', label: copy.controllers.violet },
@@ -53,10 +65,15 @@ const viewOpts = [
 ];
 ---
 
-<div class="showcase" data-controller="proconip" data-screen="dashboard" data-theme="light" data-view="complications" data-valuetext={copy.valueText}>
-  <!-- Phone: controller + screen selectors, then the slider -->
+<div class="showcase" data-device="phone" data-controller="proconip" data-screen="dashboard" data-theme="light" data-view="complications" data-valuetext={copy.valueText} data-valuetext-tablet={copy.valueTextTablet} data-sliderlabel-tablet={copy.sliderLabelTablet}>
+  <!-- Phone/Tablet: device + controller + screen selectors, then the slider -->
   <div class="showcase__phone">
     <div class="showcase__selectors">
+      <div class="seg" role="radiogroup" aria-label={copy.deviceLabel} data-group="device">
+        {deviceOpts.map((o) => (
+          <button class="seg__btn" role="radio" aria-checked={o.v === 'phone'} tabindex={o.v === 'phone' ? 0 : -1} data-value={o.v}>{o.label}</button>
+        ))}
+      </div>
       <div class="seg" role="radiogroup" aria-label={copy.controllerLabel} data-group="controller">
         {controllerOpts.map((o) => (
           <button class="seg__btn" role="radio" aria-checked={o.v === 'proconip'} tabindex={o.v === 'proconip' ? 0 : -1} data-value={o.v}>{o.label}</button>
@@ -114,6 +131,19 @@ const viewOpts = [
     color: var(--c-primary-ink);
     box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--c-primary) 30%, transparent);
   }
+
+  /* --- Device-reactive bezel (lives here because the data-device flag is on
+     .showcase; CompareSlider internals are pierced with :global). Phone keeps the
+     portrait defaults from CompareSlider; tablet goes wider + landscape, no notch. */
+  .showcase[data-device='tablet'] :global(.compare) { width: min(44rem, 92vw); }
+  /* 16/10 = the Android-Tablet ratio (1440×900): the full bottom layer matches
+     exactly so its nav survives; the clipped iPad layer (1.44) cover-crops a touch. */
+  .showcase[data-device='tablet'] :global(.compare__screen) { aspect-ratio: 16 / 10; }
+  .showcase[data-device='tablet'] :global(.compare__notch) { display: none; }
+
+  /* Show only the active device's platform tags. */
+  .showcase[data-device='phone'] :global(.compare__tag[data-for='tablet']) { display: none; }
+  .showcase[data-device='tablet'] :global(.compare__tag[data-for='phone']) { display: none; }
 </style>
 
 <script>
@@ -121,15 +151,30 @@ const viewOpts = [
   // keyboard/selection, image-matrix toggling, and broken-image placeholders.
   const root = document.querySelector<HTMLElement>('.showcase');
   if (root) {
-    const state = { controller: 'proconip', screen: 'dashboard', theme: 'light', view: 'complications' };
+    const state = { device: 'phone', controller: 'proconip', screen: 'dashboard', theme: 'light', view: 'complications' };
 
     // --- Compare slider: mirror the range value into --pos + aria-valuetext ---
     const compare = root.querySelector<HTMLElement>('.compare');
     const range = root.querySelector<HTMLInputElement>('.compare__range');
-    const tpl = root.dataset.valuetext ?? '{ios}% iOS · {android}% Android';
+    const sliderLabel = root.querySelector<HTMLLabelElement>('label[for="compare-range"]');
+    // Per-device aria-valuetext templates + the static slider label. The phone
+    // strings live in the markup (no-JS); the tablet variants arrive via data-*.
+    const valuetextTpl = {
+      phone: root.dataset.valuetext ?? '{ios}% iOS · {android}% Android',
+      tablet: root.dataset.valuetextTablet ?? '{ipad}% iPad · {androidtablet}% Android tablet',
+    } as Record<string, string>;
+    const sliderLabelTpl = {
+      phone: sliderLabel?.textContent ?? '',
+      tablet: root.dataset.sliderlabelTablet ?? '',
+    } as Record<string, string>;
     const setPos = (v: number) => {
       compare?.style.setProperty('--pos', String(v));
-      if (range) range.setAttribute('aria-valuetext', tpl.replace('{ios}', String(v)).replace('{android}', String(100 - v)));
+      if (range) {
+        const tpl = valuetextTpl[state.device] ?? valuetextTpl.phone;
+        range.setAttribute('aria-valuetext', tpl
+          .replace('{ios}', String(v)).replace('{ipad}', String(v))
+          .replace('{android}', String(100 - v)).replace('{androidtablet}', String(100 - v)));
+      }
     };
     if (range) {
       range.addEventListener('input', () => setPos(Number(range.value)));
@@ -150,14 +195,20 @@ const viewOpts = [
 
     // --- Image-matrix toggling ---
     const applyPhone = () => {
+      root.dataset.device = state.device;
       root.dataset.controller = state.controller;
       root.dataset.screen = state.screen;
       root.dataset.theme = state.theme;
       root.querySelectorAll<HTMLImageElement>('.compare__img').forEach((img) => {
-        const on = img.dataset.controller === state.controller && img.dataset.screen === state.screen && img.dataset.theme === state.theme;
+        const on = img.dataset.device === state.device && img.dataset.controller === state.controller && img.dataset.screen === state.screen && img.dataset.theme === state.theme;
         img.classList.toggle('is-active', on);
         if (on) ensureLoaded(img);
       });
+    };
+    // Device switch also swaps the slider's labels to the right platform names.
+    const applyDevice = () => {
+      if (sliderLabel) sliderLabel.textContent = sliderLabelTpl[state.device] ?? sliderLabelTpl.phone;
+      if (range) setPos(Number(range.value));
     };
     const applyWatch = () => {
       root.dataset.view = state.view;
@@ -170,12 +221,13 @@ const viewOpts = [
 
     // --- Radiogroups: roving tabindex + arrow/Home/End keyboard + click ---
     const select = (group: string, value: string) => {
-      if (group === 'controller') state.controller = value;
+      if (group === 'device') state.device = value;
+      else if (group === 'controller') state.controller = value;
       else if (group === 'screen') state.screen = value;
       else if (group === 'theme') state.theme = value;
       else if (group === 'view') state.view = value;
       if (group === 'view') applyWatch();
-      else applyPhone();
+      else { applyPhone(); if (group === 'device') applyDevice(); }
     };
 
     root.querySelectorAll<HTMLElement>('.seg').forEach((seg) => {
