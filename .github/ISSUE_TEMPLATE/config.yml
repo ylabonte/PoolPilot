@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: ✉️ E-Mail (privat / private)
+    url: mailto:yannic.labonte@gmail.com
+    about: Für private oder kontobezogene Anliegen. / For private or account-related matters.
+  - name: 📖 Hilfe & FAQ / Help & FAQ
+    url: https://poolpilot.eu/de/support
+    about: Häufige Fragen zu Einrichtung und Verbindung. / Common setup and connection questions.
+  - name: 🔒 Datenschutz / Privacy
+    url: https://poolpilot.eu/de/datenschutz
+    about: Wie PoolPilot mit Daten umgeht. / How PoolPilot handles data.
