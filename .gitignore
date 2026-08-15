@@ -1,0 +1,17 @@
+# The family sub-checkouts, cloned side-by-side by bootstrap.sh — never tracked by the meta repo.
+/poolpilot-app/
+/poolpilot-cloud/
+/poolpilot-relay/
+/poolpilot-site/
+/poolpilot-claude/
+
+# Vendored Claude tooling (canonical in poolpilot-claude) — local-only in this public repo.
+/.claude/
+/CLAUDE.local.md
+
+# Local Go multi-module dev (bootstrap writes go.work; cloud CI sets GOWORK=off).
+go.work
+go.work.sum
+
+# macOS
+.DS_Store

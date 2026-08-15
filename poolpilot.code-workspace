@@ -1,0 +1,15 @@
+{
+  "folders": [
+    { "path": ".", "name": "cockpit (meta)" },
+    { "path": "poolpilot-app", "name": "poolpilot-app (iOS + Android)" },
+    { "path": "poolpilot-cloud", "name": "poolpilot-cloud (backend)" },
+    { "path": "poolpilot-relay", "name": "poolpilot-relay (edge agent)" },
+    { "path": "poolpilot-site", "name": "poolpilot-site (website)" },
+    { "path": "poolpilot-claude", "name": "poolpilot-claude (shared tooling)" }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/.DS_Store": true
+    }
+  }
+}
