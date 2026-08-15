@@ -31,6 +31,7 @@ Open `poolpilot.code-workspace` to get all of them in one editor window.
   gitignored, so they don't materialize in a fresh worktree.
 - **Match repos by their `origin` remote, not by folder name**, if you also work in the older
   `~/workspace` layout — the private cockpit rules explain the trap.
+- Log mistakes in MISTAKES.md (what happened, root cause, prevention).
 
 Private maintainer rules (dir-name map, push discipline, intake policy) live in `CLAUDE.local.md`,
 vendored here by `poolpilot-claude` and imported below when present.
