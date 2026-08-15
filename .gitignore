@@ -15,3 +15,8 @@ go.work.sum
 
 # macOS
 .DS_Store
+
+# Local-only mistakes log (the "log mistakes in MISTAKES.md" convention, present
+# in this repo's CLAUDE.md) — kept out of this public repo; the running log stays
+# local to each maintainer.
+MISTAKES.md
