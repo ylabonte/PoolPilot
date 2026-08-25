@@ -9,6 +9,9 @@
 /.claude/
 /CLAUDE.local.md
 
+# Mistakes log — private-only (canonical in poolpilot-claude); never track it in this public repo.
+/MISTAKES.md
+
 # Local Go multi-module dev (bootstrap writes go.work; cloud CI sets GOWORK=off).
 go.work
 go.work.sum
