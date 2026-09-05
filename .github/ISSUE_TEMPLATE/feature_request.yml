@@ -1,0 +1,31 @@
+name: 💡 Idee / Feature request
+description: Ein Wunsch oder Verbesserungsvorschlag. / A wish or improvement idea.
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Danke für die Idee! **Deutsch oder Englisch** ist beides okay.
+        Thanks for the idea! **German or English** are both fine.
+  - type: dropdown
+    id: controller
+    attributes:
+      label: Welche Steuerung? / Which controller?
+      options:
+        - ProCon.IP
+        - VIOLET
+        - beide / both
+        - weiß nicht / not sure
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: Deine Idee / Your idea
+      description: Was soll PoolPilot können? / What should PoolPilot be able to do?
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Warum ist das nützlich? / Why is it useful?
