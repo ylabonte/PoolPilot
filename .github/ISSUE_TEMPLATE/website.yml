@@ -14,7 +14,7 @@ body:
     attributes:
       label: Seite / Page
       description: Wo? Adresse oder Titel der Seite. / Where? URL or page title.
-      placeholder: z. B. https://poolpilot.eu/de/datenschutz
+      placeholder: z. B. https://poolpilot.eu/de/datenschutz/
     validations:
       required: true
   - type: dropdown

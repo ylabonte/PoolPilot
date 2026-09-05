@@ -10,7 +10,7 @@ both the **ProCon.IP** and **VIOLET** pool controllers from a single app.
 This repository is PoolPilot's public **issue tracker**. Please
 [open an issue](../../issues/new/choose) and pick the matching template.
 
-Looking for help first? See **[poolpilot.eu/support](https://poolpilot.eu/de/support)**.
+Looking for help first? See **[poolpilot.eu/support](https://poolpilot.eu/de/support/)**.
 
 ## Working on PoolPilot
 

@@ -4,8 +4,8 @@ contact_links:
     url: mailto:yannic.labonte@gmail.com
     about: Für private oder kontobezogene Anliegen. / For private or account-related matters.
   - name: 📖 Hilfe & FAQ / Help & FAQ
-    url: https://poolpilot.eu/de/support
+    url: https://poolpilot.eu/de/support/
     about: Häufige Fragen zu Einrichtung und Verbindung. / Common setup and connection questions.
   - name: 🔒 Datenschutz / Privacy
-    url: https://poolpilot.eu/de/datenschutz
+    url: https://poolpilot.eu/de/datenschutz/
     about: Wie PoolPilot mit Daten umgeht. / How PoolPilot handles data.
