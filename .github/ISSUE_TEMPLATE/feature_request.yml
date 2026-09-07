@@ -12,9 +12,11 @@ body:
     attributes:
       label: Welche Steuerung? / Which controller?
       options:
+        - Allgemein / general
+        - BADU Blue
+        - BADU Blue Pro
         - ProCon.IP
         - VIOLET
-        - beide / both
         - weiß nicht / not sure
     validations:
       required: true
